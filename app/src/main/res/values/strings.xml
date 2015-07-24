@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">AppLU</string>
+    <string name="enter_search_pattern">Enter search pattern</string>
+
+    <string name="widget_name_base">App Manager Widget Basic</string>
+    <!--
+    to be filtered
+    -->
+    <string name="cannot_run_app">This app is not runnable</string>
+    <!-- icons from awesome-->
+    <string name="icon_trash">&#xf1f8;</string>
+    <string name="icon_trash_o">&#xf014;</string>
+    <string name="no_matches">[no results]</string>
+    <string name="last_apps">Last apps</string>
+</resources>

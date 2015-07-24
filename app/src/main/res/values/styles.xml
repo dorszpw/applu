@@ -1,0 +1,107 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- For the resting Spinner style -->
+        <item name="android:spinnerItemStyle">
+            @style/spinnerItemStyle
+        </item>
+
+        <!-- For each individual Spinner list item once clicked on -->
+        <item name="android:spinnerDropDownItemStyle">
+            @style/spinnerDropDownItemStyle
+        </item>
+    </style>
+
+    <style name="keypadButtonStyle">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textColor">@color/button_text_color_theme_black</item>
+        <item name="android:layout_weight">2</item>
+    </style>
+
+    <style name="keypadButtonStyleL" parent="keypadButtonStyle">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+    </style>
+    <style name="keypadButtonStyleWhite">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textColor">@color/button_text_color_theme_white</item>
+        <item name="android:layout_weight">2</item>
+    </style>
+    <style name="keypadButtonStyleLWhite" parent="keypadButtonStyleWhite">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+    </style>
+    <style name="spinnerItemStyle">
+        <item name="android:padding">2dp</item>
+        <item name="android:textSize">@dimen/ref_font_large</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle">
+        <item name="android:padding">2dp</item>
+        <item name="android:textSize">@dimen/ref_font_large</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center_horizontal</item>
+
+    </style>
+
+    <style name="CosmosTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="CosmosTextStyle.Title">
+        <item name="android:textSize">@dimen/ref_font_title</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="actionButtonStyle">
+        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="lastAppButtonStyle">
+        <item name="android:layout_width">37dp</item>
+        <item name="android:layout_height">37dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:src">@null</item>
+    </style>
+
+    <style name="lastAppButtonStyleTight" parent="lastAppButtonStyle">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:src">@null</item>
+    </style>
+
+
+</resources>
