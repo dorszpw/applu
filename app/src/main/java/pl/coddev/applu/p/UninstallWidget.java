@@ -142,7 +142,6 @@ public class UninstallWidget extends AppWidgetProvider {
     }
 
 
-
     RemoteViews getRemoteViews(Context context) {
         return null;
     }
@@ -257,7 +256,7 @@ public class UninstallWidget extends AppWidgetProvider {
 
         if (!button.equals(WidgetActions.TEXTFIELD_BUTTON) || !PInfoHandler.filteredPInfosExists(widgetId)) {
 
-            switch(button) {
+            switch (button) {
                 case TEXTFIELD_BUTTON:
                     PInfoHandler.incrementAppIndex(widgetId, 1);
                     break;
@@ -356,19 +355,19 @@ public class UninstallWidget extends AppWidgetProvider {
                 }
             } else if (actionString.contains("LASTAPP")) {
 
-                    currentApp = getLastApp(actionString, widgetId);
-                    try {
+                currentApp = getLastApp(actionString, widgetId);
+                try {
 
-                        if(currentApp != null && currentApp != "") {
-                            Intent i = context.getPackageManager().getLaunchIntentForPackage(currentApp);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(i);
-                            handleLastApps(currentApp, widgetId);
-                        }
-                    } catch (Exception e) {
-                        Log.d(TAG, e.getMessage());
-                        Toast.makeText(context, R.string.cannot_run_app, Toast.LENGTH_LONG).show();
+                    if (currentApp != null && currentApp != "") {
+                        Intent i = context.getPackageManager().getLaunchIntentForPackage(currentApp);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                        handleLastApps(currentApp, widgetId);
                     }
+                } catch (Exception e) {
+                    Log.d(TAG, e.getMessage());
+                    Toast.makeText(context, R.string.cannot_run_app, Toast.LENGTH_LONG).show();
+                }
 
             } else if (actionString.contains("BUTTON")) {
                 if (action.equals((WidgetActions.BUTTON_SELECTOR))) {
@@ -404,7 +403,7 @@ public class UninstallWidget extends AppWidgetProvider {
     }
 
     void handleLastApps(String newPackage, int widgetId) {
-       //
+        //
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import pl.coddev.applu.c.Log;
 import pl.coddev.applu.d.PInfo;
 import pl.coddev.applu.p.UninstallWidget;
 
@@ -18,7 +19,7 @@ import pl.coddev.applu.p.UninstallWidget;
  * Created by Piotr Woszczek on 19/06/15.
  */
 public final class PInfoHandler {
-
+    private static final String TAG = "PInfoHandler";
     private static Map<Integer, Integer> appIndex = new HashMap<>();
     private static Map<Integer, ArrayList<PInfo>> filteredPInfos = new HashMap<>();
     private static Map<Integer, ArrayList<PInfo>> allPInfos = new HashMap<>();
@@ -33,10 +34,10 @@ public final class PInfoHandler {
     }
 
     public static boolean allPInfosExists(int widgetId){
-        return allPInfos.get(widgetId)==null?false:true;
+        return allPInfos.containsKey(widgetId);
     }
     public static boolean filteredPInfosExists(int widgetId){
-        return filteredPInfos.get(widgetId)==null?false:true;
+        return filteredPInfos.containsKey(widgetId);
     }
 
     public static int getAppIndex(int widgetId) {
@@ -69,19 +70,23 @@ public final class PInfoHandler {
     public static int sizeOfFiltered(int widgetId){
         return filteredPInfos.get(widgetId).size();
     }
+
     public static int sizeOfAll(int widgetId){
         return allPInfos.get(widgetId).size();
     }
 
-    public static void clearFiltered(int widgetId){
-        filteredPInfos.get(widgetId).clear();
-    }
 
     public static void addToFiltered(int widgetId, PInfo pInfo){
+        if(!filteredPInfosExists(widgetId)) {
+            setFilteredPInfos(widgetId);
+        }
         filteredPInfos.get(widgetId).add(pInfo);
     }
 
     public static void addToAll(int widgetId, PInfo pInfo){
+        if(!allPInfosExists(widgetId)){
+            setAllPInfos(widgetId);
+        }
         allPInfos.get(widgetId).add(pInfo);
     }
 
