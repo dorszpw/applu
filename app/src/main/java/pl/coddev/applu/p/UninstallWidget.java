@@ -85,9 +85,9 @@ public class UninstallWidget extends AppWidgetProvider {
 
             widgetId = appWidgetIds[i];
             int[] ids = {widgetId};
-            if (prefs == null) {
-                prefs = context.getSharedPreferences(Constants.PREF_FILE + widgetId, Context.MODE_PRIVATE);
-            }
+            prefs = context.getSharedPreferences(Constants.PREF_FILE + widgetId, Context.MODE_PRIVATE);
+            appSelectorStatus = AppSelectorStatus.valueOf(prefs.getString(Constants.APP_SELECTOR_STATUS,
+                    AppSelectorStatus.USER.name()));
 
             RemoteViews views = null;
             // Get the layout for the App Widget and attach an on-click listener
@@ -122,8 +122,8 @@ public class UninstallWidget extends AppWidgetProvider {
                 String appName = pinfo.getAppname();
                 packageName = pinfo.getPname();
 
-                views.setOnClickPendingIntent(R.id.uninstallButton, buildPendingIntent(context, WidgetActions.BUTTON_UNINSTALL.name(), ids));
-                views.setOnClickPendingIntent(R.id.launchButton, buildPendingIntent(context, WidgetActions.BUTTON_LAUNCH.name(), ids));
+                views.setOnClickPendingIntent(R.id.uninstallButton, buildPendingIntentForActionButtons(context, packageName, WidgetActions.BUTTON_UNINSTALL.name(), ids));
+                views.setOnClickPendingIntent(R.id.launchButton, buildPendingIntentForActionButtons(context, packageName, WidgetActions.BUTTON_LAUNCH.name(), ids));
 
                 Bitmap iconBitmap = Cache.getInstance().getBitmapFromMemCache(pinfo.getPname(), this.pm);
                 views.setImageViewBitmap(R.id.launchButton, iconBitmap);
@@ -134,8 +134,9 @@ public class UninstallWidget extends AppWidgetProvider {
                 views.setImageViewResource(R.id.launchButton, R.drawable.search_problem_128);
             }
 
-            prefs.edit().putInt(Constants.APP_INDEX, PInfoHandler.getAppIndex(widgetId)).commit();
-            prefs.edit().putString(Constants.CURRENT_APP, packageName).commit();
+            boolean appindexSaved = prefs.edit().putInt(Constants.APP_INDEX, PInfoHandler.getAppIndex(widgetId)).commit();
+            boolean packageSaved = prefs.edit().putString(Constants.CURRENT_APP, packageName).commit();
+            Log.d(TAG, "onUpdate prefs, class:  " + this.getClass().getName() + ", saved: " + appindexSaved + "/" + packageSaved);
             views.setViewVisibility(R.id.progressBar, View.GONE);
             appWidgetManager.updateAppWidget(widgetId, views);
         }
@@ -202,15 +203,24 @@ public class UninstallWidget extends AppWidgetProvider {
         return pendingIntent;
     }
 
+    // separate method to add packageName, just to be sure that what user uninstalls is right
+    PendingIntent buildPendingIntentForActionButtons(Context context, String packageName, String actionName, int ids[]) {
+        Intent intent = new Intent(context, this.getClass());
+        intent.setAction(actionName);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        intent.putExtra(Constants.CURRENT_APP, packageName);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return pendingIntent;
+    }
+
 
     public static void getInstalledApps(int widgetId, WidgetActions button, Context context,
                                         AppSelectorStatus appSelectorStatus, PackageManager pm) {
 
         Pattern ptn;
         Matcher matcher;
-        if (prefs == null) {
-            prefs = context.getSharedPreferences(Constants.PREF_FILE + widgetId, Context.MODE_PRIVATE);
-        }
+        prefs = context.getSharedPreferences(Constants.PREF_FILE + widgetId, Context.MODE_PRIVATE);
+
         String filter = prefs.getString(Constants.PREFS_FILTER_LIST, "");
 
         Log.d(TAG, "getInstalledApps, last filter: " + filter);
@@ -321,7 +331,10 @@ public class UninstallWidget extends AppWidgetProvider {
             int widgetId = appWidgetIds[0];
             prefs = context.getSharedPreferences(Constants.PREF_FILE + widgetId, Context.MODE_PRIVATE);
 
-            String currentApp = prefs.getString(Constants.CURRENT_APP, "");
+            //String currentApp = prefs.getString(Constants.CURRENT_APP, "");
+            String currentApp;
+            //Log.d(TAG, "onUpdate prefs, class:  " + this.getClass().getName() + ", saved: " + currentApp);
+
             appSelectorStatus = AppSelectorStatus.valueOf(prefs.getString(Constants.APP_SELECTOR_STATUS,
                     AppSelectorStatus.USER.name()));
 
@@ -334,6 +347,7 @@ public class UninstallWidget extends AppWidgetProvider {
             }
 
             if (action.equals(WidgetActions.BUTTON_UNINSTALL)) {
+                currentApp = intent.getStringExtra(Constants.CURRENT_APP);
                 if (currentApp != "") {
                     Uri packageUri = Uri.parse("package:" + currentApp);
                     Intent uninstallIntent =
@@ -342,6 +356,7 @@ public class UninstallWidget extends AppWidgetProvider {
                     context.startActivity(uninstallIntent);
                 }
             } else if (action.equals(WidgetActions.BUTTON_LAUNCH)) {
+                currentApp = intent.getStringExtra(Constants.CURRENT_APP);
                 if (currentApp != "") {
                     try {
                         Intent i = context.getPackageManager().getLaunchIntentForPackage(currentApp);

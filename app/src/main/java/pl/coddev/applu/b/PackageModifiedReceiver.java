@@ -92,6 +92,8 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                         UninstallWidget.AppSelectorStatus selector = UninstallWidget.AppSelectorStatus.valueOf(
                                 prefs.getString(Constants.APP_SELECTOR_STATUS,
                                         UninstallWidget.AppSelectorStatus.USER.name()));
+                        Log.d(TAG, "onReceive PMR, class: " + Class.forName(awpi.get(i).provider.getClassName()) +
+                                " selector: " + selector );
 
                         // add to ALL lists, if falls into selector
                         if (action.equals(Intent.ACTION_PACKAGE_ADDED)) {
