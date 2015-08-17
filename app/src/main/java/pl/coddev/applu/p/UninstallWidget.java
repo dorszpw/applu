@@ -44,7 +44,7 @@ public class UninstallWidget extends AppWidgetProvider {
 
     public enum WidgetActions {
         TEXTFIELD_BUTTON, BUTTON1, BUTTON2, BUTTON3, BUTTON4, BUTTON5, BUTTON6, BUTTON7, BUTTON8,
-        BUTTON_CLEAR, BUTTON_UNINSTALL, BUTTON_LAUNCH, OTHER, BUTTON_SELECTOR, ADDED_NEW_APP,
+        BUTTON_CLEAR, BUTTON_CLEAR_ALL, BUTTON_UNINSTALL, BUTTON_LAUNCH, OTHER, BUTTON_SELECTOR, ADDED_NEW_APP,
         BUTTON_LASTAPP1, BUTTON_LASTAPP2, BUTTON_LASTAPP3, BUTTON_LASTAPP4, BUTTON_LASTAPP5,
         BUTTON_LASTAPP6, BUTTON_LASTAPP7, BUTTON_LASTAPP8, NO_ACTION;
 
@@ -105,6 +105,7 @@ public class UninstallWidget extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.clearButton, buildPendingIntent(context, WidgetActions.BUTTON_CLEAR.name(), ids));
             views.setOnClickPendingIntent(R.id.appSelectorButton, buildPendingIntent(context, WidgetActions.BUTTON_SELECTOR.name(), ids));
             setupLastAppsButtons(views, context, ids);
+            setupRemoveAllButton(views, context, ids);
             switchSelectorStatus(views);
 
 
@@ -140,6 +141,10 @@ public class UninstallWidget extends AppWidgetProvider {
             views.setViewVisibility(R.id.progressBar, View.GONE);
             appWidgetManager.updateAppWidget(widgetId, views);
         }
+    }
+
+    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids) {
+        //
     }
 
 
@@ -255,6 +260,8 @@ public class UninstallWidget extends AppWidgetProvider {
                 filter = filter.replaceFirst("\\[\\w+\\]\\[\\^a\\-z" +
                         "A\\-Z\\]\\*$", "");
                 break;
+            case BUTTON_CLEAR_ALL:
+                filter = "";
             default:
                 break;
         }

@@ -76,24 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/launchButton"
-            style="@style/lastAppButtonStyleTight" />
-        <ImageView
-            android:id="@+id/uninstallButton"
-            style="@style/lastAppButtonStyleTight"
-            android:src="@drawable/ic_delete_theme_black" />
-        <ImageView
-            android:id="@+id/appSelectorButton"
-            style="@style/lastAppButtonStyleTight"
-            android:padding="2dp"
-            android:src="@drawable/filter_all_theme_black" />
-        <ImageView
-            android:layout_width="1dp"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/separator" />
+
         <ImageView
             android:id="@+id/lastApp1"
             style="@style/lastAppButtonStyle"/>
@@ -142,6 +125,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/launchButton"
+            style="@style/lastAppButtonStyleTight" />
 
 
 
@@ -177,6 +163,10 @@
         android:orientation="horizontal">
 
 
+        <ImageView
+            android:id="@+id/uninstallButton"
+            style="@style/lastAppButtonStyleTight"
+            android:src="@drawable/ic_delete_theme_black" />
 
 
         <Button
@@ -206,6 +196,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/appSelectorButton"
+            style="@style/lastAppButtonStyleTight"
+            android:padding="2dp"
+            android:src="@drawable/filter_all_theme_black" />
 
 
         <Button
@@ -222,15 +217,29 @@
 
             />
 
-        <FrameLayout style="@style/keypadButtonStyleL">
+        <LinearLayout style="@style/keypadButtonStyleL"
+            android:orientation="horizontal"
+
+            >
 
             <ImageView
                 android:id="@+id/clearButton"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
                 android:layout_gravity="center"
+                android:padding="5dp"
                 android:src="@drawable/backspace_arrow" />
-        </FrameLayout>
+            <ImageView
+                android:id="@+id/clearAllButton"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:src="@drawable/cancel_button_128" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

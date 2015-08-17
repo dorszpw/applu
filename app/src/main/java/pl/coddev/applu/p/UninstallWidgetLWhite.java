@@ -9,8 +9,8 @@ import pl.coddev.applu.R;
 /**
  * Created by pw on 16/03/15.
  */
-public class UninstallWidgetLWhite extends UninstallWidgetM {
-    private static final String TAG = "UninstallWidgetMWhite";
+public class UninstallWidgetLWhite extends UninstallWidgetL {
+    private static final String TAG = "UninstallWidgetLWhite";
 
     @Override
     void switchSelectorStatus(RemoteViews views) {
