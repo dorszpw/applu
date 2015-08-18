@@ -36,7 +36,7 @@ import pl.coddev.applu.d.PInfo;
 /**
  * Created by pw on 16/03/15.
  */
-public class UninstallWidget extends AppWidgetProvider {
+abstract public class UninstallWidget extends AppWidgetProvider {
     private static final String TAG = "UninstallWidget";
     private static int widgetId = 0;
     protected AppSelectorStatus appSelectorStatus = AppSelectorStatus.USER;
@@ -73,6 +73,13 @@ public class UninstallWidget extends AppWidgetProvider {
     public void setAction(WidgetActions action) {
         this.action = action;
     }
+
+
+    abstract void setupLastAppsButtons(RemoteViews views, Context context, int[] ids);
+    abstract void handleLastApps(String newPackage, int widgetId);
+    abstract void setupRemoveAllButton(RemoteViews views, Context context, int[] ids);
+    abstract void switchSelectorStatus(RemoteViews views);
+    abstract RemoteViews getRemoteViews(Context context);
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
@@ -143,29 +150,6 @@ public class UninstallWidget extends AppWidgetProvider {
         }
     }
 
-    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids) {
-        //
-    }
-
-
-    RemoteViews getRemoteViews(Context context) {
-        return null;
-    }
-
-    void switchSelectorStatus(RemoteViews views) {
-
-        switch (appSelectorStatus) {
-            case ALL:
-                views.setImageViewResource(R.id.appSelectorButton, R.drawable.filter_all_theme_black);
-                break;
-            case USER:
-                views.setImageViewResource(R.id.appSelectorButton, R.drawable.filter_user_theme_black);
-                break;
-            case SYSTEM:
-                views.setImageViewResource(R.id.appSelectorButton, R.drawable.filter_system_theme_black);
-                break;
-        }
-    }
 
     private CharSequence getSpannableForField(Context context, PInfo pInfo) {
         SpannableString spannableShowMore = new SpannableString(""),
@@ -417,17 +401,11 @@ public class UninstallWidget extends AppWidgetProvider {
 
     }
 
-    void setupLastAppsButtons(RemoteViews views, Context context, int[] ids) {
-        //
-    }
 
     String getLastApp(String action, int widgetId) {
         return null;
     }
 
-    void handleLastApps(String newPackage, int widgetId) {
-        //
-    }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {

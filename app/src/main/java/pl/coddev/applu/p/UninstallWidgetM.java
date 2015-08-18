@@ -16,9 +16,12 @@ import pl.coddev.applu.c.Log;
 /**
  * Created by Piotr Woszczek on 23/07/15.
  */
-public class UninstallWidgetM extends UninstallWidget {
+abstract public class UninstallWidgetM extends UninstallWidget {
     private static final String TAG = "UninstallWidgetM";
 
+
+    @Override
+    abstract RemoteViews getRemoteViews(Context context);
 
     @Override
     String getLastApp(String action, int widgetId) {
@@ -91,4 +94,10 @@ public class UninstallWidgetM extends UninstallWidget {
         Log.d(TAG, "handleLastApps " + lastAppsString);
         prefs.edit().putString(Constants.LAST_APPS_SYNC, lastAppsString).commit();
     }
+
+    @Override
+    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids){};
+
+    @Override
+    abstract void switchSelectorStatus(RemoteViews views);
 }

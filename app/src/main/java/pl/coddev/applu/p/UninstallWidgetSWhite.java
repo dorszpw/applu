@@ -9,7 +9,7 @@ import pl.coddev.applu.R;
 /**
  * Created by pw on 16/03/15.
  */
-public class UninstallWidgetSWhite extends UninstallWidget {
+public class UninstallWidgetSWhite extends UninstallWidgetS {
     private static final String TAG = "UninstallWidgetSWhite";
 
     @Override

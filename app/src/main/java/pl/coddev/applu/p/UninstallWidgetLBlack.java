@@ -25,7 +25,6 @@ public class UninstallWidgetLBlack extends UninstallWidgetL {
                 views.setImageViewResource(R.id.appSelectorButton, R.drawable.filter_system_theme_black);
                 break;
         }
-
     }
 
     @Override
