@@ -360,6 +360,7 @@ public class UninstallWidget extends AppWidgetProvider {
                     Intent uninstallIntent =
                             new Intent(Intent.ACTION_DELETE, packageUri);
                     uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    uninstallIntent.putExtra("android.intent.extra.UNINSTALL_ALL_USERS", true);
                     context.startActivity(uninstallIntent);
                 }
             } else if (action.equals(WidgetActions.BUTTON_LAUNCH)) {
