@@ -81,9 +81,13 @@ abstract public class UninstallWidget extends AppWidgetProvider {
 
 
     abstract void setupLastAppsButtons(RemoteViews views, Context context, int[] ids);
+
     abstract void handleLastApps(String newPackage, int widgetId);
+
     abstract void setupRemoveAllButton(RemoteViews views, Context context, int[] ids);
+
     abstract void switchSelectorStatus(RemoteViews views);
+
     abstract RemoteViews getRemoteViews(Context context);
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -257,7 +261,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                 break;
         }
         if ((PInfoHandler.filteredPInfosExists(widgetId) &&
-                PInfoHandler.sizeOfFiltered(widgetId) > 0) || !PInfoHandler.allPInfosExists(widgetId)) {
+                PInfoHandler.sizeOfFiltered(widgetId) > 0) || !PInfoHandler.selectedPInfosExists(widgetId)) {
             filter += filterExpansion;
         }
         Log.d(TAG, "getInstalledApps, new filter: " + filter);
@@ -277,31 +281,42 @@ abstract public class UninstallWidget extends AppWidgetProvider {
 
             ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
 
-            if (!PInfoHandler.allPInfosExists(widgetId) || button.equals(WidgetActions.BUTTON_SELECTOR)) {
-                ArrayList<PackageInfo> packs = (ArrayList) pm.getInstalledPackages(0);
-                PInfoHandler.setAllPInfos(widgetId);
+            if (!PInfoHandler.selectedPInfosExists(widgetId) || button.equals(WidgetActions.BUTTON_SELECTOR)) {
+                if (!PInfoHandler.allPInfosExists()) {
+                    ArrayList<PackageInfo> packs = (ArrayList) pm.getInstalledPackages(0);
+                    PInfoHandler.setSelectedPInfos(widgetId);
 
-                for (int i = 0; i < packs.size(); i++) {
-                    PackageInfo pi = packs.get(i);
+                    for (int i = 0; i < packs.size(); i++) {
+                        PackageInfo pi = packs.get(i);
 
-                    if (!PInfoHandler.fallsIntoSelector(pi, appSelectorStatus, context))
-                        continue;
+                        if (!PInfoHandler.fallsIntoSelector(pi, appSelectorStatus, context))
+                            continue;
 
-                    PInfo newInfo = new PInfo();
-                    newInfo.setAppname(pi.applicationInfo.loadLabel(pm).toString());
-                    //newInfo.setAppname("applu");
-                    newInfo.setPname(pi.packageName);
-                    PInfoHandler.addToAll(widgetId, newInfo);
+                        PInfo newInfo = new PInfo();
+                        newInfo.setAppname(pi.applicationInfo.loadLabel(pm).toString());
+                        //newInfo.setAppname("applu");
+                        newInfo.setPname(pi.packageName);
+                        newInfo.setIsSystemPackage(PInfoHandler.isSystemPackage(pi));
+                        PInfoHandler.addToSelected(widgetId, newInfo);
+                    }
+                    Log.d(TAG, "Loaded new ALL list. Size: " + PInfoHandler.sizeOfAll());
+                } else {
+                    PInfoHandler.setSelectedPInfos(widgetId);
+                    for (PInfo pi : PInfoHandler.getAllPInfos()) {
+                        if (!PInfoHandler.fallsIntoSelector(pi, appSelectorStatus))
+                            continue;
+                        PInfoHandler.addToSelected(widgetId, pi);
+                    }
                 }
-                Log.d(TAG, "Loaded new ALL list. Size: " + PInfoHandler.sizeOfAll(widgetId));
             } else {
-                Log.d(TAG, "Using cached ALL list. Size: " + PInfoHandler.sizeOfAll(widgetId));
+                Log.d(TAG, "Using cached SELECTED list. Size: " + PInfoHandler.sizeOfSelected(widgetId));
             }
+
 
             PInfoHandler.setFilteredPInfos(widgetId);
             //PInfoHandler.clearFiltered(widgetId);
-            for (int i = 0; i < PInfoHandler.sizeOfAll(widgetId); i++) {
-                PInfo newInfo = PInfoHandler.getPInfoFromAll(widgetId, i);
+            for (int i = 0; i < PInfoHandler.sizeOfSelected(widgetId); i++) {
+                PInfo newInfo = PInfoHandler.getPInfoFromSelected(widgetId, i);
                 matcher = ptn.matcher(newInfo.getAppname());
                 if (matcher.find()) {
                     newInfo.setMatch(matcher.start());

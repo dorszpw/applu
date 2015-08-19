@@ -28,6 +28,7 @@ public class DataService extends Service {
     // DataService
     private final IBinder mBinder = new MyBinder();
     SharedPreferences prefs;
+    Context context;
 
 
     //==============================================================================================
@@ -54,39 +55,39 @@ public class DataService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-
         return super.onUnbind(intent);
     }
 
     @Override
     public void onRebind(Intent intent) {
         super.onRebind(intent);
-
     }
 
     @Override
     public void onCreate() {
         //Log.i(TAG, "onCreate()");
         super.onCreate();
+        context = getApplicationContext();
         // TODO: 19/08/15 data
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 PackageManager pm = getApplicationContext().getPackageManager();
                 ArrayList<PackageInfo> packs = (ArrayList) pm.getInstalledPackages(0);
-                PInfoHandler.setAllPInfos(1);
+                PInfoHandler.setAllPInfos();
 
                 for (int i = 0; i < packs.size(); i++) {
                     PackageInfo pi = packs.get(i);
 
-//            if (!PInfoHandler.fallsIntoSelector(pi, appSelectorStatus, context))
-//                continue;
+            if (!PInfoHandler.fallsIntoSelector(pi, UninstallWidget.AppSelectorStatus.ALL, context))
+                continue;
 
                     PInfo newInfo = new PInfo();
                     newInfo.setAppname(pi.applicationInfo.loadLabel(pm).toString());
                     //newInfo.setAppname("applu");
+                    newInfo.setIsSystemPackage(PInfoHandler.isSystemPackage(pi));
                     newInfo.setPname(pi.packageName);
-                    PInfoHandler.addToAll(1, newInfo);
+                    PInfoHandler.addToAll(newInfo);
                 }
                 Log.d(TAG, "onCreate " + packs.size());
             }
@@ -142,7 +143,7 @@ public class DataService extends Service {
                 break;
         }
         if ((PInfoHandler.filteredPInfosExists(widgetId) &&
-                PInfoHandler.sizeOfFiltered(widgetId) > 0) || !PInfoHandler.allPInfosExists(widgetId)) {
+                PInfoHandler.sizeOfFiltered(widgetId) > 0) || !PInfoHandler.selectedPInfosExists(widgetId)) {
             filter += filterExpansion;
         }
         pl.coddev.applu.c.Log.d(TAG, "getInstalledApps, new filter: " + filter);
@@ -163,9 +164,9 @@ public class DataService extends Service {
 
             ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
 
-            if (!PInfoHandler.allPInfosExists(widgetId) || button.equals(UninstallWidget.WidgetActions.BUTTON_SELECTOR)) {
+            if (!PInfoHandler.selectedPInfosExists(widgetId) || button.equals(UninstallWidget.WidgetActions.BUTTON_SELECTOR)) {
                 ArrayList<PackageInfo> packs = (ArrayList) pm.getInstalledPackages(0);
-                PInfoHandler.setAllPInfos(widgetId);
+                PInfoHandler.setSelectedPInfos(widgetId);
 
                 for (int i = 0; i < packs.size(); i++) {
                     PackageInfo pi = packs.get(i);
@@ -176,17 +177,17 @@ public class DataService extends Service {
                     PInfo newInfo = new PInfo();
                     newInfo.setAppname(pi.applicationInfo.loadLabel(pm).toString());
                     newInfo.setPname(pi.packageName);
-                    PInfoHandler.addToAll(widgetId, newInfo);
+                    PInfoHandler.addToSelected(widgetId, newInfo);
                 }
-                pl.coddev.applu.c.Log.d(TAG, "Loaded new ALL list. Size: " + PInfoHandler.sizeOfAll(widgetId));
+                pl.coddev.applu.c.Log.d(TAG, "Loaded new ALL list. Size: " + PInfoHandler.sizeOfSelected(widgetId));
             } else {
-                pl.coddev.applu.c.Log.d(TAG, "Using cached ALL list. Size: " + PInfoHandler.sizeOfAll(widgetId));
+                pl.coddev.applu.c.Log.d(TAG, "Using cached ALL list. Size: " + PInfoHandler.sizeOfSelected(widgetId));
             }
 
             PInfoHandler.setFilteredPInfos(widgetId);
             //PInfoHandler.clearFiltered(widgetId);
-            for (int i = 0; i < PInfoHandler.sizeOfAll(widgetId); i++) {
-                PInfo newInfo = PInfoHandler.getPInfoFromAll(widgetId, i);
+            for (int i = 0; i < PInfoHandler.sizeOfSelected(widgetId); i++) {
+                PInfo newInfo = PInfoHandler.getPInfoFromSelected(widgetId, i);
                 matcher = ptn.matcher(newInfo.getAppname());
                 if (matcher.find()) {
                     newInfo.setMatch(matcher.start());

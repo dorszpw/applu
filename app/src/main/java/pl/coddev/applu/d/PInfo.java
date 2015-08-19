@@ -12,6 +12,16 @@ public class PInfo {
     private String matcherGroup = "";
     private Boolean removed = false;
 
+    public boolean isSystemPackage() {
+        return isSystemPackage;
+    }
+
+    public void setIsSystemPackage(boolean isSystemPackage) {
+        this.isSystemPackage = isSystemPackage;
+    }
+
+    private boolean isSystemPackage = false;
+
     public String getAppname() {
         return appname;
     }

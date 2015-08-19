@@ -1,21 +1,16 @@
 package pl.coddev.applu.b;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import pl.coddev.applu.c.Log;
 import pl.coddev.applu.d.PInfo;
 import pl.coddev.applu.p.UninstallWidget;
 
@@ -26,22 +21,36 @@ public final class PInfoHandler {
     private static final String TAG = "PInfoHandler";
     private static Map<Integer, Integer> appIndex = new HashMap<>();
     private static Map<Integer, ArrayList<PInfo>> filteredPInfos = new HashMap<>();
-    private static Map<Integer, ArrayList<PInfo>> allPInfos = new HashMap<>();
+    private static Map<Integer, ArrayList<PInfo>> selectedPInfos = new HashMap<>();
+    private static ArrayList<PInfo> allPInfos = new ArrayList<>();
 
 
-    public static void setAllPInfos(int widgetId) {
-       PInfoHandler.allPInfos.put(widgetId, new ArrayList<PInfo>());
+    public static void setSelectedPInfos(int widgetId) {
+        PInfoHandler.selectedPInfos.put(widgetId, new ArrayList<PInfo>());
     }
 
     public static void setFilteredPInfos(int widgetId) {
         PInfoHandler.filteredPInfos.put(widgetId, new ArrayList<PInfo>());
     }
 
-    public static boolean allPInfosExists(int widgetId){
-        return allPInfos.containsKey(widgetId);
+    public static void setAllPInfos() {
+        allPInfos = new ArrayList<PInfo>();
     }
-    public static boolean filteredPInfosExists(int widgetId){
+
+    public static ArrayList<PInfo> getAllPInfos() {
+        return allPInfos;
+    }
+
+    public static boolean selectedPInfosExists(int widgetId) {
+        return selectedPInfos.containsKey(widgetId);
+    }
+
+    public static boolean filteredPInfosExists(int widgetId) {
         return filteredPInfos.containsKey(widgetId);
+    }
+
+    public static boolean allPInfosExists() {
+        return (allPInfos == null || allPInfos.size() == 0) ? false : true;
     }
 
     public static int getAppIndex(int widgetId) {
@@ -51,53 +60,67 @@ public final class PInfoHandler {
     public static void setAppIndex(int widgetId, int appIndex) {
         PInfoHandler.appIndex.put(widgetId, appIndex);
     }
-    public static int incrementAppIndex(int widgetId, int by){
-        int newIndex = appIndex.get(widgetId)+by;
+
+    public static int incrementAppIndex(int widgetId, int by) {
+        int newIndex = appIndex.get(widgetId) + by;
         appIndex.put(widgetId, newIndex);
         return newIndex;
     }
 
-    public static void rollIndex(int widgetId){
+    public static void rollIndex(int widgetId) {
         if (appIndex.get(widgetId) >= filteredPInfos.get(widgetId).size()) {
             appIndex.put(widgetId, 0);
         }
-        if (appIndex.get(widgetId) < 0) appIndex.put(widgetId, filteredPInfos.get(widgetId).size()-1);
+        if (appIndex.get(widgetId) < 0)
+            appIndex.put(widgetId, filteredPInfos.get(widgetId).size() - 1);
     }
 
-    public static PInfo getCurrentPInfo(int widgetId){
+    public static PInfo getCurrentPInfo(int widgetId) {
         return filteredPInfos.get(widgetId).get(appIndex.get(widgetId));
     }
-    public static PInfo getPInfoFromAll(int widgetId, int index){
-        return allPInfos.get(widgetId).get(index);
+
+    public static PInfo getPInfoFromSelected(int widgetId, int index) {
+        return selectedPInfos.get(widgetId).get(index);
     }
 
-    public static int sizeOfFiltered(int widgetId){
+    public static int sizeOfFiltered(int widgetId) {
         return filteredPInfos.get(widgetId).size();
     }
 
-    public static int sizeOfAll(int widgetId){
-        return allPInfos.get(widgetId).size();
+    public static int sizeOfSelected(int widgetId) {
+        return selectedPInfos.get(widgetId).size();
+    }
+
+    public static int sizeOfAll() {
+        return allPInfos.size();
     }
 
 
-    public static void addToFiltered(int widgetId, PInfo pInfo){
-        if(!filteredPInfosExists(widgetId)) {
+    public static void addToFiltered(int widgetId, PInfo pInfo) {
+        if (!filteredPInfosExists(widgetId)) {
             setFilteredPInfos(widgetId);
         }
         filteredPInfos.get(widgetId).add(pInfo);
     }
 
-    public static void addToAll(int widgetId, PInfo pInfo){
-        if(!allPInfosExists(widgetId)){
-            setAllPInfos(widgetId);
+    public static void addToSelected(int widgetId, PInfo pInfo) {
+        if (!selectedPInfosExists(widgetId)) {
+            setSelectedPInfos(widgetId);
         }
-        allPInfos.get(widgetId).add(pInfo);
+        selectedPInfos.get(widgetId).add(pInfo);
+    }
+
+    public static void addToAll(PInfo pInfo) {
+        if (!allPInfosExists()) {
+            setAllPInfos();
+        }
+        allPInfos.add(pInfo);
     }
 
 
-    public static void removeFromAllAll(String packageName){
-        for(Map.Entry<Integer, ArrayList<PInfo>> entry : allPInfos.entrySet())
-        if(entry.getValue()!=null) {
+    public static void removeFromSelected(String packageName) {
+        for (Map.Entry<Integer, ArrayList<PInfo>> entry : selectedPInfos.entrySet())
+            if (entry.getValue() != null) {
 
                 Iterator<PInfo> iter = entry.getValue().iterator();
                 while (iter.hasNext()) {
@@ -105,46 +128,47 @@ public final class PInfoHandler {
                         iter.remove();
                 }
 
-        }
+            }
     }
 
-    public static void sortFilteredByMatch(int widgetId){
+    public static void removeFromAll(String packageName) {
+        allPInfos.remove(packageName);
+    }
+
+    public static void sortFilteredByMatch(int widgetId) {
         Collections.sort(PInfoHandler.filteredPInfos.get(widgetId), new PInfoComparator());
     }
 
-    public static boolean isSystemPackage(PackageInfo pi){
+    public static boolean isSystemPackage(PackageInfo pi) {
         return (pi.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
     }
 
-    public static boolean fallsIntoSelector(PackageInfo pi, UninstallWidget.AppSelectorStatus selector, Context context){
+    public static boolean fallsIntoSelector(PackageInfo pi, UninstallWidget.AppSelectorStatus selector, Context context) {
 
-//        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-//        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-//        PackageManager packageManager = context.getPackageManager();
-//        final List<ResolveInfo> apps = packageManager.queryIntentActivities(
-//                mainIntent, 0);
-//        boolean foundIt = false;
-//        for(ResolveInfo ri : apps){
-//            //Log.d(TAG, "fallsIntoSelector " + ri.activityInfo.packageName);
-//            if(ri.activityInfo.packageName.equals(pi.packageName)){
-//                foundIt = true;
-//            }
-//        }
-//        if(!foundIt)
-//        {
-//            return false;
-//        }
-
-        if (context.getPackageManager().getLaunchIntentForPackage(pi.packageName) == null){
+        if (context.getPackageManager().getLaunchIntentForPackage(pi.packageName) == null) {
             return false;
         }
-        switch (selector){
+        switch (selector) {
             case ALL:
                 return true;
             case USER:
                 return !isSystemPackage(pi);
             case SYSTEM:
                 return isSystemPackage(pi);
+            default:
+                return false;
+        }
+    }
+
+    public static boolean fallsIntoSelector(PInfo pi, UninstallWidget.AppSelectorStatus selector) {
+
+        switch (selector) {
+            case ALL:
+                return true;
+            case USER:
+                return !pi.isSystemPackage();
+            case SYSTEM:
+                return pi.isSystemPackage();
             default:
                 return false;
         }
@@ -162,8 +186,8 @@ public final class PInfoHandler {
         @Override
         public int compare(PInfo o1, PInfo o2) {
 
-            int match1 = o1.getMatch(), match2=o2.getMatch();
-            if (match1 != match2){
+            int match1 = o1.getMatch(), match2 = o2.getMatch();
+            if (match1 != match2) {
                 return match1 - match2;
             } else {
                 return o1.getAppname().compareToIgnoreCase(o2.getAppname());

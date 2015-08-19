@@ -54,7 +54,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
 
         if (!replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
             Log.d(TAG, "Package removed: " + packageName);
-            PInfoHandler.removeFromAllAll(packageName);
+            PInfoHandler.removeFromSelected(packageName);
         } else if (replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
             Log.d(TAG, "Package replaced: " + packageName);
         } else {
@@ -98,11 +98,11 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                         // add to ALL lists, if falls into selector
                         if (action.equals(Intent.ACTION_PACKAGE_ADDED)) {
                             if (PInfoHandler.fallsIntoSelector(pi, selector, context)) {
-                                PInfoHandler.addToAll(appWidgetIds[j], newInfo);
+                                PInfoHandler.addToSelected(appWidgetIds[j], newInfo);
                             }
                         }
 
-                        if (!PInfoHandler.allPInfosExists(appWidgetIds[j]) || !PInfoHandler.filteredPInfosExists(appWidgetIds[j])) {
+                        if (!PInfoHandler.selectedPInfosExists(appWidgetIds[j]) || !PInfoHandler.filteredPInfosExists(appWidgetIds[j])) {
                             UninstallWidget.getInstalledApps(appWidgetIds[j], UninstallWidget.WidgetActions.BUTTON_SELECTOR,
                                     context, selector, this.pm);
                         }
