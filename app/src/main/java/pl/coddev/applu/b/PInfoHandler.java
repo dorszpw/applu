@@ -1,14 +1,18 @@
 package pl.coddev.applu.b;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import pl.coddev.applu.c.Log;
@@ -113,6 +117,23 @@ public final class PInfoHandler {
     }
 
     public static boolean fallsIntoSelector(PackageInfo pi, UninstallWidget.AppSelectorStatus selector, Context context){
+
+//        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+//        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        PackageManager packageManager = context.getPackageManager();
+//        final List<ResolveInfo> apps = packageManager.queryIntentActivities(
+//                mainIntent, 0);
+//        boolean foundIt = false;
+//        for(ResolveInfo ri : apps){
+//            //Log.d(TAG, "fallsIntoSelector " + ri.activityInfo.packageName);
+//            if(ri.activityInfo.packageName.equals(pi.packageName)){
+//                foundIt = true;
+//            }
+//        }
+//        if(!foundIt)
+//        {
+//            return false;
+//        }
 
         if (context.getPackageManager().getLaunchIntentForPackage(pi.packageName) == null){
             return false;
