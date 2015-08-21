@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.SpannableString;
@@ -139,8 +140,12 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                 String appName = pinfo.getAppname();
                 packageName = pinfo.getPname();
 
-                views.setOnClickPendingIntent(R.id.uninstallButton, buildPendingIntentForActionButtons(context, packageName, WidgetActions.BUTTON_UNINSTALL.name(), ids));
-                views.setOnClickPendingIntent(R.id.launchButton, buildPendingIntentForActionButtons(context, packageName, WidgetActions.BUTTON_LAUNCH.name(), ids));
+                views.setOnClickPendingIntent(R.id.uninstallButton,
+                        buildPendingIntentForActionButtons(context, packageName,
+                                WidgetActions.BUTTON_UNINSTALL.name(), ids));
+                views.setOnClickPendingIntent(R.id.launchButton,
+                        buildPendingIntentForActionButtons(context, packageName,
+                                WidgetActions.BUTTON_LAUNCH.name(), ids));
 
                 Bitmap iconBitmap = Cache.getInstance().getBitmapFromMemCache(pinfo.getPname(), this.pm);
                 views.setImageViewBitmap(R.id.launchButton, iconBitmap);
@@ -149,14 +154,21 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             } else {
                 views.setTextViewText(R.id.searchText, context.getString(R.string.no_matches));
                 views.setImageViewResource(R.id.launchButton, R.drawable.search_problem_128);
-                views.setOnClickPendingIntent(R.id.uninstallButton, buildPendingIntentForActionButtons(context, null, WidgetActions.NO_ACTION.name(), ids));
-                views.setOnClickPendingIntent(R.id.launchButton, buildPendingIntentForActionButtons(context, null, WidgetActions.NO_ACTION.name(), ids));
+                views.setOnClickPendingIntent(R.id.uninstallButton,
+                        buildPendingIntentForActionButtons(context, null,
+                                WidgetActions.NO_ACTION.name(), ids));
+                views.setOnClickPendingIntent(R.id.launchButton,
+                        buildPendingIntentForActionButtons(context, null,
+                                WidgetActions.NO_ACTION.name(), ids));
 
             }
 
-            boolean appindexSaved = prefs.edit().putInt(Constants.APP_INDEX, PInfoHandler.getAppIndex(widgetId)).commit();
-            boolean packageSaved = prefs.edit().putString(Constants.CURRENT_APP, packageName).commit();
-            Log.d(TAG, "onUpdate prefs, class:  " + this.getClass().getName() + ", saved: " + appindexSaved + "/" + packageSaved);
+            boolean appindexSaved = prefs.edit().putInt(Constants.APP_INDEX,
+                    PInfoHandler.getAppIndex(widgetId)).commit();
+            boolean packageSaved = prefs.edit().putString(Constants.CURRENT_APP,
+                    packageName).commit();
+            Log.d(TAG, "onUpdate prefs, class:  " + this.getClass().getName() +
+                    ", saved: " + appindexSaved + "/" + packageSaved);
             views.setViewVisibility(R.id.progressBar, View.GONE);
             appWidgetManager.updateAppWidget(widgetId, views);
         }
@@ -167,6 +179,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
         SpannableString spannableShowMore = new SpannableString(""),
                 spannableAppName = new SpannableString("");
         String showMore = "";
+        Resources res = context.getResources();
 
         if (PInfoHandler.sizeOfFiltered(widgetId) > 1) {
             StringBuilder sb = new StringBuilder(7);
@@ -181,15 +194,18 @@ abstract public class UninstallWidget extends AppWidgetProvider {
 
         if (!pInfo.isRemoved()) {
             spannableShowMore = new SpannableString(showMore);
-            spannableShowMore.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.blue_nasty)), 0, showMore.length(), 0);
+            spannableShowMore.setSpan(new ForegroundColorSpan(res.getColor(R.color.blue_nasty)),
+                    0, showMore.length(), 0);
             spannableAppName = new SpannableString(pInfo.getAppname());
-            spannableAppName.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.blue_nasty)),
+            spannableAppName.setSpan(new ForegroundColorSpan(res.getColor(R.color.blue_nasty)),
                     pInfo.getMatch(), pInfo.getMatch() + pInfo.getMatcherGroup().length(), 0);
         } else {
             spannableShowMore = new SpannableString(showMore);
-            spannableShowMore.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.blue_nasty)), 0, showMore.length(), 0);
+            spannableShowMore.setSpan(new ForegroundColorSpan(res.getColor(R.color.blue_nasty)),
+                    0, showMore.length(), 0);
             spannableAppName = new SpannableString(pInfo.getAppname());
-            spannableAppName.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red)), 0, pInfo.getAppname().length(), 0);
+            spannableAppName.setSpan(new ForegroundColorSpan(res.getColor(R.color.red)),
+                    0, pInfo.getAppname().length(), 0);
             spannableAppName.setSpan(new StrikethroughSpan(), 0, pInfo.getAppname().length(), 0);
         }
 
@@ -200,17 +216,20 @@ abstract public class UninstallWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, this.getClass());
         intent.setAction(actionName);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
         return pendingIntent;
     }
 
     // separate method to add packageName, just to be sure that what user uninstalls is right
-    PendingIntent buildPendingIntentForActionButtons(Context context, String packageName, String actionName, int ids[]) {
+    PendingIntent buildPendingIntentForActionButtons(Context context, String packageName,
+                                                     String actionName, int ids[]) {
         Intent intent = new Intent(context, this.getClass());
         intent.setAction(actionName);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         intent.putExtra(Constants.CURRENT_APP, packageName);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
         return pendingIntent;
     }
 
@@ -333,7 +352,8 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             PInfoHandler.incrementAppIndex(widgetId, 1);
         }
 
-        Log.d(TAG, "getInstalledApps xend " + Calendar.getInstance().getTimeInMillis() + ", " + (Calendar.getInstance().getTimeInMillis() - start));
+        Log.d(TAG, "getInstalledApps xend " + Calendar.getInstance().getTimeInMillis() + ", " +
+                (Calendar.getInstance().getTimeInMillis() - start));
     }
 
 
