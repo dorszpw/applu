@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import pl.coddev.applu.c.Log;
 import pl.coddev.applu.d.PInfo;
 import pl.coddev.applu.p.UninstallWidget;
 
@@ -132,7 +133,11 @@ public final class PInfoHandler {
     }
 
     public static void removeFromAll(String packageName) {
-        allPInfos.remove(packageName);
+        Iterator<PInfo> iter = allPInfos.iterator();
+        while (iter.hasNext()) {
+            if (iter.next().getPname().equals(packageName))
+                iter.remove();
+        }
     }
 
     public static void sortFilteredByMatch(int widgetId) {

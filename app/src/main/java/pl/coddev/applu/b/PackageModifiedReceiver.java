@@ -55,6 +55,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
         if (!replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
             Log.d(TAG, "Package removed: " + packageName);
             PInfoHandler.removeFromSelected(packageName);
+            PInfoHandler.removeFromAll(packageName);
         } else if (replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
             Log.d(TAG, "Package replaced: " + packageName);
         } else {
@@ -100,6 +101,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                             if (PInfoHandler.fallsIntoSelector(pi, selector, context)) {
                                 PInfoHandler.addToSelected(appWidgetIds[j], newInfo);
                             }
+                            PInfoHandler.addToAll(newInfo);
                         }
 
                         if (!PInfoHandler.selectedPInfosExists(appWidgetIds[j]) || !PInfoHandler.filteredPInfosExists(appWidgetIds[j])) {

@@ -149,6 +149,9 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             } else {
                 views.setTextViewText(R.id.searchText, context.getString(R.string.no_matches));
                 views.setImageViewResource(R.id.launchButton, R.drawable.search_problem_128);
+                views.setOnClickPendingIntent(R.id.uninstallButton, buildPendingIntentForActionButtons(context, null, WidgetActions.NO_ACTION.name(), ids));
+                views.setOnClickPendingIntent(R.id.launchButton, buildPendingIntentForActionButtons(context, null, WidgetActions.NO_ACTION.name(), ids));
+
             }
 
             boolean appindexSaved = prefs.edit().putInt(Constants.APP_INDEX, PInfoHandler.getAppIndex(widgetId)).commit();
