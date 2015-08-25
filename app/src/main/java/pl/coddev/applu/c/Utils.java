@@ -1,6 +1,7 @@
 package pl.coddev.applu.c;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -64,5 +65,18 @@ public final class Utils {
             canvas.drawLine(bitmap.getWidth(), 0, 0, bitmap.getHeight(), paint);
         }
         return bitmapStroked;
+    }
+
+    public static boolean ranBefore(Context context){
+        SharedPreferences preferences = context.getSharedPreferences(
+                Constants.PREFS_FILE, Context.MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean(Constants.EXTRA_RAN_BEFORE, false);
+        if(!ranBefore){
+            preferences.edit()
+                .putBoolean(Constants.EXTRA_RAN_BEFORE, true)
+                .commit();
+        }
+        // TODO: 25/08/15 fix this after tests 
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package pl.coddev.applu.i;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +8,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -21,27 +23,13 @@ import pl.coddev.applu.p.UninstallWidget;
 public class DataService extends Service {
     private static final String TAG = "DataService";
 
-
-    // DataService
-    private final IBinder mBinder = new MyBinder();
     SharedPreferences prefs;
     Context context;
 
-
-    //==============================================================================================
-    // ===== DataService
-    //==============================================================================================
-    public class MyBinder extends Binder {
-        public DataService getService() {
-            Log.i(TAG, "getService()");
-            return DataService.this;
-        }
-    }
-
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i(TAG, "onBind()");
-        return mBinder;
+        return null;
     }
 
     @Override
@@ -50,15 +38,6 @@ public class DataService extends Service {
         return Service.START_STICKY;
     }
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        return super.onUnbind(intent);
-    }
-
-    @Override
-    public void onRebind(Intent intent) {
-        super.onRebind(intent);
-    }
 
     @Override
     public void onCreate() {
@@ -82,7 +61,6 @@ public class DataService extends Service {
                     PInfo newInfo = new PInfo();
                     // most time consuming task!
                     newInfo.setAppname(pi.applicationInfo.loadLabel(pm).toString());
-                    //newInfo.setAppname("applu");
                     newInfo.setIsSystemPackage(PInfoHandler.isSystemPackage(pi));
                     newInfo.setPname(pi.packageName);
                     PInfoHandler.addToAll(newInfo);

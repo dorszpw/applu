@@ -12,4 +12,11 @@
     <string name="icon_trash_o">&#xf014;</string>
     <string name="no_matches">[no results]</string>
     <string name="last_apps">Last apps</string>
+    <string name="help_title">AppLU is a widget application.\n</string>
+    <string name="help_body">
+                                To make it work, just add it to your home screen.\n\n
+                                You can choose between layouts in size:\n S, M or L\n
+
+
+    </string>
 </resources>
