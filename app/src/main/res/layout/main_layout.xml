@@ -85,12 +85,13 @@
 
         <ImageButton
             android:id="@+id/share"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="5dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/ref_10"
             android:layout_marginTop="@dimen/ref_10"
-            android:alpha="0.8"
+            android:alpha="1"
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@drawable/network19" />

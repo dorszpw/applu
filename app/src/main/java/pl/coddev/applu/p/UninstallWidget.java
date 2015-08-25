@@ -27,14 +27,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.fabric.sdk.android.Fabric;
-import pl.coddev.applu.MyApplication;
 import pl.coddev.applu.R;
 import pl.coddev.applu.b.Cache;
 import pl.coddev.applu.b.PInfoHandler;
 import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
 import pl.coddev.applu.d.PInfo;
-import pl.coddev.applu.i.DataService;
 
 
 /**
@@ -45,8 +43,6 @@ abstract public class UninstallWidget extends AppWidgetProvider {
     private static int widgetId = 0;
     protected AppSelectorStatus appSelectorStatus = AppSelectorStatus.USER;
     static SharedPreferences prefs = null;
-    private MyApplication mApp;
-    private DataService mDataService;
 
     public enum WidgetActions {
         TEXTFIELD_BUTTON, BUTTON1, BUTTON2, BUTTON3, BUTTON4, BUTTON5, BUTTON6, BUTTON7, BUTTON8,
