@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,6 +40,7 @@ public class MainActivity extends Activity {
     ImageView app;
     ImageView lid;
     ImageView rocket;
+    ImageView frame;
     private DisplayMetrics dm;
     FloatingActionButton fabPlay;
     private float scale;
@@ -53,6 +55,7 @@ public class MainActivity extends Activity {
 
         context = getApplicationContext();
         relative = (RelativeLayout) findViewById(R.id.relative);
+        frame = (ImageView) findViewById(R.id.frame);
         lu = (ImageView) findViewById(R.id.background);
         app = (ImageView) findViewById(R.id.app);
         lid = (ImageView) findViewById(R.id.lid);
@@ -95,7 +98,7 @@ public class MainActivity extends Activity {
                 lid.setPivotY(174 * scale);
                 app.setPivotX(714 * scale);
                 app.setPivotY(513 * scale);
-
+                frame.getLayoutParams().height = rocket.getHeight();
                 if (!Utils.ranBefore(context))
                     animateLogo(scale);
                 //this is an important step not to keep receiving callbacks:
@@ -121,8 +124,6 @@ public class MainActivity extends Activity {
                 animateLogo(scale);
             }
         });
-
-
     }
 
     private void resetImageViews() {
@@ -132,6 +133,7 @@ public class MainActivity extends Activity {
         lid.setTranslationX(0);
         lid.setTranslationY(0);
         lid.setRotation(0);
+        app.setImageResource(R.drawable.ic_app);
         app.setTranslationX(0);
         app.setTranslationY(0);
         app.setRotation(0);
@@ -145,14 +147,15 @@ public class MainActivity extends Activity {
     private void animateLogo(float scale) {
 
 
-        ObjectAnimator rotation = ObjectAnimator.ofFloat(rocket, "rotation", -5, 5);
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(rocket, "rotation", -2, 2);
         rotation.setStartDelay(startDelay);
-        rotation.setRepeatCount(30);
+        rotation.setRepeatCount(40);
         rotation.setRepeatMode(ObjectAnimator.REVERSE);
         rotation.setInterpolator(new AccelerateDecelerateInterpolator());
-        rotation.setDuration(50);
+        rotation.setDuration(40);
         final ObjectAnimator translate = ObjectAnimator.ofFloat(rocket, "translationY", -1000);
         translate.setDuration(300);
+        translate.setInterpolator(new AccelerateInterpolator());
 
         AnimatorSet rocketSet = new AnimatorSet();
         rocketSet.playSequentially(rotation, translate);
@@ -189,6 +192,7 @@ public class MainActivity extends Activity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                app.setImageResource(R.drawable.ic_app_white);
                 fabPlay.setEnabled(true);
                 fabPlay.setClickable(true);
             }

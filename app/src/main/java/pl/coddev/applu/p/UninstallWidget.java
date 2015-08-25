@@ -104,7 +104,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             int[] ids = {widgetId};
             prefs = context.getSharedPreferences(Constants.PREF_FILE + widgetId, Context.MODE_PRIVATE);
             appSelectorStatus = AppSelectorStatus.valueOf(prefs.getString(Constants.APP_SELECTOR_STATUS,
-                    AppSelectorStatus.USER.name()));
+                    AppSelectorStatus.ALL.name()));
 
             RemoteViews views = null;
             // Get the layout for the App Widget and attach an on-click listener
@@ -377,7 +377,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             //Log.d(TAG, "onUpdate prefs, class:  " + this.getClass().getName() + ", saved: " + currentApp);
 
             appSelectorStatus = AppSelectorStatus.valueOf(prefs.getString(Constants.APP_SELECTOR_STATUS,
-                    AppSelectorStatus.USER.name()));
+                    AppSelectorStatus.ALL.name()));
 
             String actionString = intent.getAction();
             Log.d(TAG, "Intent action: " + actionString);

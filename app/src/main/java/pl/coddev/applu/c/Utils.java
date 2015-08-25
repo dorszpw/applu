@@ -76,7 +76,6 @@ public final class Utils {
                 .putBoolean(Constants.EXTRA_RAN_BEFORE, true)
                 .commit();
         }
-        // TODO: 25/08/15 fix this after tests 
-        return false;
+        return ranBefore;
     }
 }
