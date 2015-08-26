@@ -15,6 +15,7 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -27,13 +28,13 @@ import pl.coddev.applu.c.Log;
 import pl.coddev.applu.c.Utils;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private final String TAG = "MainActivity";
     private Context context;
-    private boolean ranBefore;
     RelativeLayout relative;
-    ImageButton shareButton;
+    ImageButton play;
+    ImageButton infoButton;
     ImageView lu;
     ImageView rocket_background;
     ImageView bin_background;
@@ -42,9 +43,10 @@ public class MainActivity extends Activity {
     ImageView rocket;
     ImageView frame;
     private DisplayMetrics dm;
-    FloatingActionButton fabPlay;
+    FloatingActionButton share;
     private float scale;
     private int startDelay = 500;
+    private boolean onHelpScreen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,26 +64,10 @@ public class MainActivity extends Activity {
         rocket = (ImageView) findViewById(R.id.rocket);
         rocket_background = (ImageView) findViewById(R.id.rocket_background);
         bin_background = (ImageView) findViewById(R.id.bin_background);
-        shareButton = (ImageButton) findViewById(R.id.share);
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //create the send intent
-                Intent shareIntent =
-                        new Intent(android.content.Intent.ACTION_SEND);
-
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-                        "Applu is great");
-                String shareMessage = "Apllu is great. Download it from Google Play.";
-                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                        shareMessage);
-                startActivity(Intent.createChooser(shareIntent,
-                        "Insert share chooser title here"));
-
-            }
-        });
-
+        play = (ImageButton) findViewById(R.id.play);
+        play.setOnClickListener(this);
+        infoButton = (ImageButton) findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(this);
 
         dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -112,18 +98,19 @@ public class MainActivity extends Activity {
         });
 
 
-        fabPlay = (FloatingActionButton) findViewById(R.id.fabRefresh);
-        fabPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick ");
-                fabPlay.setEnabled(false);
-                fabPlay.setClickable(false);
-                resetImageViews();
-                startDelay = 0;
-                animateLogo(scale);
-            }
-        });
+        share = (FloatingActionButton) findViewById(R.id.share);
+        share.setOnClickListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed ");
+        if (onHelpScreen) {
+            animateRelative(1f);
+            onHelpScreen = false;
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void resetImageViews() {
@@ -193,8 +180,8 @@ public class MainActivity extends Activity {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 app.setImageResource(R.drawable.ic_app_white);
-                fabPlay.setEnabled(true);
-                fabPlay.setClickable(true);
+                share.setEnabled(true);
+                share.setClickable(true);
             }
         });
 
@@ -203,5 +190,59 @@ public class MainActivity extends Activity {
         finishSet.start();
     }
 
+    void animateRelative(final float endValue) {
+        if (endValue == 1f)
+            share.setVisibility(View.VISIBLE);
+        ObjectAnimator relativeScale = ObjectAnimator.ofFloat(relative, "scaleX", endValue);
+        ObjectAnimator relativeAlpha = ObjectAnimator.ofFloat(relative, "alpha", endValue);
+        AnimatorSet relativeSet = new AnimatorSet();
+        relativeSet.setDuration(500);
+        relativeSet.setInterpolator(new OvershootInterpolator());
+        relativeSet.playTogether(relativeAlpha, relativeScale);
+        relativeSet.start();
+        relativeSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (endValue == 0f)
+                    share.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        Log.d(TAG, "onClick ");
+        switch (v.getId()) {
+            case R.id.play:
+                share.setEnabled(false);
+                share.setClickable(false);
+                resetImageViews();
+                startDelay = 0;
+                animateLogo(scale);
+                break;
+
+            case R.id.share:
+                //create the send intent
+                Intent shareIntent =
+                        new Intent(android.content.Intent.ACTION_SEND);
+
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+                        getString(R.string.share_subject));
+
+                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        getString(R.string.share_message));
+                startActivity(Intent.createChooser(shareIntent,
+                        getString(R.string.share_title)));
+                break;
+
+            case R.id.infoButton:
+                onHelpScreen = true;
+                animateRelative(0f);
+
+        }
+    }
 
 }

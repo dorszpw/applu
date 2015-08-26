@@ -5,7 +5,7 @@ android:minHeight="180dp"
 android:minResizeHeight="180dp"
 android:minResizeWidth="180dp"
 android:updatePeriodMillis="0"
-android:previewImage="@android:drawable/ic_delete"
+android:previewImage="@drawable/ic_previewmw"
 android:initialLayout="@layout/widget_m_layout_theme_white"
 
 android:resizeMode="horizontal|vertical"

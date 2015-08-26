@@ -17,10 +17,11 @@
     <color name="lightGreen">#d22fed3f</color>
     <color name="red">#d2ff3f4e</color>
     <color name="orange">#d2fdb813</color>
-    <color name="lightGrey">#AAAAAA</color>
+    <color name="lightGrey">#dadada</color>
     <color name="grey_transparent">#992C3134</color>
     <color name="grey_transparentish">#29495153</color>
     <color name="last_apps_theme_black">#64ededed</color>
     <color name="last_apps_theme_white">#64808080</color>
+    <color name="dark_grey">#373737</color>
 
 </resources>

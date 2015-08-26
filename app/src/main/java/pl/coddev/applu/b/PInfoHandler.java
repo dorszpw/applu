@@ -38,7 +38,7 @@ public final class PInfoHandler {
         allPInfos = new ArrayList<PInfo>();
     }
 
-    public static ArrayList<PInfo> getAllPInfos() {
+    public synchronized static ArrayList<PInfo> getAllPInfos() {
         return allPInfos;
     }
 
