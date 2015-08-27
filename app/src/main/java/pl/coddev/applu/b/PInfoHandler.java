@@ -25,7 +25,7 @@ public final class PInfoHandler {
     private static Map<Integer, Integer> appIndex = new HashMap<>();
     private static Map<Integer, ArrayList<PInfo>> filteredPInfos = new HashMap<>();
     private static Map<Integer, ArrayList<PInfo>> selectedPInfos = new HashMap<>();
-    private static CopyOnWriteArrayList<PInfo> allPInfos = new CopyOnWriteArrayList<>(); //Collections.synchronizedList(new ArrayList<PInfo>());
+    private static CopyOnWriteArrayList<PInfo> allPInfos = new CopyOnWriteArrayList<>();
 
 
     public static void setSelectedPInfos(int widgetId) {
@@ -37,10 +37,13 @@ public final class PInfoHandler {
     }
 
     public static void setAllPInfos(ArrayList<PInfo> list) {
-        if(list==null)
+        if(allPInfos != null){
+            allPInfos.clear();
+        } else {
             allPInfos = new CopyOnWriteArrayList<>();
-        else
-            allPInfos = new CopyOnWriteArrayList<>(list);
+        }
+        if(list!=null)
+            allPInfos.addAll(list);
     }
 
     public static List<PInfo> getAllPInfos() {

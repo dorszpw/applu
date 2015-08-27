@@ -4,33 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/dark_blue">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/ref_10"
-        android:layout_marginRight="@dimen/ref_10"
-        android:layout_marginTop="@dimen/ref_30"
-        android:orientation="vertical"
-        >
-
-        <TextView
-            android:id="@+id/helpTitleBack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/help_title"
-            android:textColor="@color/white"
-            android:textSize="@dimen/ref_font_large" />
-
-        <TextView
-            android:id="@+id/helpBodyBack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/help_body"
-            android:textColor="@color/white"
-            android:textSize="@dimen/ref_font_medium" />
-    </LinearLayout>
+    <include layout="@layout/help_view" />
 
     <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -78,6 +52,7 @@
 
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/frame">
@@ -108,6 +83,7 @@
                     android:textSize="@dimen/ref_font_medium" />
             </LinearLayout>
         </ScrollView>
+
 
         <ImageButton
             android:id="@+id/play"

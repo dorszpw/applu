@@ -19,11 +19,14 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 import pl.coddev.applu.R;
+import pl.coddev.applu.c.BulletTextUtil;
 import pl.coddev.applu.c.Log;
 import pl.coddev.applu.c.Utils;
 
@@ -42,11 +45,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
     ImageView lid;
     ImageView rocket;
     ImageView frame;
+    ScrollView scrollView;
     private DisplayMetrics dm;
     FloatingActionButton share;
     private float scale;
     private int startDelay = 500;
-    private boolean onHelpScreen = false;
+    private VIEW screen = VIEW.MAIN;
+
+    private enum HELPVIEW_ACTION {SHOW, HIDE};
+    private enum VIEW {MAIN, HELP, NO};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +75,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         play.setOnClickListener(this);
         infoButton = (ImageButton) findViewById(R.id.infoButton);
         infoButton.setOnClickListener(this);
-
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        //helpBodyPoints = (TextView) findViewById(R.id.helpBodyPoints);
         dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
@@ -100,15 +108,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         share = (FloatingActionButton) findViewById(R.id.share);
         share.setOnClickListener(this);
+
+//        CharSequence bulletedList = BulletTextUtil.makeBulletList(10, getString(R.string.help_points1),
+//                getString(R.string.help_points2));
+//        helpBodyPoints.setText(bulletedList);
     }
 
     @Override
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed ");
-        if (onHelpScreen) {
-            animateRelative(1f);
-            onHelpScreen = false;
-        } else {
+        if (screen.equals(VIEW.HELP)) {
+            handleHelpView(HELPVIEW_ACTION.HIDE);
+        } else if (screen.equals(VIEW.MAIN)){
             super.onBackPressed();
         }
     }
@@ -190,24 +201,38 @@ public class MainActivity extends Activity implements View.OnClickListener {
         finishSet.start();
     }
 
-    void animateRelative(final float endValue) {
-        if (endValue == 1f)
-            share.setVisibility(View.VISIBLE);
-        ObjectAnimator relativeScale = ObjectAnimator.ofFloat(relative, "scaleX", endValue);
+    void handleHelpView(final HELPVIEW_ACTION action) {
+        float endValue, endValueShare;
+        if (action.equals(HELPVIEW_ACTION.HIDE)) {
+            endValue = 1;
+            endValueShare = 0;
+            relative.setVisibility(View.VISIBLE);
+        } else {
+            endValue = 0;
+            endValueShare = scrollView.getHeight()+2*share.getHeight();
+        }
+
         ObjectAnimator relativeAlpha = ObjectAnimator.ofFloat(relative, "alpha", endValue);
+        ObjectAnimator shareFall = ObjectAnimator.ofFloat(share, "translationY", endValueShare);
         AnimatorSet relativeSet = new AnimatorSet();
-        relativeSet.setDuration(500);
+        relativeSet.setDuration(700);
         relativeSet.setInterpolator(new OvershootInterpolator());
-        relativeSet.playTogether(relativeAlpha, relativeScale);
-        relativeSet.start();
+        relativeSet.playTogether(relativeAlpha, shareFall);
         relativeSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                Log.d(TAG, "onAnimationEnd ");
+                if(action.equals(HELPVIEW_ACTION.SHOW)){
+                    relative.setVisibility(View.GONE);
+                    screen = VIEW.HELP;
+                } else {
+                    screen = VIEW.MAIN;
+                }
                 super.onAnimationEnd(animation);
-                if (endValue == 0f)
-                    share.setVisibility(View.INVISIBLE);
             }
         });
+        relativeSet.start();
+
     }
 
 
@@ -239,8 +264,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.infoButton:
-                onHelpScreen = true;
-                animateRelative(0f);
+                handleHelpView(HELPVIEW_ACTION.SHOW);
 
         }
     }

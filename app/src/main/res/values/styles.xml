@@ -61,7 +61,6 @@
     </style>
 
 
-
     <!--<style name="Theme.Transparent" parent="android:Theme">-->
         <!--<item name="android:windowIsTranslucent">true</item>-->
         <!--<item name="android:windowBackground">@android:color/transparent</item>-->
@@ -138,6 +137,22 @@
     </style>
     <style name="searchTextStyleWhiteL" parent="searchTextStyleWhite">
         <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="helpPageStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/ref_font_medium</item>
+    </style>
+
+    <style name="helpPagePointsStyle" parent="helpPageStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/ref_font_medium</item>
     </style>
 
 
