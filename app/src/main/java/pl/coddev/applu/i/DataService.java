@@ -50,8 +50,8 @@ public class DataService extends Service {
                 PackageManager pm = getApplicationContext().getPackageManager();
                 // one of the most consuming tasks
                 ArrayList<PackageInfo> packs = (ArrayList) pm.getInstalledPackages(0);
-                PInfoHandler.setAllPInfos();
-
+                //PInfoHandler.setAllPInfos();
+                ArrayList<PInfo> allInfos = new ArrayList<>();
                 for (int i = 0; i < packs.size(); i++) {
                     PackageInfo pi = packs.get(i);
 
@@ -63,8 +63,10 @@ public class DataService extends Service {
                     newInfo.setAppname(pi.applicationInfo.loadLabel(pm).toString());
                     newInfo.setIsSystemPackage(PInfoHandler.isSystemPackage(pi));
                     newInfo.setPname(pi.packageName);
-                    PInfoHandler.addToAll(newInfo);
+                    allInfos.add(newInfo);
                 }
+                // add all to synchronized ArrayList, not one by one
+                PInfoHandler.setAllPInfos(allInfos);
                 Log.d(TAG, "onCreate " + packs.size());
             }
         });

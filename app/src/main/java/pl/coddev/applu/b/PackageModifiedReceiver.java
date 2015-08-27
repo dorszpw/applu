@@ -52,25 +52,25 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         List<AppWidgetProviderInfo> awpi = appWidgetManager.getInstalledProviders();
 
+        PackageInfo pi = null;
+        PInfo modifiedInfo = null;
+        try {
+            pi = pm.getPackageInfo(packageName, 0);
+            modifiedInfo = new PInfo();
+            modifiedInfo.setAppname(pi.applicationInfo.loadLabel(this.pm).toString());
+            modifiedInfo.setPname(pi.packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         if (!replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
             Log.d(TAG, "Package removed: " + packageName);
             PInfoHandler.removeFromSelected(packageName);
-            PInfoHandler.removeFromAll(packageName);
+            PInfoHandler.removeFromAll(modifiedInfo);
         } else if (replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
             Log.d(TAG, "Package replaced: " + packageName);
         } else {
             Log.d(TAG, "Package added: " + packageName);
-        }
-
-        PackageInfo pi = null;
-        PInfo newInfo = null;
-        try {
-            pi = pm.getPackageInfo(packageName, 0);
-            newInfo = new PInfo();
-            newInfo.setAppname(pi.applicationInfo.loadLabel(this.pm).toString());
-            newInfo.setPname(pi.packageName);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
         }
 
         for (int i = 0; i < awpi.size(); i++) {
@@ -99,9 +99,9 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                         // add to ALL lists, if falls into selector
                         if (action.equals(Intent.ACTION_PACKAGE_ADDED)) {
                             if (PInfoHandler.fallsIntoSelector(pi, selector, context)) {
-                                PInfoHandler.addToSelected(appWidgetIds[j], newInfo);
+                                PInfoHandler.addToSelected(appWidgetIds[j], modifiedInfo);
                             }
-                            PInfoHandler.addToAll(newInfo);
+                            PInfoHandler.addToAll(modifiedInfo);
                         }
 
                         if (!PInfoHandler.selectedPInfosExists(appWidgetIds[j]) || !PInfoHandler.filteredPInfosExists(appWidgetIds[j])) {

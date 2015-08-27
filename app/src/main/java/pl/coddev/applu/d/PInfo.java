@@ -62,4 +62,12 @@ public class PInfo {
     public synchronized void setRemoved(Boolean removed) {
         this.removed = removed;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PInfo)
+            return ((PInfo) o).pname == this.pname;
+        else
+            return false;
+    }
 }

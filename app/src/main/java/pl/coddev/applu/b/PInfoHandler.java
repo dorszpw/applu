@@ -9,7 +9,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import pl.coddev.applu.c.Log;
 import pl.coddev.applu.d.PInfo;
@@ -23,7 +25,7 @@ public final class PInfoHandler {
     private static Map<Integer, Integer> appIndex = new HashMap<>();
     private static Map<Integer, ArrayList<PInfo>> filteredPInfos = new HashMap<>();
     private static Map<Integer, ArrayList<PInfo>> selectedPInfos = new HashMap<>();
-    private static ArrayList<PInfo> allPInfos = new ArrayList<>();
+    private static CopyOnWriteArrayList<PInfo> allPInfos = new CopyOnWriteArrayList<>(); //Collections.synchronizedList(new ArrayList<PInfo>());
 
 
     public static void setSelectedPInfos(int widgetId) {
@@ -34,11 +36,14 @@ public final class PInfoHandler {
         PInfoHandler.filteredPInfos.put(widgetId, new ArrayList<PInfo>());
     }
 
-    public static void setAllPInfos() {
-        allPInfos = new ArrayList<PInfo>();
+    public static void setAllPInfos(ArrayList<PInfo> list) {
+        if(list==null)
+            allPInfos = new CopyOnWriteArrayList<>();
+        else
+            allPInfos = new CopyOnWriteArrayList<>(list);
     }
 
-    public synchronized static ArrayList<PInfo> getAllPInfos() {
+    public static List<PInfo> getAllPInfos() {
         return allPInfos;
     }
 
@@ -113,7 +118,7 @@ public final class PInfoHandler {
 
     public static void addToAll(PInfo pInfo) {
         if (!allPInfosExists()) {
-            setAllPInfos();
+            setAllPInfos(null);
         }
         allPInfos.add(pInfo);
     }
@@ -132,12 +137,8 @@ public final class PInfoHandler {
             }
     }
 
-    public static void removeFromAll(String packageName) {
-        Iterator<PInfo> iter = allPInfos.iterator();
-        while (iter.hasNext()) {
-            if (iter.next().getPname().equals(packageName))
-                iter.remove();
-        }
+    public static void removeFromAll(PInfo pinfo) {
+        getAllPInfos().remove(pinfo);
     }
 
     public static void sortFilteredByMatch(int widgetId) {

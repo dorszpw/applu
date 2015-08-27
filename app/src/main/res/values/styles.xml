@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
 
@@ -41,7 +41,8 @@
         <item name="android:layout_margin">0dp</item>
         <item name="android:textColor">@color/button_text_color_theme_black</item>
         <item name="android:layout_weight">2</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:textAllCaps" tools:targetApi="14">false</item>
+        <item name="android:textSize">16dp</item>
     </style>
 
     <style name="keypadButtonStyleL" parent="keypadButtonStyle">
