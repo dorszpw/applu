@@ -63,7 +63,7 @@ public class DataService extends Service {
                     newInfo.setAppname(pi.applicationInfo.loadLabel(pm).toString());
                     newInfo.setIsSystemPackage(PInfoHandler.isSystemPackage(pi));
                     newInfo.setPname(pi.packageName);
-                    allInfos.add(newInfo);
+                    if(!allInfos.contains(newInfo))allInfos.add(newInfo);
                 }
                 // add all to synchronized ArrayList, not one by one
                 PInfoHandler.setAllPInfos(allInfos);

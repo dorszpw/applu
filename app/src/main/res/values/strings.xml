@@ -48,8 +48,8 @@
     <string name="help_points8">Backspace buttons - remove last or all letters from the filter</string>
     <string name="help_title_extended">How to use the widgets?</string>
      <string name="help_body_extended">
-
-         \nUsing the letter buttons (7) is very easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
+         \nFirst please try to familiarize with the widgets yourself. If you still have some doubts, sweep through below manual.
+         \n\nUsing the letter buttons (7) is very easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
          \nThat\'s it.
          \nIf one letter is not enough, add another one and another one, until the app is found.
          \nIf there are multiple results, just click on the app name field (1) and the next one will appear.

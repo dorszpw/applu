@@ -156,7 +156,6 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                 views.setOnClickPendingIntent(R.id.launchButton,
                         buildPendingIntentForActionButtons(context, null,
                                 WidgetActions.NO_ACTION.name(), ids));
-
             }
 
             boolean appindexSaved = prefs.edit().putInt(Constants.APP_INDEX,

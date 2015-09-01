@@ -66,7 +66,7 @@ public class PInfo {
     @Override
     public boolean equals(Object o) {
         if (o instanceof PInfo)
-            return ((PInfo) o).pname == this.pname;
+            return ((PInfo) o).pname.equals(this.pname);
         else
             return false;
     }

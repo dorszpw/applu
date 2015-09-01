@@ -37,12 +37,12 @@ public final class PInfoHandler {
     }
 
     public static void setAllPInfos(ArrayList<PInfo> list) {
-        if(allPInfos != null){
+        if (allPInfos != null) {
             allPInfos.clear();
         } else {
             allPInfos = new CopyOnWriteArrayList<>();
         }
-        if(list!=null)
+        if (list != null)
             allPInfos.addAll(list);
     }
 
@@ -109,21 +109,26 @@ public final class PInfoHandler {
         if (!filteredPInfosExists(widgetId)) {
             setFilteredPInfos(widgetId);
         }
-        filteredPInfos.get(widgetId).add(pInfo);
+        if (!filteredPInfos.get(widgetId).contains(pInfo))
+            filteredPInfos.get(widgetId).add(pInfo);
     }
 
     public static void addToSelected(int widgetId, PInfo pInfo) {
         if (!selectedPInfosExists(widgetId)) {
             setSelectedPInfos(widgetId);
         }
-        selectedPInfos.get(widgetId).add(pInfo);
+        if (!selectedPInfos.get(widgetId).contains(pInfo)) {
+            selectedPInfos.get(widgetId).add(pInfo);
+        }
     }
 
     public static void addToAll(PInfo pInfo) {
         if (!allPInfosExists()) {
             setAllPInfos(null);
         }
-        allPInfos.add(pInfo);
+        if (!allPInfos.contains(pInfo)) {
+            allPInfos.add(pInfo);
+        }
     }
 
 
@@ -136,7 +141,6 @@ public final class PInfoHandler {
                     if (iter.next().getPname().equals(packageName))
                         iter.remove();
                 }
-
             }
     }
 
