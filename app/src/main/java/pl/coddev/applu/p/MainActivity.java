@@ -58,7 +58,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
 
         setContentView(R.layout.main_layout);
 
@@ -76,7 +76,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         infoButton = (ImageButton) findViewById(R.id.infoButton);
         infoButton.setOnClickListener(this);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
-        //helpBodyPoints = (TextView) findViewById(R.id.helpBodyPoints);
         dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
@@ -108,10 +107,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         share = (FloatingActionButton) findViewById(R.id.share);
         share.setOnClickListener(this);
-
-//        CharSequence bulletedList = BulletTextUtil.makeBulletList(10, getString(R.string.help_points1),
-//                getString(R.string.help_points2));
-//        helpBodyPoints.setText(bulletedList);
     }
 
     @Override

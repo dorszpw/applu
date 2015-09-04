@@ -355,7 +355,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Fabric.with(context, new Crashlytics());
+        //Fabric.with(context, new Crashlytics());
         Log.d(TAG, "---onReceive received");
 
 //        this.mApp = (MyApplication) context.getApplicationContext();

@@ -1,15 +1,10 @@
 package pl.coddev.applu;
 
 import android.app.Application;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
-import io.fabric.sdk.android.Fabric;
 import pl.coddev.applu.i.DataService;
 
 /**
@@ -39,22 +34,8 @@ public class MyApplication extends Application {
         //Fabric.with(this, new Crashlytics());
         Log.i(TAG, "OnCreate invoked");
 
-        // DataService
-//        mConnection = new ServiceConnection() {
-//            public void onServiceConnected(ComponentName className, IBinder binder) {
-//                Log.i(TAG, "onServiceConnected()");
-//                mDataService = ((DataService.MyBinder) binder).getService();
-////                getInvitationsList();
-//            }
-//
-//            public void onServiceDisconnected(ComponentName className) {
-//                Log.i(TAG, "onServiceDisconnected()");
-//                mDataService = null;
-//            }
-//        };
         Intent intent = new Intent(this, DataService.class);
         startService(intent);
-        //bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
     } // onCreate - end
 

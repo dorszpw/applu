@@ -34,7 +34,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Fabric.with(context, new Crashlytics());
+        //Fabric.with(context, new Crashlytics());
         Uri data = intent.getData();
 
         this.pm = context.getPackageManager();
