@@ -20,13 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
-
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
 import pl.coddev.applu.R;
-import pl.coddev.applu.c.BulletTextUtil;
 import pl.coddev.applu.c.Log;
 import pl.coddev.applu.c.Utils;
 
@@ -52,8 +46,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int startDelay = 500;
     private VIEW screen = VIEW.MAIN;
 
-    private enum HELPVIEW_ACTION {SHOW, HIDE};
-    private enum VIEW {MAIN, HELP, NO};
+    private enum HELPVIEW_ACTION {SHOW, HIDE}
+    private enum VIEW {MAIN, HELP, NO}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

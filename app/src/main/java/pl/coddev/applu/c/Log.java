@@ -1,6 +1,5 @@
 package pl.coddev.applu.c;
 
-import com.crashlytics.android.Crashlytics;
 
 /**
  * Created by Piotr Woszczek on 27/04/15.
@@ -30,7 +29,7 @@ public class Log {
 
     private static void logIt(int level, String tag, String message){
         if(Constants.CRASHLYTICS_LOGS) {
-            Crashlytics.log(level, tag, message);
+            //Crashlytics.log(level, tag, message);
         } else {
             android.util.Log.println(level, tag, message);
         }

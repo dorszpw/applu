@@ -18,15 +18,10 @@ import android.text.style.StrikethroughSpan;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-
-import com.crashlytics.android.Crashlytics;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.fabric.sdk.android.Fabric;
 import pl.coddev.applu.R;
 import pl.coddev.applu.b.Cache;
 import pl.coddev.applu.b.PInfoHandler;

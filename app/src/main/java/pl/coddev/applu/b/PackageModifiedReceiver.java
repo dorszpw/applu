@@ -11,13 +11,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import com.crashlytics.android.Crashlytics;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-
-import io.fabric.sdk.android.Fabric;
 import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
 import pl.coddev.applu.d.PInfo;
@@ -66,7 +62,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
         if (!replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
             Log.d(TAG, "Package removed: " + packageName);
             PInfoHandler.removeFromSelected(packageName);
-            PInfoHandler.removeFromAll(modifiedInfo);
+            PInfoHandler.removeFromAll(packageName);
         } else if (replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
             Log.d(TAG, "Package replaced: " + packageName);
         } else {

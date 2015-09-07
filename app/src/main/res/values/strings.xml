@@ -48,7 +48,6 @@
     <string name="help_points8">Backspace buttons - remove last or all letters from the filter</string>
     <string name="help_title_extended">How to use the widgets?</string>
      <string name="help_body_extended">
-         \nFirst please try to familiarize with the widgets yourself. If you still have some doubts, sweep through below manual.
          \n\nUsing the letter buttons (7) is very easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
          \nThat\'s it.
          \nIf one letter is not enough, add another one and another one, until the app is found.
@@ -57,9 +56,10 @@
 
     </string>
     <string name="share_message">Applu is an awesome app :)
-        \nDownload it from Google Play:
-        \nhttps://play.google.com/store/search?q=applu</string>
+        \nDownload it from the appstore:
+        \nhttp://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu
+        \nhttp://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dmobile-apps&amp;field-keywords=applu</string>
     <string name="share_title">Share Applu</string>
-    <string name="share_subject">Applu is great</string>
+    <string name="share_subject">Applu</string>
     <string name="abc">abc</string>
 </resources>

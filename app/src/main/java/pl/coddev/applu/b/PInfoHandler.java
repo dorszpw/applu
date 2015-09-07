@@ -144,8 +144,11 @@ public final class PInfoHandler {
             }
     }
 
-    public static void removeFromAll(PInfo pinfo) {
-        getAllPInfos().remove(pinfo);
+    public static void removeFromAll(String packageName) {
+        for(PInfo info : getAllPInfos()) {
+            if(info.getPname().equals(packageName))
+                getAllPInfos().remove(info);
+        }
     }
 
     public static void sortFilteredByMatch(int widgetId) {
