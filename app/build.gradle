@@ -20,16 +20,29 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "pl.coddev.applu"
+
         minSdkVersion 11
         targetSdkVersion 22
     }
+
+    productFlavors {
+        pro {
+            applicationId "pl.coddev.applu"
+        }
+        light {
+            applicationId "pl.coddev.applu.light"
+        }
+    }
+
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }
 
 dependencies {

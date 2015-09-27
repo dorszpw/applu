@@ -26,6 +26,7 @@
         <TextView
             android:id="@+id/helpBodyBack"
             style="@style/helpPageStyle"
+            android:textColorLink="@color/white"
             android:text="@string/help_body_extended" />
 
         <ImageView

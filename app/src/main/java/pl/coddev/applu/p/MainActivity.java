@@ -7,8 +7,15 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -20,6 +27,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
+
 import pl.coddev.applu.R;
 import pl.coddev.applu.c.Log;
 import pl.coddev.applu.c.Utils;
@@ -40,6 +49,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     ImageView rocket;
     ImageView frame;
     ScrollView scrollView;
+    TextView helpBody, helpBodyBack;
     private DisplayMetrics dm;
     FloatingActionButton share;
     private float scale;
@@ -70,6 +80,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         infoButton = (ImageButton) findViewById(R.id.infoButton);
         infoButton.setOnClickListener(this);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
+        helpBody = (TextView) findViewById(R.id.helpBody);
+        helpBody.setMovementMethod(LinkMovementMethod.getInstance());
+        helpBodyBack = (TextView) findViewById(R.id.helpBodyBack);
+        helpBodyBack.setMovementMethod(LinkMovementMethod.getInstance());
         dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
