@@ -36,8 +36,9 @@
     <string name="help_points8">Backspace buttons - remove last or all letters from the filter</string>
     <string name="help_title_extended">How to use the widgets?</string>
      <string name="help_body_extended">
-         \n\nThis help is based on full version <b><a href="http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu">AppLU</a></b>
- widget, but concept is the same.
+         \n\nThis help is based on a full version
+         <b><a href="http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu">AppLU</a></b>
+            widget, but the concept is the same.
          \n\nUsing the letter buttons (7) is very easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
          \nThat\'s it.
          \nIf one letter is not enough, add another one and another one, until the app is found.
@@ -55,4 +56,8 @@
     <string name="share_title">Share Applu</string>
     <string name="share_subject">Applu</string>
     <string name="abc">abc</string>
+    <string name="get_full_version">Go full!</string>
+    <string name="cancel">No, thanks</string>
+    <string name="filtering_in_full_version">Get the full version to use filtering option.
+        \nIn this one, always all apps (user + system) are searched through.</string>
 </resources>

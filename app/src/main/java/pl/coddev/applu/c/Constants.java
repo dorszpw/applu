@@ -19,4 +19,5 @@ public class Constants {
     public static final String PREF_FILE = "pref_file_";
     public static final String EXTRA_PACKAGE_NAME = "extra_packageName";
     public static final String PREFS_FILE = "prefs_main" ;
+    public static final String AMAZON_LINK = "http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu";
 }

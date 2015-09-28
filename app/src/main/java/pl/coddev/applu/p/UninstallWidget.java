@@ -1,9 +1,11 @@
 package pl.coddev.applu.p;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -22,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import pl.coddev.applu.BuildConfig;
+import pl.coddev.applu.MyApplication;
 import pl.coddev.applu.R;
 import pl.coddev.applu.b.Cache;
 import pl.coddev.applu.b.PInfoHandler;
@@ -418,9 +423,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
 
             } else if (actionString.contains("BUTTON")) {
                 if (action.equals((WidgetActions.BUTTON_SELECTOR))) {
-                    appSelectorStatus = appSelectorStatus.next();
-                    prefs.edit().putString(Constants.APP_SELECTOR_STATUS, appSelectorStatus.name()).commit();
-                    Log.d(TAG, "Widget/selector: " + widgetId + "/" + appSelectorStatus.name());
+                    buttonSelectorAction(context);
                 }
                 RemoteViews views = getRemoteViews(context);
                 //views.setProgressBar(R.id.progressBar, 0, 0, true);
@@ -437,6 +440,40 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             }
         } else {
             super.onReceive(context, intent);
+        }
+
+    }
+
+    void buttonSelectorAction(final Context context) {
+        if(BuildConfig.FLAVOR.equals("light")) {
+
+            Intent popUpIntent = new Intent(context, RedirectDialog.class);
+
+            popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            context.startActivity(popUpIntent);
+
+
+//            AlertDialog.Builder builder = new AlertDialog.Builder(MyApplication.get().getApplicationContext());
+//            builder.setPositiveButton(R.string.get_full_version, new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int id) {
+//                    Intent i = new Intent(Intent.ACTION_VIEW);
+//                    i.setData(Uri.parse(Constants.AMAZON_LINK));
+//                    context.startActivity(i);
+//                }
+//            });
+//            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int id) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            // Create the AlertDialog
+//            AlertDialog dialog = builder.create();
+//            dialog.show();
+        } else {
+            appSelectorStatus = appSelectorStatus.next();
+            prefs.edit().putString(Constants.APP_SELECTOR_STATUS, appSelectorStatus.name()).commit();
+            Log.d(TAG, "Widget/selector: " + widgetId + "/" + appSelectorStatus.name());
         }
 
     }
