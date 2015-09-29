@@ -18,7 +18,7 @@
 
         <receiver
             android:name=".p.UninstallWidgetSBlack"
-            android:label="Applu Light black">
+            android:label="Applu Free black">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -29,7 +29,7 @@
         </receiver>
         <receiver
             android:name=".p.UninstallWidgetSWhite"
-            android:label="Applu Light white">
+            android:label="Applu Free white">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

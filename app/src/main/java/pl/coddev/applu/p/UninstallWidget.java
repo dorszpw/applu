@@ -445,7 +445,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
     }
 
     void buttonSelectorAction(final Context context) {
-        if(BuildConfig.FLAVOR.equals("light")) {
+        if(BuildConfig.FLAVOR.equals("free")) {
 
             Intent popUpIntent = new Intent(context, RedirectDialog.class);
 

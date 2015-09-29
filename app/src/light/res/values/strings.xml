@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppLU Light</string>
+    <string name="app_name">AppLU Free</string>
     <string name="enter_search_pattern">Enter search pattern</string>
 
     <!--
@@ -10,8 +10,8 @@
     <string name="icon_trash_o">&#xf014;</string>
     <string name="no_matches">[no results]</string>
     <string name="last_apps">Last apps</string>
-    <string name="help_title">AppLU Light is a widget application\n</string>
-    <string name="help_body">   It\'s a fully functional Light version of <b><a href="http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu">AppLU on Amazon</a></b>
+    <string name="help_title">AppLU (Free) is a widget application\n</string>
+    <string name="help_body">   It\'s a fully functional free version of <b><a href="http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu">AppLU on Amazon</a></b>
                                 \nTo make it work,
                                 \njust add it to your home screen.
                                 \nAfter adding first widget, you\'ll be able
@@ -22,20 +22,16 @@
                                 list, different layouts and filter &amp; more.
     </string>
 
-     <string name="help_points1">
-        Name of the currently selected app
-         </string>
+    <string name="help_points1">Name of the currently selected app</string>
     <string name="help_points2">Index of the current app and number of found apps</string>
-    <string name="help_points3">
-    Last apps ran from AppLU. You can click to run any of them
-    </string>
+    <string name="help_points3">Last apps ran from AppLU. You can click to run any of them</string>
     <string name="help_points4">Launch button - runs currently selected app</string>
     <string name="help_points5">Uninstall button - removes currently selected app from the system</string>
     <string name="help_points6">App filter button - switch between user/system/all</string>
     <string name="help_points7">Letter buttons - click on them to find your app</string>
     <string name="help_points8">Backspace buttons - remove last or all letters from the filter</string>
     <string name="help_title_extended">How to use the widgets?</string>
-     <string name="help_body_extended">
+    <string name="help_body_extended">
          \n\nThis help is based on a full version
          <b><a href="http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu">AppLU</a></b>
             widget, but the concept is the same.
@@ -44,11 +40,10 @@
          \nIf one letter is not enough, add another one and another one, until the app is found.
          \nIf there are multiple results, just click on the app name field (1) and the next one will appear.
          \n\nNow, just have a look at below description with some hints:
-
     </string>
     <string name="share_message">Applu is an awesome app :)
         \nDownload it from the appstore.
-        \nLight version:
+        \nFree version:
         \nhttps://play.google.com/store/search?q=applu
         \nFull:
         \nhttp://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu
