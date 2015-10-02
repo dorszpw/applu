@@ -123,7 +123,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (screen.equals(VIEW.HELP)) {
             handleHelpView(HELPVIEW_ACTION.HIDE);
         } else if (screen.equals(VIEW.MAIN)){
-            super.onBackPressed();
+            finish();
         }
     }
 

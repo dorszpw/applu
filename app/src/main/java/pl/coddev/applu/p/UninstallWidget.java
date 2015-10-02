@@ -445,37 +445,15 @@ abstract public class UninstallWidget extends AppWidgetProvider {
     }
 
     void buttonSelectorAction(final Context context) {
-        if(BuildConfig.FLAVOR.equals("free")) {
-
-            Intent popUpIntent = new Intent(context, RedirectDialog.class);
-
-            popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            context.startActivity(popUpIntent);
-
-
-//            AlertDialog.Builder builder = new AlertDialog.Builder(MyApplication.get().getApplicationContext());
-//            builder.setPositiveButton(R.string.get_full_version, new DialogInterface.OnClickListener() {
-//                public void onClick(DialogInterface dialog, int id) {
-//                    Intent i = new Intent(Intent.ACTION_VIEW);
-//                    i.setData(Uri.parse(Constants.AMAZON_LINK));
-//                    context.startActivity(i);
-//                }
-//            });
-//            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//                public void onClick(DialogInterface dialog, int id) {
-//                    dialog.dismiss();
-//                }
-//            });
-//            // Create the AlertDialog
-//            AlertDialog dialog = builder.create();
-//            dialog.show();
-        } else {
+        if(BuildConfig.FLAVOR.equals("pro")) {
             appSelectorStatus = appSelectorStatus.next();
             prefs.edit().putString(Constants.APP_SELECTOR_STATUS, appSelectorStatus.name()).commit();
             Log.d(TAG, "Widget/selector: " + widgetId + "/" + appSelectorStatus.name());
+        } else {
+            Intent popUpIntent = new Intent(context, RedirectDialog.class);
+            popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(popUpIntent);
         }
-
     }
 
 
