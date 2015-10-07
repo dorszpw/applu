@@ -9,8 +9,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Random;
-
 import pl.coddev.applu.R;
 import pl.coddev.applu.c.Constants;
 
@@ -30,9 +28,7 @@ public class RedirectDialog extends Activity {
         setContentView(R.layout.dialog_redirect);
 
         TextView txt = (TextView) findViewById(R.id.mytxt);
-
         txt.setText(R.string.filtering_in_full_version);
-
 
         Button getFullButton = (Button) findViewById(R.id.getFullVerBtn);
 
@@ -42,7 +38,7 @@ public class RedirectDialog extends Activity {
 
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(Constants.AMAZON_LINK));
+                i.setData(Uri.parse(Constants.APPSTORE_LINK_AMAZON_PRO));
                 RedirectDialog.this.startActivity(i);
                 finish();
             }

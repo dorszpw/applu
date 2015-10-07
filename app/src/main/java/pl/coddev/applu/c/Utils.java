@@ -1,6 +1,7 @@
 package pl.coddev.applu.c;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,7 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import pl.coddev.applu.MyApplication;
 import pl.coddev.applu.R;
+import pl.coddev.applu.p.RateDialog;
 
 /**
  * Created by pw on 25/02/15.
@@ -67,15 +70,46 @@ public final class Utils {
         return bitmapStroked;
     }
 
-    public static boolean ranBefore(Context context){
+    public static boolean ranBefore(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(
                 Constants.PREFS_FILE, Context.MODE_PRIVATE);
         boolean ranBefore = preferences.getBoolean(Constants.EXTRA_RAN_BEFORE, false);
-        if(!ranBefore){
+        if (!ranBefore) {
             preferences.edit()
-                .putBoolean(Constants.EXTRA_RAN_BEFORE, true)
-                .commit();
+                    .putBoolean(Constants.EXTRA_RAN_BEFORE, true)
+                    .commit();
+            preferences.edit()
+                    .putString(Calendar.getInstance().getTime().toString(), "")
+                    .commit();
         }
         return ranBefore;
+    }
+
+    public static int incrementUsage() {
+        if(MyApplication.get().featureCount() < Constants.FEATURE_USAGE_MAX) {
+            Context context = MyApplication.get();
+
+            SharedPreferences preferences = context.getSharedPreferences(
+                    Constants.PREFS_FILE, Context.MODE_PRIVATE);
+            int featureUsageCount = preferences.getInt(Constants.EXTRA_FEATURE_USAGE, 0);
+
+            if (featureUsageCount < Constants.FEATURE_USAGE_MAX) {
+                preferences.edit()
+                        .putInt(Constants.EXTRA_FEATURE_USAGE, featureUsageCount + 1)
+                        .commit();
+            } else if (featureUsageCount == Constants.FEATURE_USAGE_MAX) {
+
+                preferences.edit()
+                        .putInt(Constants.EXTRA_FEATURE_USAGE, featureUsageCount + 1)
+                        .commit();
+
+                Intent popUpIntent = new Intent(context, RateDialog.class);
+                popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(popUpIntent);
+            }
+            return featureUsageCount;
+        }
+
+        return MyApplication.get().featureCount();
     }
 }

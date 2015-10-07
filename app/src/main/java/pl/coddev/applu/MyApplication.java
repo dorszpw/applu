@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.util.Log;
 
+import pl.coddev.applu.c.Utils;
 import pl.coddev.applu.i.DataService;
 
 /**
@@ -15,6 +16,7 @@ public class MyApplication extends Application {
     public static String TAG = "MyApplication";
 
     private static MyApplication instance;
+    private int featureCount = 0;
 
     public static MyApplication get() {
         return instance;
@@ -30,6 +32,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        featureCount = Utils.incrementUsage();
 
         //Fabric.with(this, new Crashlytics());
         Log.i(TAG, "OnCreate invoked");
@@ -38,5 +41,9 @@ public class MyApplication extends Application {
         startService(intent);
 
     } // onCreate - end
+
+    public int featureCount(){
+        return instance.featureCount;
+    }
 
 }

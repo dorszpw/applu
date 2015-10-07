@@ -19,5 +19,8 @@ public class Constants {
     public static final String PREF_FILE = "pref_file_";
     public static final String EXTRA_PACKAGE_NAME = "extra_packageName";
     public static final String PREFS_FILE = "prefs_main" ;
-    public static final String AMAZON_LINK = "http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu";
+    public static final String APPSTORE_LINK_AMAZON_PRO = "http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu";
+    public static final String APPSTORE_LINK_PLAY_FREE = "https://play.google.com/store/apps/details?id=pl.coddev.applu.light";
+    public static final String EXTRA_FEATURE_USAGE = "feature_usage";
+    public static final int FEATURE_USAGE_MAX = 70;
 }

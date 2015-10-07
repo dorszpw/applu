@@ -1,11 +1,9 @@
 package pl.coddev.applu.p;
 
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -26,12 +24,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pl.coddev.applu.BuildConfig;
-import pl.coddev.applu.MyApplication;
 import pl.coddev.applu.R;
 import pl.coddev.applu.b.Cache;
 import pl.coddev.applu.b.PInfoHandler;
 import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
+import pl.coddev.applu.c.Utils;
 import pl.coddev.applu.d.PInfo;
 
 
@@ -383,6 +381,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             }
 
             if (action.equals(WidgetActions.BUTTON_UNINSTALL)) {
+
                 currentApp = intent.getStringExtra(Constants.CURRENT_APP);
                 if (currentApp != "") {
                     Uri packageUri = Uri.parse("package:" + currentApp);
@@ -393,6 +392,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                     context.startActivity(uninstallIntent);
                 }
             } else if (action.equals(WidgetActions.BUTTON_LAUNCH)) {
+
                 currentApp = intent.getStringExtra(Constants.CURRENT_APP);
                 if (currentApp != "") {
                     try {
@@ -422,6 +422,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                 }
 
             } else if (actionString.contains("BUTTON")) {
+                Utils.incrementUsage();
                 if (action.equals((WidgetActions.BUTTON_SELECTOR))) {
                     buttonSelectorAction(context);
                 }
@@ -445,17 +446,10 @@ abstract public class UninstallWidget extends AppWidgetProvider {
     }
 
     void buttonSelectorAction(final Context context) {
-        if(BuildConfig.FLAVOR.equals("pro")) {
-            appSelectorStatus = appSelectorStatus.next();
-            prefs.edit().putString(Constants.APP_SELECTOR_STATUS, appSelectorStatus.name()).commit();
-            Log.d(TAG, "Widget/selector: " + widgetId + "/" + appSelectorStatus.name());
-        } else {
             Intent popUpIntent = new Intent(context, RedirectDialog.class);
             popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(popUpIntent);
-        }
     }
-
 
     String getLastApp(String action, int widgetId) {
         return null;

@@ -66,6 +66,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.main_layout);
 
+
         context = getApplicationContext();
         relative = (RelativeLayout) findViewById(R.id.relative);
         frame = (ImageView) findViewById(R.id.frame);

@@ -35,7 +35,7 @@
          \n\nThis help is based on a full version
          <b><a href="http://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu">AppLU</a></b>
             widget, but the concept is the same.
-         \n\nUsing the letter buttons (7) is very easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
+         \n\nUsing the letter buttons (7) is easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
          \nThat\'s it.
          \nIf one letter is not enough, add another one and another one, until the app is found.
          \nIf there are multiple results, just click on the app name field (1) and the next one will appear.
@@ -44,7 +44,7 @@
     <string name="share_message">Applu is an awesome app :)
         \nDownload it from the appstore.
         \nFree version:
-        \nhttps://play.google.com/store/search?q=applu
+        \nhttps://play.google.com/store/apps/details?id=pl.coddev.applu.light
         \nFull:
         \nhttp://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu
     </string>
@@ -52,7 +52,8 @@
     <string name="share_subject">Applu</string>
     <string name="abc">abc</string>
     <string name="get_full_version">Go full!</string>
-    <string name="cancel">No, thanks</string>
+
     <string name="filtering_in_full_version">Get the full version to use filtering option &amp; and bigger, more functional widgets.
         \nIn this one, always all apps (user + system) are searched through.</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

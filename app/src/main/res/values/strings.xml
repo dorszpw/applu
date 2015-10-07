@@ -46,7 +46,7 @@
     <string name="help_points8">Backspace buttons - remove last or all letters from the filter</string>
     <string name="help_title_extended">How to use the widgets?</string>
      <string name="help_body_extended">
-         \n\nUsing the letter buttons (7) is very easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
+         \n\nUsing the letter buttons (7) is easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
          \nThat\'s it.
          \nIf one letter is not enough, add another one and another one, until the app is found.
          \nIf there are multiple results, just click on the app name field (1) and the next one will appear.
@@ -60,4 +60,9 @@
     <string name="share_title">Share Applu</string>
     <string name="share_subject">Applu</string>
     <string name="abc">abc</string>
+    <string name="rate_body">You\'ve used AppLU a couple of times now, it seems :)
+    \nPlease rate it in the app store.</string>
+    <string name="rate">Let\'s rate!</string>
+    <string name="cancel">No, thanks</string>
+    <string name="back">Back</string>
 </resources>
