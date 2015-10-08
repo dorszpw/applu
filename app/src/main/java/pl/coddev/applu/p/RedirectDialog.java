@@ -8,19 +8,21 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import pl.coddev.applu.R;
 import pl.coddev.applu.c.Constants;
+import pl.coddev.applu.c.Log;
 
 /**
  * Created by Piotr Woszczek on 28/09/15.
  */
 public class RedirectDialog extends Activity {
-
+    private static final String TAG = "RedirectDialog";
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
-
+        
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -38,7 +40,7 @@ public class RedirectDialog extends Activity {
 
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(Constants.APPSTORE_LINK_AMAZON_PRO));
+                i.setData(Uri.parse(Constants.APPSTORE_LINK_PRO));
                 RedirectDialog.this.startActivity(i);
                 finish();
             }

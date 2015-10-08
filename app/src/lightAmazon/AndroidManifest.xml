@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pl.coddev.applu" >
+
+    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application android:label="@string/app_name" >
+        <activity
+            android:name=".p.RedirectDialog"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+        </activity>
+
+        <receiver
+            android:name=".p.UninstallWidgetSBlack"
+            android:label="Applu Free black" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_s_theme_black" />
+        </receiver>
+        <receiver
+            android:name=".p.UninstallWidgetSWhite"
+            android:label="Applu Free white" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_s_theme_white" />
+        </receiver>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+    </application>
+
+</manifest>

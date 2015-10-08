@@ -13,12 +13,14 @@ import android.widget.Toast;
 
 import pl.coddev.applu.R;
 import pl.coddev.applu.c.Constants;
+import pl.coddev.applu.c.Log;
 
 /**
  * Created by Piotr Woszczek on 28/09/15.
  */
-public class RateDialog extends Activity implements DialogInterface.OnClickListener{
+public class RateDialog extends Activity {
 
+    private static final String TAG = "RateDialog";
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class RateDialog extends Activity implements DialogInterface.OnClickListe
 
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(Constants.APPSTORE_LINK_PLAY_FREE));
+                i.setData(Uri.parse(Constants.APPSTORE_LINK));
                 RateDialog.this.startActivity(i);
                 finish();
             }
@@ -55,10 +57,5 @@ public class RateDialog extends Activity implements DialogInterface.OnClickListe
             }
         });
         setFinishOnTouchOutside(false);
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        Toast.makeText(this, "clicked", Toast.LENGTH_SHORT);
     }
 }

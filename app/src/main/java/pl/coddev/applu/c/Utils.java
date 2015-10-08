@@ -91,18 +91,13 @@ public final class Utils {
 
             SharedPreferences preferences = context.getSharedPreferences(
                     Constants.PREFS_FILE, Context.MODE_PRIVATE);
-            int featureUsageCount = preferences.getInt(Constants.EXTRA_FEATURE_USAGE, 0);
-
-            if (featureUsageCount < Constants.FEATURE_USAGE_MAX) {
-                preferences.edit()
-                        .putInt(Constants.EXTRA_FEATURE_USAGE, featureUsageCount + 1)
-                        .commit();
-            } else if (featureUsageCount == Constants.FEATURE_USAGE_MAX) {
+            int featureUsageCount = MyApplication.get().incrementFeatureCount();
 
                 preferences.edit()
-                        .putInt(Constants.EXTRA_FEATURE_USAGE, featureUsageCount + 1)
+                        .putInt(Constants.EXTRA_FEATURE_USAGE, featureUsageCount)
                         .commit();
 
+            if (featureUsageCount == Constants.FEATURE_USAGE_MAX) {
                 Intent popUpIntent = new Intent(context, RateDialog.class);
                 popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(popUpIntent);

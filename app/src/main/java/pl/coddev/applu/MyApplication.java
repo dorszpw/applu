@@ -1,10 +1,13 @@
 package pl.coddev.applu;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Utils;
 import pl.coddev.applu.i.DataService;
 
@@ -32,7 +35,9 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        featureCount = Utils.incrementUsage();
+        SharedPreferences preferences = getSharedPreferences(
+                Constants.PREFS_FILE, Context.MODE_PRIVATE);
+        featureCount = preferences.getInt(Constants.EXTRA_FEATURE_USAGE, 0);
 
         //Fabric.with(this, new Crashlytics());
         Log.i(TAG, "OnCreate invoked");
@@ -44,6 +49,10 @@ public class MyApplication extends Application {
 
     public int featureCount(){
         return instance.featureCount;
+    }
+
+    public int incrementFeatureCount(){
+        return ++instance.featureCount;
     }
 
 }

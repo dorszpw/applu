@@ -26,10 +26,13 @@ android {
     }
 
     productFlavors {
-        pro {
+        proAmazon {
             applicationId "pl.coddev.applu"
         }
         light {
+            applicationId "pl.coddev.applu.light"
+        }
+        lightAmazon {
             applicationId "pl.coddev.applu.light"
         }
     }
@@ -52,4 +55,14 @@ dependencies {
 //    compile('com.crashlytics.sdk.android:crashlytics:2.5.0@aar') {
 //        transitive = true;
 //    }
+}
+
+sourceSets {
+
+    light {
+        resources.srcDirs = ['src/light/resources']
+    }
+    pro {
+        resources.srcDirs = ['src/pro/resources']
+    }
 }

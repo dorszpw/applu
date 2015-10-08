@@ -51,9 +51,6 @@
     <string name="share_title">Share Applu</string>
     <string name="share_subject">Applu</string>
     <string name="abc">abc</string>
-    <string name="get_full_version">Go full!</string>
 
-    <string name="filtering_in_full_version">Get the full version to use filtering option &amp; and bigger, more functional widgets.
-        \nIn this one, always all apps (user + system) are searched through.</string>
     <string name="title_activity_main">MainActivity</string>
 </resources>
