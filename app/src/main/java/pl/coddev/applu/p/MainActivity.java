@@ -28,8 +28,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import pl.coddev.applu.R;
+import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
 import pl.coddev.applu.c.Utils;
 
@@ -87,7 +89,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         helpBodyBack.setMovementMethod(LinkMovementMethod.getInstance());
         dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-
 
         relative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
