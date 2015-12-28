@@ -41,15 +41,17 @@
          \nIf there are multiple results, just click on the app name field (1) and the next one will appear.
          \n\nNow, just have a look at below description with some hints:
     </string>
-    <string name="share_message">Applu is an awesome app :)
-        \nDownload it from the appstore.
-        \nFree version:
+    <string name="share_message">Hi :)
+        \nHave you seen AppLU? It\'s a great Widget letting you find, run &amp;
+        uninstall apps directly from your home screen.
+        \n\nYou can download it from the app store.
+        \n\nFree version:
         \nhttps://play.google.com/store/apps/details?id=pl.coddev.applu.light
-        \nFull:
+        \n\nFull:
         \nhttp://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu
     </string>
     <string name="share_title">Share Applu</string>
-    <string name="share_subject">Applu</string>
+    <string name="share_subject">Applu is an awesome Widget</string>
     <string name="abc">abc</string>
 
     <string name="title_activity_main">MainActivity</string>
