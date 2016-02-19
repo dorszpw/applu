@@ -446,9 +446,12 @@ abstract public class UninstallWidget extends AppWidgetProvider {
     }
 
     void buttonSelectorAction(final Context context) {
-            Intent popUpIntent = new Intent(context, RedirectDialog.class);
-            popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(popUpIntent);
+//            Intent popUpIntent = new Intent(context, RedirectDialog.class);
+//            popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(popUpIntent);
+        appSelectorStatus = appSelectorStatus.next();
+        prefs.edit().putString(Constants.APP_SELECTOR_STATUS, appSelectorStatus.name()).commit();
+        Log.d(TAG, "Widget/selector: " + widgetId + "/" + appSelectorStatus.name());
     }
 
     String getLastApp(String action, int widgetId) {

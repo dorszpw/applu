@@ -7,15 +7,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application android:label="@string/app_name" >
-        <activity
-            android:name=".p.RedirectDialog"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" >
-        </activity>
-
         <receiver
             android:name=".p.UninstallWidgetSBlack"
-            android:label="Applu Free black" >
+            android:label="Applu S black" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -26,7 +20,7 @@
         </receiver>
         <receiver
             android:name=".p.UninstallWidgetSWhite"
-            android:label="Applu Free white" >
+            android:label="Applu S white" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -35,12 +29,51 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider_s_theme_white" />
         </receiver>
+        <receiver
+            android:name=".p.UninstallWidgetMBlack"
+            android:label="Applu M black" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_m_theme_black" />
+        </receiver>
+        <receiver
+            android:name=".p.UninstallWidgetMWhite"
+            android:label="Applu M white" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_m_theme_white" />
+        </receiver>
+
+        <receiver
+            android:name=".p.UninstallWidgetLBlack"
+            android:label="Applu L black" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_l_theme_black" />
+        </receiver>
+        <receiver
+            android:name=".p.UninstallWidgetLWhite"
+            android:label="Applu L white" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_l_theme_white" />
+        </receiver>
     </application>
 
 </manifest>
