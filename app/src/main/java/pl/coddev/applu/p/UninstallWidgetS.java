@@ -21,7 +21,11 @@ abstract public class UninstallWidgetS extends UninstallWidget {
 
     void setupLastAppsButtons(RemoteViews views, Context context, int[] ids){};
     void handleLastApps(String newPackage, int widgetId){};
-    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids){};
+//    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids){};
+    @Override
+    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids) {
+        views.setOnClickPendingIntent(R.id.clearAllButton, buildPendingIntent(context, WidgetActions.BUTTON_CLEAR_ALL.name(), ids));
+    }
     abstract void switchSelectorStatus(RemoteViews views);
     abstract RemoteViews getRemoteViews(Context context);
 }

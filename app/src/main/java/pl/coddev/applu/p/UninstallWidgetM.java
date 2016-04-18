@@ -95,8 +95,13 @@ abstract public class UninstallWidgetM extends UninstallWidget {
         prefs.edit().putString(Constants.LAST_APPS_SYNC, lastAppsString).commit();
     }
 
+//    @Override
+//    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids){};
+
     @Override
-    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids){};
+    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids) {
+        views.setOnClickPendingIntent(R.id.clearAllButton, buildPendingIntent(context, WidgetActions.BUTTON_CLEAR_ALL.name(), ids));
+    }
 
     @Override
     abstract void switchSelectorStatus(RemoteViews views);
