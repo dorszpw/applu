@@ -1,0 +1,176 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/widget_background_theme_white"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/searchTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/searchText"
+                style="@style/searchTextStyleWhite" />
+
+
+            <Button
+                android:id="@+id/navButtonLeft"
+                style="@style/keypadButtonStyleWhite"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="0.2"
+                android:gravity="center_vertical|right"
+                android:text="◀"
+                android:textColor="@color/blue_nasty"
+                android:visibility="gone"/>
+
+
+
+            <Button
+                android:id="@+id/navButtonRight"
+                style="@style/keypadButtonStyleWhite"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="0.2"
+                android:gravity="center_vertical|left"
+                android:text="▶"
+                android:textColor="@color/blue_nasty"
+                android:visibility="gone"/>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="0.2"
+                style="@android:style/Widget.Holo.ProgressBar.Small"
+                android:visibility="visible"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/searchTextLayout"
+            android:src="@drawable/separator" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/searchButton1"
+            style="@style/keypadButtonStyleWhite"
+            android:text="abc"
+
+            />
+
+        <Button
+            android:id="@+id/searchButton2"
+            style="@style/keypadButtonStyleWhite"
+            android:text="def"
+
+
+            />
+
+        <Button
+            android:id="@+id/searchButton3"
+            style="@style/keypadButtonStyleWhite"
+            android:text="ghi"
+            />
+        <ImageView
+            android:id="@+id/launchButton"
+            style="@style/actionButtonStyle" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <Button
+            android:id="@+id/searchButton4"
+            style="@style/keypadButtonStyleWhite"
+            android:text="jkl"
+
+            />
+
+        <Button
+            android:id="@+id/searchButton5"
+            style="@style/keypadButtonStyleWhite"
+            android:text="mno"
+
+            />
+
+        <Button
+            android:id="@+id/searchButton6"
+            style="@style/keypadButtonStyleWhite"
+            android:text="pqrs" />
+        <ImageView
+            android:id="@+id/uninstallButton"
+            style="@style/actionButtonStyle"
+            android:src="@drawable/ic_delete_theme_white" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/searchButton7"
+            style="@style/keypadButtonStyleWhite"
+            android:text="tuv"
+
+            />
+
+        <Button
+            android:id="@+id/searchButton8"
+            style="@style/keypadButtonStyleWhite"
+            android:text="wxyz"
+
+            />
+
+
+        <LinearLayout
+            style="@style/keypadButtonStyleWhite"
+            android:layout_width="95dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/clearButton"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="0.5"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/backspace_arrow" />
+
+            <ImageView
+                android:id="@+id/clearAllButton"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+
+                android:layout_weight="0.5"
+                android:padding="3dp"
+                android:src="@drawable/cancel_button_128" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

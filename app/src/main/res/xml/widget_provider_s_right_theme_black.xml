@@ -5,8 +5,8 @@
     android:minResizeHeight="110dp"
     android:minResizeWidth="180dp"
     android:updatePeriodMillis="0"
-    android:previewImage="@drawable/ic_preview_scw"
-    android:initialLayout="@layout/widget_s_layout_inside_theme_white"
+    android:previewImage="@drawable/ic_preview_srb"
+    android:initialLayout="@layout/widget_s_layout_right_theme_black"
 
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"

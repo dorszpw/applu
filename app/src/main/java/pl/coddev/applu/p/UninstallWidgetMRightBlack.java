@@ -9,7 +9,7 @@ import pl.coddev.applu.R;
 /**
  * Created by pw on 16/03/15.
  */
-public class UninstallWidgetMInsideBlack extends UninstallWidgetM {
+public class UninstallWidgetMRightBlack extends UninstallWidgetM {
     private static final String TAG = "UninstallWidgetMBlack";
 
     @Override
@@ -30,7 +30,7 @@ public class UninstallWidgetMInsideBlack extends UninstallWidgetM {
 
     @Override
     RemoteViews getRemoteViews(Context context) {
-        return new RemoteViews(context.getPackageName(), R.layout.widget_m_layout_inside_theme_black);
+        return new RemoteViews(context.getPackageName(), R.layout.widget_m_layout_right_theme_black);
     }
 
 }

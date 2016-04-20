@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.coddev.applu"
-    android:versionCode="111"
-    android:versionName="1.1" >
+    android:versionCode="112"
+    android:versionName="1.2" >
 
     <!--<uses-permission android:name="android.permission.INTERNET" />-->
     <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
@@ -35,7 +35,7 @@
 
         <receiver
             android:name=".p.UninstallWidgetSInsideBlack"
-            android:label="Applu S' black" >
+            android:label="Applu S Crazy black" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -46,7 +46,7 @@
         </receiver>
         <receiver
             android:name=".p.UninstallWidgetSInsideWhite"
-            android:label="Applu S' black" >
+            android:label="Applu S Crazy white" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -55,27 +55,51 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider_s_inside_theme_white" />
         </receiver>
+
         <receiver
-            android:name=".p.UninstallWidgetMInsideBlack"
-            android:label="Applu M' black" >
+            android:name=".p.UninstallWidgetSRightBlack"
+            android:label="Applu S Comfy black" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_provider_m_inside_theme_black" />
+                android:resource="@xml/widget_provider_s_right_theme_black" />
         </receiver>
         <receiver
-            android:name=".p.UninstallWidgetMInsideWhite"
-            android:label="Applu M' white" >
+            android:name=".p.UninstallWidgetSRightWhite"
+            android:label="Applu S Comfy white" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_provider_m_inside_theme_white" />
+                android:resource="@xml/widget_provider_s_right_theme_white" />
+        </receiver>
+
+        <receiver
+            android:name=".p.UninstallWidgetMRightBlack"
+            android:label="Applu M Comfy black" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_m_right_theme_black" />
+        </receiver>
+        <receiver
+            android:name=".p.UninstallWidgetMRightWhite"
+            android:label="Applu M Comfy white" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_m_right_theme_white" />
         </receiver>
 
         <receiver

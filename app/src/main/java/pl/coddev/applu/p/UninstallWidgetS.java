@@ -28,4 +28,6 @@ abstract public class UninstallWidgetS extends UninstallWidget {
     }
     abstract void switchSelectorStatus(RemoteViews views);
     abstract RemoteViews getRemoteViews(Context context);
+
+
 }

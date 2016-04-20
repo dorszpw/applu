@@ -9,11 +9,12 @@ import pl.coddev.applu.R;
 /**
  * Created by pw on 16/03/15.
  */
-public class UninstallWidgetMInsideWhite extends UninstallWidgetM {
-    private static final String TAG = "UninstallWidgetMWhite";
+public class UninstallWidgetSRightWhite extends UninstallWidgetS {
+    private static final String TAG = "UninstallWidgetSWhite";
 
     @Override
     void switchSelectorStatus(RemoteViews views) {
+
         switch (this.appSelectorStatus) {
             case ALL:
                 views.setImageViewResource(R.id.appSelectorButton, R.drawable.filter_all_theme_white);
@@ -29,7 +30,7 @@ public class UninstallWidgetMInsideWhite extends UninstallWidgetM {
 
     @Override
     RemoteViews getRemoteViews(Context context) {
-        return new RemoteViews(context.getPackageName(), R.layout.widget_m_layout_inside_theme_white);
+        return new RemoteViews(context.getPackageName(), R.layout.widget_s_layout_right_theme_white);
     }
 
 }
