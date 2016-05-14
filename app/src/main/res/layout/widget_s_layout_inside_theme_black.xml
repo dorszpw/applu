@@ -114,16 +114,20 @@
             />
         <ImageView
             android:id="@+id/launchButton"
+            android:layout_width="60dp"
+            android:layout_weight="1.3"
             style="@style/actionButtonInsideStyle" />
         <ImageView
             android:id="@+id/uninstallButton"
+            android:layout_width="60dp"
+            android:layout_weight="1.3"
             style="@style/actionButtonInsideStyle"
             android:src="@drawable/ic_delete_theme_black" />
-        <ImageView
-            android:id="@+id/appSelectorButton"
-            style="@style/actionButtonInsideStyle"
-            android:padding="2dp"
-            android:src="@drawable/filter_all_theme_black" />
+        <!--<ImageView-->
+            <!--android:id="@+id/appSelectorButton"-->
+            <!--style="@style/actionButtonInsideStyle"-->
+            <!--android:padding="2dp"-->
+            <!--android:src="@drawable/filter_all_theme_black" />-->
 
 
         <Button

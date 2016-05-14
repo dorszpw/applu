@@ -119,11 +119,11 @@
             android:id="@+id/uninstallButton"
             style="@style/actionButtonInsideStyle"
             android:src="@drawable/ic_delete_theme_white" />
-        <ImageView
-            android:id="@+id/appSelectorButton"
-            style="@style/actionButtonInsideStyle"
-            android:padding="2dp"
-            android:src="@drawable/filter_all_theme_white" />
+        <!--<ImageView-->
+            <!--android:id="@+id/appSelectorButton"-->
+            <!--style="@style/actionButtonInsideStyle"-->
+            <!--android:padding="2dp"-->
+            <!--android:src="@drawable/filter_all_theme_white" />-->
 
 
         <Button
