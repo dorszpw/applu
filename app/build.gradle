@@ -16,13 +16,17 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 24
+    buildToolsVersion '24.0.0'
 
     defaultConfig {
 
         minSdkVersion 11
-        targetSdkVersion 22
+        targetSdkVersion 24
+
+//        jackOptions {
+//            enabled true
+//        }
     }
 
     productFlavors {
@@ -44,6 +48,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+
+    dataBinding {
+        enabled = true
+    }
+
 
 
 }

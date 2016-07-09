@@ -3,7 +3,7 @@
 
     <color name="blue_nasty">#1DAEF0</color>
     <color name="blue_sunny">#A8E1F4</color>
-    <color name="dark_blue">#51a6c7</color>
+    <color name="dark_blue">#3F51B5</color>
     <color name="dark_blue_grey">#79A7B8</color>
     <color name="sky_rainy">#5C6D75</color>
     <color name="sky_stormy">#2C3134</color>
@@ -15,13 +15,15 @@
     <color name="grey">#555555</color>
     <color name="yellow">#FFFF00</color>
     <color name="lightGreen">#d22fed3f</color>
-    <color name="red">#d2ff3f4e</color>
+    <color name="red">#FF5252</color>
     <color name="orange">#d2fdb813</color>
-    <color name="lightGrey">#dadada</color>
+    <color name="lightGrey">#fafafa</color>
     <color name="grey_transparent">#992C3134</color>
     <color name="grey_transparentish">#29495153</color>
     <color name="last_apps_theme_black">#64ededed</color>
     <color name="last_apps_theme_white">#64808080</color>
     <color name="dark_grey">#373737</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#727272</color>
 
 </resources>
