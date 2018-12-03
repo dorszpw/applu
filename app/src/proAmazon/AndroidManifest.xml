@@ -3,8 +3,7 @@
     package="pl.coddev.applu"
     >
 
-    <application
-        >
+    <application>
         <receiver
             android:name=".p.UninstallWidgetSBlack"
             android:label="Applu S black" >

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -36,7 +37,7 @@ import pl.coddev.applu.c.Log;
 import pl.coddev.applu.c.Utils;
 
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = "MainActivity";
     private Context context;
@@ -68,9 +69,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.main_layout);
 
-
         context = getApplicationContext();
-        relative = (RelativeLayout) findViewById(R.id.relative);
+        relative = findViewById(R.id.relative);
         frame = (ImageView) findViewById(R.id.frame);
         lu = (ImageView) findViewById(R.id.background);
         app = (ImageView) findViewById(R.id.app);
@@ -115,7 +115,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         });
 
 
-        share = (FloatingActionButton) findViewById(R.id.share);
+        share = findViewById(R.id.share);
         share.setOnClickListener(this);
     }
 

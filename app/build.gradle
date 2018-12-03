@@ -1,35 +1,17 @@
-buildscript {
-//    repositories {
-//        maven { url 'https://maven.fabric.io/public' }
-//    }
-//
-//    dependencies {
-//        classpath 'io.fabric.tools:gradle:1.+'
-//    }
-}
 apply plugin: 'com.android.application'
-//apply plugin: 'io.fabric'
-//
-//repositories {
-//    maven { url 'https://maven.fabric.io/public' }
-//}
 
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '24.0.0'
+    compileSdkVersion 27
 
     defaultConfig {
         versionCode 116
         versionName "1.2.6"
-        minSdkVersion 11
-        targetSdkVersion 24
-
-//        jackOptions {
-//            enabled true
-//        }
+        minSdkVersion 19
+        targetSdkVersion 27
     }
 
+    flavorDimensions "main"
     productFlavors {
         proAmazon {
             applicationId "pl.coddev.applu"
@@ -49,35 +31,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+//
 //    compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
 //    }
-
-    dataBinding {
-        enabled = true
-    }
-
-
-
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-//    compile('com.crashlytics.sdk.android:crashlytics:2.5.0@aar') {
-//        transitive = true;
-//    }
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:design:27.1.1'
 }
 
 sourceSets {
 
-    light {
-        resources.srcDirs = ['src/light/resources']
-    }
-    pro {
-        resources.srcDirs = ['src/pro/resources']
-    }
+//    light {
+//        resources.srcDirs = ['src/light/resources']
+//    }
+//    pro {
+//        resources.srcDirs = ['src/pro/resources']
+//    }
 }
