@@ -2,10 +2,16 @@ package pl.coddev.applu.b;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.util.LruCache;
+
+import pl.coddev.applu.c.Log;
 
 
 /**
@@ -13,6 +19,7 @@ import android.support.v4.util.LruCache;
  */
 public final class Cache {
 
+    private static final String TAG = "Cache";
     private LruCache<String, Bitmap> mMemoryCache;
     private static Cache instance;
 
@@ -38,14 +45,19 @@ public final class Cache {
 
     public Bitmap getBitmapFromMemCache(String key, PackageManager pm) {
         Bitmap bitmap=null;
+        Log.d(TAG, "Icon drawable key: " + key);
         if (mMemoryCache.get(key) == null){
             try {
                 Drawable drawable = pm.getApplicationIcon(key);
+
+                Log.d(TAG, "Icon drawable is null: " + (drawable == null));
+                Log.d(TAG, "Icon drawable class: " + drawable.getClass());
                 if(drawable instanceof BitmapDrawable){
                     bitmap = ((BitmapDrawable) drawable).getBitmap();
-                } else if(drawable instanceof VectorDrawable){
-                    bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                            drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    Log.d(TAG, "Icon drawable bitmap: " + bitmap.getByteCount());
+                } else if((Build.VERSION.SDK_INT >= 21 && drawable instanceof VectorDrawable) || (
+                        Build.VERSION.SDK_INT >= 26 && drawable instanceof AdaptiveIconDrawable)){
+                    bitmap = getBitmapFromDrawable(drawable);
                 } else {
                     return null;
                 }
@@ -59,5 +71,14 @@ public final class Cache {
 
         }
         return bitmap;
+    }
+
+    @NonNull
+    private Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
     }
 }

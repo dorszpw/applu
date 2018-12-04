@@ -141,6 +141,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                         buildPendingIntentForActionButtons(context, packageName,
                                 WidgetActions.BUTTON_LAUNCH.name(), ids));
 
+                Log.d(TAG, "App package name: " + pinfo.getPname());
                 Bitmap iconBitmap = Cache.getInstance().getBitmapFromMemCache(pinfo.getPname(), this.pm);
                 views.setImageViewBitmap(R.id.launchButton, iconBitmap);
                 views.setTextViewText(R.id.searchText, getSpannableForField(context, pinfo));

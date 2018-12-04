@@ -12,7 +12,7 @@ public class Constants {
     public static final String PREFS_FILTER_LIST = "filter_list";
     public static final String SHOW_MORE_STRING = "▼ ";
     public static final String NO_MATCHES_STRING = "[:( no results]";
-    public static final boolean CRASHLYTICS_LOGS = true;
+    public static final boolean CRASHLYTICS_LOGS = false;
     public static final String APP_SELECTOR_STATUS = "appSelectorStatus";
     public static final String APP_INDEX = "appIndex";
     public static final String CURRENT_APP = "currentApp";
