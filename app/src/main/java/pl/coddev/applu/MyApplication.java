@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 
 import pl.coddev.applu.c.Constants;
@@ -43,7 +44,11 @@ public class MyApplication extends Application {
         Log.i(TAG, "OnCreate invoked");
 
         Intent intent = new Intent(this, DataService.class);
-        startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
 
     } // onCreate - end
 
