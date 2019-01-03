@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 app.setPivotX(714 * scale);
                 app.setPivotY(513 * scale);
                 frame.getLayoutParams().height = rocket.getHeight();
-                if (!Utils.ranBefore(context))
-                    animateLogo(scale);
+//                if (!Utils.ranBefore(context))
+//                    animateLogo(scale);
                 //this is an important step not to keep receiving callbacks:
                 //we should remove this listener
                 //I use the function to remove it based on the api level!

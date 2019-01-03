@@ -105,15 +105,16 @@
                 android:background="@null"
                 android:padding="5dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_arrow16" />
+                android:src="@drawable/ic_arrow16"
+                android:visibility="gone"/>
 
             <ImageButton
                 android:id="@+id/infoButton"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/ref_10"
                 android:layout_marginTop="@dimen/ref_10"
-                android:layout_toLeftOf="@+id/play"
                 android:background="@null"
                 android:padding="2dp"
                 android:scaleType="centerInside"
