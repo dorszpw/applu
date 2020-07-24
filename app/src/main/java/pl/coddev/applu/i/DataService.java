@@ -1,12 +1,12 @@
 package pl.coddev.applu.i;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -14,19 +14,19 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
 
 import pl.coddev.applu.R;
 import pl.coddev.applu.b.PInfoHandler;
+import pl.coddev.applu.b.PackageModifiedReceiver;
 import pl.coddev.applu.d.PInfo;
 import pl.coddev.applu.p.UninstallWidget;
-
-import static android.support.v4.app.NotificationCompat.PRIORITY_MIN;
 
 
 public class DataService extends Service {
@@ -45,7 +45,7 @@ public class DataService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand()");
 
-        startForeground();
+        //startForeground();
 
         return Service.START_STICKY;
     }
@@ -56,6 +56,8 @@ public class DataService extends Service {
         Log.d(TAG, "onCreate()");
         super.onCreate();
         context = getApplicationContext();
+        registerBroadcastReceiver();
+
         AsyncTask.execute(() -> {
             PackageManager pm = getApplicationContext().getPackageManager();
             // one of the most consuming tasks
@@ -73,25 +75,25 @@ public class DataService extends Service {
                 newInfo.setAppname(pi.applicationInfo.loadLabel(pm).toString());
                 newInfo.setIsSystemPackage(PInfoHandler.isSystemPackage(pi));
                 newInfo.setPname(pi.packageName);
-                if(!allInfos.contains(newInfo))allInfos.add(newInfo);
+                if (!allInfos.contains(newInfo)) allInfos.add(newInfo);
             }
             // add all to synchronized ArrayList, not one by one
             PInfoHandler.setAllPInfos(allInfos);
-            Log.d(TAG, "onCreate " + packs.size());
+            Log.d(TAG, "onCreate number of packages from PM: " + packs.size());
         });
-        startForeground();
+        //startForeground();
     }
 
-    private void startForeground() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startMyOwnForeground();
-        else
-            startForeground(1, new Notification());
-    }
+//    private void startForeground() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+//            startMyOwnForeground();
+//        else
+//            startForeground(1, new Notification());
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void startMyOwnForeground(){
-        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+    private void startMyOwnForeground() {
+        String NOTIFICATION_CHANNEL_ID = "pl.coddev.applu";
         String channelName = "My Background Service";
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
@@ -108,5 +110,15 @@ public class DataService extends Service {
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
         startForeground(2, notification);
+    }
+
+    private void registerBroadcastReceiver() {
+        PackageModifiedReceiver packageModifiedReceiver = new PackageModifiedReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+        filter.addDataScheme("package");
+        registerReceiver(packageModifiedReceiver, filter);
     }
 }

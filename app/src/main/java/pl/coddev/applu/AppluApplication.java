@@ -5,24 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.util.Log;
 
 import pl.coddev.applu.c.Constants;
-import pl.coddev.applu.c.Utils;
 import pl.coddev.applu.i.DataService;
 
 /**
  * Created by ted on 30.12.14.
  */
-public class MyApplication extends Application {
+public class AppluApplication extends Application {
 
-    public static String TAG = "MyApplication";
+    public static String TAG = "AppluApplication";
 
-    private static MyApplication instance;
+    private static AppluApplication instance;
     private int featureCount = 0;
 
-    public static MyApplication get() {
+    public static AppluApplication get() {
         return instance;
     }
 
@@ -44,11 +42,11 @@ public class MyApplication extends Application {
         Log.i(TAG, "OnCreate invoked");
 
         Intent intent = new Intent(this, DataService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
-        } else {
-            startService(intent);
-        }
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        //    startForegroundService(intent);
+        //} else {
+        startService(intent);
+        //}
 
     } // onCreate - end
 

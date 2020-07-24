@@ -18,12 +18,12 @@ import android.text.style.StrikethroughSpan;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pl.coddev.applu.BuildConfig;
 import pl.coddev.applu.R;
 import pl.coddev.applu.b.Cache;
 import pl.coddev.applu.b.PInfoHandler;
@@ -100,7 +100,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             appSelectorStatus = AppSelectorStatus.valueOf(prefs.getString(Constants.APP_SELECTOR_STATUS,
                     AppSelectorStatus.ALL.name()));
 
-            RemoteViews views = null;
+            RemoteViews views;
             // Get the layout for the App Widget and attach an on-click listener
             views = getRemoteViews(context);
 
@@ -125,13 +125,10 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             PInfoHandler.rollIndex(widgetId);
 
             String packageName = "";
-            String showMore = "";
-
 
             if (PInfoHandler.sizeOfFiltered(widgetId) > 0) {
 
                 PInfo pinfo = PInfoHandler.getCurrentPInfo(widgetId);
-                String appName = pinfo.getAppname();
                 packageName = pinfo.getPname();
 
                 views.setOnClickPendingIntent(R.id.uninstallButton,
@@ -170,8 +167,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
 
 
     private CharSequence getSpannableForField(Context context, PInfo pInfo) {
-        SpannableString spannableShowMore = new SpannableString(""),
-                spannableAppName = new SpannableString("");
+        SpannableString spannableShowMore, spannableAppName;
         String showMore = "";
         Resources res = context.getResources();
 
@@ -210,9 +206,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, this.getClass());
         intent.setAction(actionName);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        return pendingIntent;
+        return PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     // separate method to add packageName, just to be sure that what user uninstalls is right
@@ -222,9 +216,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
         intent.setAction(actionName);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         intent.putExtra(Constants.CURRENT_APP, packageName);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        return pendingIntent;
+        return PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 
@@ -293,7 +285,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                 default:
                     PInfoHandler.setAppIndex(widgetId, 0);
             }
-            prefs.edit().putString(Constants.PREFS_FILTER_LIST, filter).commit();
+            prefs.edit().putString(Constants.PREFS_FILTER_LIST, filter).apply();
 
             ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
 
@@ -354,7 +346,6 @@ abstract public class UninstallWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        //Fabric.with(context, new Crashlytics());
         Log.d(TAG, "---onReceive received");
 
 //        this.mApp = (MyApplication) context.getApplicationContext();
@@ -384,7 +375,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             if (action.equals(WidgetActions.BUTTON_UNINSTALL)) {
 
                 currentApp = intent.getStringExtra(Constants.CURRENT_APP);
-                if (currentApp != "") {
+                if (currentApp != null && !currentApp.equals("")) {
                     Uri packageUri = Uri.parse("package:" + currentApp);
                     Intent uninstallIntent =
                             new Intent(Intent.ACTION_DELETE, packageUri);
@@ -395,7 +386,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             } else if (action.equals(WidgetActions.BUTTON_LAUNCH)) {
 
                 currentApp = intent.getStringExtra(Constants.CURRENT_APP);
-                if (currentApp != "") {
+                if (currentApp != null && !currentApp.equals("")) {
                     try {
                         Intent i = context.getPackageManager().getLaunchIntentForPackage(currentApp);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -406,12 +397,12 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                         Toast.makeText(context, R.string.cannot_run_app, Toast.LENGTH_LONG).show();
                     }
                 }
-            } else if (actionString.contains("LASTAPP")) {
+            } else if (actionString != null && actionString.contains("LASTAPP")) {
 
                 currentApp = getLastApp(actionString, widgetId);
                 try {
 
-                    if (currentApp != null && currentApp != "") {
+                    if (currentApp != null && !currentApp.equals("")) {
                         Intent i = context.getPackageManager().getLaunchIntentForPackage(currentApp);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
@@ -422,7 +413,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                     Toast.makeText(context, R.string.cannot_run_app, Toast.LENGTH_LONG).show();
                 }
 
-            } else if (actionString.contains("BUTTON")) {
+            } else if (actionString != null && actionString.contains("BUTTON")) {
                 Utils.incrementUsage();
                 if (action.equals((WidgetActions.BUTTON_SELECTOR))) {
                     buttonSelectorAction(context);

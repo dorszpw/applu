@@ -4,19 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ForegroundColorSpan;
-import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -29,12 +20,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import pl.coddev.applu.R;
-import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
-import pl.coddev.applu.c.Utils;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -61,11 +53,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private enum HELPVIEW_ACTION {SHOW, HIDE}
     private enum VIEW {MAIN, HELP, NO}
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Fabric.with(this, new Crashlytics());
 
         setContentView(R.layout.main_layout);
 
@@ -118,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         share = findViewById(R.id.share);
         share.setOnClickListener(this);
     }
+
 
     @Override
     public void onBackPressed() {

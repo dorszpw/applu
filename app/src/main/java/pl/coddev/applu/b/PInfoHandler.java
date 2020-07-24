@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import pl.coddev.applu.c.Log;
 import pl.coddev.applu.d.PInfo;
 import pl.coddev.applu.p.UninstallWidget;
 
@@ -29,11 +28,11 @@ public final class PInfoHandler {
 
 
     public static void setSelectedPInfos(int widgetId) {
-        PInfoHandler.selectedPInfos.put(widgetId, new ArrayList<PInfo>());
+        PInfoHandler.selectedPInfos.put(widgetId, new ArrayList<>());
     }
 
     public static void setFilteredPInfos(int widgetId) {
-        PInfoHandler.filteredPInfos.put(widgetId, new ArrayList<PInfo>());
+        PInfoHandler.filteredPInfos.put(widgetId, new ArrayList<>());
     }
 
     public static void setAllPInfos(ArrayList<PInfo> list) {

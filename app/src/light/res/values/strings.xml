@@ -29,15 +29,6 @@
     <string name="help_points7">Letter buttons - click on them to find your app</string>
     <string name="help_points8">Backspace buttons - remove last or all letters from the filter</string>
     <string name="help_title_extended">How to use the widgets?</string>
-     <!--<string name="help_body_extended">-->
-         <!--\n\nUsing the letter buttons (7) is easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!-->
-         <!--\nThat\'s it.-->
-         <!--\nIf one letter is not enough, add another one and another one, until the app is found.-->
-         <!--\nIf there are multiple results, just click on the app name field (1) and the next one will appear.-->
-         <!--\n\nNow, just have a look at below description with some hints:-->
-
-    <!--</string>-->
-
      <string name="help_body_extended">
          \nSpell app name that you\'re trying to find, locate appropriate letters and click on them!
          \nThat\'s it.

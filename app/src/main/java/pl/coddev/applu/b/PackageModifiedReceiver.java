@@ -14,13 +14,14 @@ import android.net.Uri;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+
 import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
 import pl.coddev.applu.d.PInfo;
 import pl.coddev.applu.p.UninstallWidget;
 
 public class PackageModifiedReceiver extends BroadcastReceiver {
-    static final String TAG = "PackageRemovedReceiver";
+    static final String TAG = "PackageModifiedReceiver";
     private PackageManager pm;
     private boolean listRefreshed = false;
 
@@ -30,7 +31,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        //Fabric.with(context, new Crashlytics());
+        android.util.Log.d(TAG, "onReceive: ");
         Uri data = intent.getData();
 
         this.pm = context.getPackageManager();
@@ -59,7 +60,8 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
 
-        if (!replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
+        if (!replacing && (action.equals(Intent.ACTION_PACKAGE_REMOVED) ||
+                action.equals(Intent.ACTION_PACKAGE_FULLY_REMOVED))) {
             Log.d(TAG, "Package removed: " + packageName);
             PInfoHandler.removeFromSelected(packageName);
             PInfoHandler.removeFromAll(packageName);

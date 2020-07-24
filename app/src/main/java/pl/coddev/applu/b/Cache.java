@@ -8,8 +8,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.util.LruCache;
+
+import androidx.annotation.NonNull;
+import androidx.collection.LruCache;
 
 import pl.coddev.applu.c.Log;
 
@@ -33,7 +34,7 @@ public final class Cache {
         // Use 1/8th of the available memory for this memory cache.
         final int cacheSize = maxMemory / 8;
 
-        mMemoryCache = new LruCache<String, Bitmap>(cacheSize);
+        mMemoryCache = new LruCache<>(cacheSize);
     }
 
     public static Cache getInstance(){

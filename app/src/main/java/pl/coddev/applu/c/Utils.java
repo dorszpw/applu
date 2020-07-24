@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import pl.coddev.applu.MyApplication;
+import pl.coddev.applu.AppluApplication;
 import pl.coddev.applu.R;
 import pl.coddev.applu.p.RateDialog;
 
@@ -86,16 +86,16 @@ public final class Utils {
     }
 
     public static int incrementUsage() {
-        if(MyApplication.get().featureCount() < Constants.FEATURE_USAGE_MAX) {
-            Context context = MyApplication.get();
+        if (AppluApplication.get().featureCount() < Constants.FEATURE_USAGE_MAX) {
+            Context context = AppluApplication.get();
 
             SharedPreferences preferences = context.getSharedPreferences(
                     Constants.PREFS_FILE, Context.MODE_PRIVATE);
-            int featureUsageCount = MyApplication.get().incrementFeatureCount();
+            int featureUsageCount = AppluApplication.get().incrementFeatureCount();
 
-                preferences.edit()
-                        .putInt(Constants.EXTRA_FEATURE_USAGE, featureUsageCount)
-                        .commit();
+            preferences.edit()
+                    .putInt(Constants.EXTRA_FEATURE_USAGE, featureUsageCount)
+                    .commit();
 
             if (featureUsageCount == Constants.FEATURE_USAGE_MAX) {
                 Intent popUpIntent = new Intent(context, RateDialog.class);
@@ -105,6 +105,6 @@ public final class Utils {
             return featureUsageCount;
         }
 
-        return MyApplication.get().featureCount();
+        return AppluApplication.get().featureCount();
     }
 }
