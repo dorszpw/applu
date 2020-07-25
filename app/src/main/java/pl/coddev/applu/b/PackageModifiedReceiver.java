@@ -102,7 +102,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                             PInfoHandler.addToAll(modifiedInfo);
                         }
 
-                        if (!PInfoHandler.selectedPInfosExists(appWidgetIds[j]) || !PInfoHandler.filteredPInfosExists(appWidgetIds[j])) {
+                        if (PInfoHandler.selectedPInfosNotExist(appWidgetIds[j]) || !PInfoHandler.filteredPInfosExists(appWidgetIds[j])) {
                             UninstallWidget.getInstalledApps(appWidgetIds[j], UninstallWidget.WidgetActions.BUTTON_SELECTOR,
                                     context, selector, this.pm);
                         }

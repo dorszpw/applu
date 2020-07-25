@@ -269,7 +269,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                 break;
         }
         if ((PInfoHandler.filteredPInfosExists(widgetId) &&
-                PInfoHandler.sizeOfFiltered(widgetId) > 0) || !PInfoHandler.selectedPInfosExists(widgetId)) {
+                PInfoHandler.sizeOfFiltered(widgetId) > 0) || PInfoHandler.selectedPInfosNotExist(widgetId)) {
             filter += filterExpansion;
         }
         Log.d(TAG, "getInstalledApps, new filter: " + filter);
@@ -289,10 +289,10 @@ abstract public class UninstallWidget extends AppWidgetProvider {
 
             ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
 
-            if (!PInfoHandler.selectedPInfosExists(widgetId) || button.equals(WidgetActions.BUTTON_SELECTOR)) {
-                if (!PInfoHandler.allPInfosExists()) {
+            if (PInfoHandler.selectedPInfosNotExist(widgetId) || button.equals(WidgetActions.BUTTON_SELECTOR)) {
+                if (PInfoHandler.PInfosNotExist()) {
                     ArrayList<PackageInfo> packs = (ArrayList) pm.getInstalledPackages(0);
-                    PInfoHandler.setSelectedPInfos(widgetId);
+                    PInfoHandler.setSelectedPInfosMap(widgetId);
 
                     for (int i = 0; i < packs.size(); i++) {
                         PackageInfo pi = packs.get(i);
@@ -309,7 +309,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                     }
                     Log.d(TAG, "Loaded new ALL list. Size: " + PInfoHandler.sizeOfAll());
                 } else {
-                    PInfoHandler.setSelectedPInfos(widgetId);
+                    PInfoHandler.setSelectedPInfosMap(widgetId);
                     for (PInfo pi : PInfoHandler.getAllPInfos()) {
                         if (!PInfoHandler.fallsIntoSelector(pi, appSelectorStatus))
                             continue;
@@ -321,7 +321,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             }
 
 
-            PInfoHandler.setFilteredPInfos(widgetId);
+            PInfoHandler.setFilteredPInfosMap(widgetId);
             //PInfoHandler.clearFiltered(widgetId);
             for (int i = 0; i < PInfoHandler.sizeOfSelected(widgetId); i++) {
                 PInfo newInfo = PInfoHandler.getPInfoFromSelected(widgetId, i);

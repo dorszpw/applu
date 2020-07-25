@@ -21,18 +21,18 @@ import pl.coddev.applu.p.UninstallWidget;
  */
 public final class PInfoHandler {
     private static final String TAG = "PInfoHandler";
-    private static Map<Integer, Integer> appIndex = new HashMap<>();
-    private static Map<Integer, ArrayList<PInfo>> filteredPInfos = new HashMap<>();
-    private static Map<Integer, ArrayList<PInfo>> selectedPInfos = new HashMap<>();
+    private static Map<Integer, Integer> appIndexMap = new HashMap<>();
+    private static Map<Integer, ArrayList<PInfo>> filteredPInfosMap = new HashMap<>();
+    private static Map<Integer, ArrayList<PInfo>> selectedPInfosMap = new HashMap<>();
     private static CopyOnWriteArrayList<PInfo> allPInfos = new CopyOnWriteArrayList<>();
 
 
-    public static void setSelectedPInfos(int widgetId) {
-        PInfoHandler.selectedPInfos.put(widgetId, new ArrayList<>());
+    public static void setSelectedPInfosMap(int widgetId) {
+        selectedPInfosMap.put(widgetId, new ArrayList<>());
     }
 
-    public static void setFilteredPInfos(int widgetId) {
-        PInfoHandler.filteredPInfos.put(widgetId, new ArrayList<>());
+    public static void setFilteredPInfosMap(int widgetId) {
+        filteredPInfosMap.put(widgetId, new ArrayList<>());
     }
 
     public static void setAllPInfos(ArrayList<PInfo> list) {
@@ -49,54 +49,80 @@ public final class PInfoHandler {
         return allPInfos;
     }
 
-    public static boolean selectedPInfosExists(int widgetId) {
-        return selectedPInfos.containsKey(widgetId);
+    public static boolean selectedPInfosNotExist(int widgetId) {
+        return !selectedPInfosMap.containsKey(widgetId);
     }
 
     public static boolean filteredPInfosExists(int widgetId) {
-        return filteredPInfos.containsKey(widgetId);
+        return filteredPInfosMap.containsKey(widgetId);
     }
 
-    public static boolean allPInfosExists() {
-        return (allPInfos == null || allPInfos.size() == 0) ? false : true;
+    public static boolean PInfosNotExist() {
+        return allPInfos == null || allPInfos.size() == 0;
     }
 
-    public static int getAppIndex(int widgetId) {
-        return appIndex.get(widgetId);
+    public static Integer getAppIndex(int widgetId) {
+        return appIndexMap.get(widgetId);
     }
 
     public static void setAppIndex(int widgetId, int appIndex) {
-        PInfoHandler.appIndex.put(widgetId, appIndex);
+        PInfoHandler.appIndexMap.put(widgetId, appIndex);
     }
 
-    public static int incrementAppIndex(int widgetId, int by) {
-        int newIndex = appIndex.get(widgetId) + by;
-        appIndex.put(widgetId, newIndex);
-        return newIndex;
+    public static void incrementAppIndex(int widgetId, int by) {
+        Integer appIndex = appIndexMap.get(widgetId);
+        if (appIndex != null) {
+            appIndexMap.put(widgetId, appIndex + by);
+        }
     }
 
     public static void rollIndex(int widgetId) {
-        if (appIndex.get(widgetId) >= filteredPInfos.get(widgetId).size()) {
-            appIndex.put(widgetId, 0);
+        Integer appIndex = appIndexMap.get(widgetId);
+        ArrayList<PInfo> filteredPInfos = filteredPInfosMap.get(widgetId);
+        if (appIndex != null) {
+            if (filteredPInfos == null || appIndex >= filteredPInfos.size()) {
+                appIndexMap.put(widgetId, 0);
+            }
+            if (appIndex < 0 && filteredPInfos != null)
+                appIndexMap.put(widgetId, filteredPInfos.size() - 1);
         }
-        if (appIndex.get(widgetId) < 0)
-            appIndex.put(widgetId, filteredPInfos.get(widgetId).size() - 1);
     }
 
     public static PInfo getCurrentPInfo(int widgetId) {
-        return filteredPInfos.get(widgetId).get(appIndex.get(widgetId));
+        Integer appIndex = appIndexMap.get(widgetId);
+        ArrayList<PInfo> filteredPInfos = filteredPInfosMap.get(widgetId);
+        if (appIndex != null && filteredPInfos != null) {
+            return filteredPInfos.get(appIndex);
+        } else {
+            return null;
+        }
     }
 
     public static PInfo getPInfoFromSelected(int widgetId, int index) {
-        return selectedPInfos.get(widgetId).get(index);
+        ArrayList<PInfo> selectedPInfos = selectedPInfosMap.get(widgetId);
+        if (selectedPInfos != null) {
+            return selectedPInfos.get(index);
+        } else {
+            return null;
+        }
     }
 
     public static int sizeOfFiltered(int widgetId) {
-        return filteredPInfos.get(widgetId).size();
+        ArrayList<PInfo> filteredPInfos = filteredPInfosMap.get(widgetId);
+        if (filteredPInfos != null) {
+            return filteredPInfos.size();
+        } else {
+            return 0;
+        }
     }
 
     public static int sizeOfSelected(int widgetId) {
-        return selectedPInfos.get(widgetId).size();
+        ArrayList<PInfo> selectedPInfos = selectedPInfosMap.get(widgetId);
+        if (selectedPInfos != null) {
+            return selectedPInfos.size();
+        } else {
+            return 0;
+        }
     }
 
     public static int sizeOfAll() {
@@ -106,23 +132,25 @@ public final class PInfoHandler {
 
     public static void addToFiltered(int widgetId, PInfo pInfo) {
         if (!filteredPInfosExists(widgetId)) {
-            setFilteredPInfos(widgetId);
+            setFilteredPInfosMap(widgetId);
         }
-        if (!filteredPInfos.get(widgetId).contains(pInfo))
-            filteredPInfos.get(widgetId).add(pInfo);
+        ArrayList<PInfo> filteredPInfos = filteredPInfosMap.get(widgetId);
+        if (filteredPInfos != null && !filteredPInfos.contains(pInfo))
+            filteredPInfos.add(pInfo);
     }
 
     public static void addToSelected(int widgetId, PInfo pInfo) {
-        if (!selectedPInfosExists(widgetId)) {
-            setSelectedPInfos(widgetId);
+        if (selectedPInfosNotExist(widgetId)) {
+            setSelectedPInfosMap(widgetId);
         }
-        if (!selectedPInfos.get(widgetId).contains(pInfo)) {
-            selectedPInfos.get(widgetId).add(pInfo);
+        ArrayList<PInfo> selectedPInfos = selectedPInfosMap.get(widgetId);
+        if (selectedPInfos != null && !selectedPInfos.contains(pInfo)) {
+            selectedPInfos.add(pInfo);
         }
     }
 
     public static void addToAll(PInfo pInfo) {
-        if (!allPInfosExists()) {
+        if (PInfosNotExist()) {
             setAllPInfos(null);
         }
         if (!allPInfos.contains(pInfo)) {
@@ -132,7 +160,7 @@ public final class PInfoHandler {
 
 
     public static void removeFromSelected(String packageName) {
-        for (Map.Entry<Integer, ArrayList<PInfo>> entry : selectedPInfos.entrySet())
+        for (Map.Entry<Integer, ArrayList<PInfo>> entry : selectedPInfosMap.entrySet())
             if (entry.getValue() != null) {
 
                 Iterator<PInfo> iter = entry.getValue().iterator();
@@ -151,7 +179,10 @@ public final class PInfoHandler {
     }
 
     public static void sortFilteredByMatch(int widgetId) {
-        Collections.sort(PInfoHandler.filteredPInfos.get(widgetId), new PInfoComparator());
+        ArrayList<PInfo> filteredPInfos = filteredPInfosMap.get(widgetId);
+        if (filteredPInfos != null) {
+            Collections.sort(filteredPInfos, new PInfoComparator());
+        }
     }
 
     public static boolean isSystemPackage(PackageInfo pi) {
@@ -186,14 +217,6 @@ public final class PInfoHandler {
                 return pi.isSystemPackage();
             default:
                 return false;
-        }
-    }
-
-
-    public class StringComparator implements Comparator<String> {
-        @Override
-        public int compare(String o1, String o2) {
-            return o1.compareTo(o2);
         }
     }
 
