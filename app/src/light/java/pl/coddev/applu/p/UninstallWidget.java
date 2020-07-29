@@ -29,9 +29,10 @@ import pl.coddev.applu.b.Cache;
 import pl.coddev.applu.b.PInfoHandler;
 import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
+import pl.coddev.applu.c.Prefs;
 import pl.coddev.applu.c.Utils;
 import pl.coddev.applu.d.PInfo;
-
+import pl.coddev.applu.enums.AppSelectorStatus;
 
 /**
  * Created by pw on 16/03/15.
@@ -49,17 +50,6 @@ abstract public class UninstallWidget extends AppWidgetProvider {
         BUTTON_LASTAPP6, BUTTON_LASTAPP7, BUTTON_LASTAPP8, NO_ACTION;
 
         public WidgetActions next() {
-            int ordinal = this.ordinal() + 1 >= values().length
-                    ? 0
-                    : this.ordinal() + 1;
-            return values()[ordinal];
-        }
-    }
-
-    public enum AppSelectorStatus {
-        ALL, SYSTEM, USER;
-
-        public AppSelectorStatus next() {
             int ordinal = this.ordinal() + 1 >= values().length
                     ? 0
                     : this.ordinal() + 1;
@@ -96,9 +86,8 @@ abstract public class UninstallWidget extends AppWidgetProvider {
 
             widgetId = appWidgetIds[i];
             int[] ids = {widgetId};
-            prefs = context.getSharedPreferences(Constants.PREF_FILE + widgetId, Context.MODE_PRIVATE);
-            appSelectorStatus = AppSelectorStatus.valueOf(prefs.getString(Constants.APP_SELECTOR_STATUS,
-                    AppSelectorStatus.ALL.name()));
+
+            appSelectorStatus = Prefs.get().getAppSelectorStatus(widgetId);
 
             RemoteViews views;
             // Get the layout for the App Widget and attach an on-click listener

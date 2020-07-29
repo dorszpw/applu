@@ -1,17 +1,17 @@
 package pl.coddev.applu;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.util.Log;
 
-import pl.coddev.applu.c.Constants;
+import pl.coddev.applu.b.PackageModifiedReceiver;
+import pl.coddev.applu.c.Prefs;
 import pl.coddev.applu.i.DataService;
 
 /**
- * Created by ted on 30.12.14.
+ * Created by piotr woszczek on 30.12.14.
  */
 public class AppluApplication extends Application {
 
@@ -33,13 +33,9 @@ public class AppluApplication extends Application {
     // =============================================================================================
     public void onCreate() {
         super.onCreate();
-        instance = this;
-        SharedPreferences preferences = getSharedPreferences(
-                Constants.PREFS_FILE, Context.MODE_PRIVATE);
-        featureCount = preferences.getInt(Constants.EXTRA_FEATURE_USAGE, 0);
-
-        //Fabric.with(this, new Crashlytics());
         Log.i(TAG, "OnCreate invoked");
+        instance = this;
+        featureCount = Prefs.get().getFeatureCount();
 
         Intent intent = new Intent(this, DataService.class);
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -48,14 +44,25 @@ public class AppluApplication extends Application {
         startService(intent);
         //}
 
+        //registerBroadcastReceiver();
+
     } // onCreate - end
 
-    public int featureCount(){
+    public int featureCount() {
         return instance.featureCount;
     }
 
-    public int incrementFeatureCount(){
+    public int incrementFeatureCount() {
         return ++instance.featureCount;
     }
 
+    private void registerBroadcastReceiver() {
+        PackageModifiedReceiver packageModifiedReceiver = new PackageModifiedReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+        filter.addDataScheme("package");
+        registerReceiver(packageModifiedReceiver, filter);
+    }
 }

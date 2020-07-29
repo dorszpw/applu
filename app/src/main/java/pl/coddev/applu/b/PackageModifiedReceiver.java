@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -15,9 +14,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
+import pl.coddev.applu.c.Prefs;
 import pl.coddev.applu.d.PInfo;
+import pl.coddev.applu.enums.AppSelectorStatus;
 import pl.coddev.applu.p.UninstallWidget;
 
 public class PackageModifiedReceiver extends BroadcastReceiver {
@@ -42,10 +42,6 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
 
         boolean replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false);
 
-        // refreshing application lists
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         List<AppWidgetProviderInfo> awpi = appWidgetManager.getInstalledProviders();
 
@@ -57,15 +53,15 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
             modifiedInfo.setAppname(pi.applicationInfo.loadLabel(this.pm).toString());
             modifiedInfo.setPname(pi.packageName);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
-        if (!replacing && (action.equals(Intent.ACTION_PACKAGE_REMOVED) ||
-                action.equals(Intent.ACTION_PACKAGE_FULLY_REMOVED))) {
+        if (!replacing && (Intent.ACTION_PACKAGE_REMOVED.equals(action) ||
+                Intent.ACTION_PACKAGE_FULLY_REMOVED.equals(action))) {
             Log.d(TAG, "Package removed: " + packageName);
             PInfoHandler.removeFromSelected(packageName);
             PInfoHandler.removeFromAll(packageName);
-        } else if (replacing && action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
+        } else if (replacing && Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
             Log.d(TAG, "Package replaced: " + packageName);
         } else {
             Log.d(TAG, "Package added: " + packageName);
@@ -76,7 +72,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
             String widgetPackage = awpi.get(i).provider.getPackageName();
             if (widgetPackage.equals(context.getPackageName())) {
 
-                int[] appWidgetIds = new int[0];
+                int[] appWidgetIds;
 
                 try {
 
@@ -84,26 +80,24 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                             Class.forName(awpi.get(i).provider.getClassName())));
                     Log.d(TAG, "appWIdgetIds length: " + appWidgetIds.length);
 
-                    for (int j = 0; j < appWidgetIds.length; j++) {
+                    for (int appWidgetId : appWidgetIds) {
 
-                        SharedPreferences prefs = context.getSharedPreferences(
-                                Constants.PREF_FILE + appWidgetIds[j], Context.MODE_PRIVATE);
-                        UninstallWidget.AppSelectorStatus selector = UninstallWidget.AppSelectorStatus.valueOf(
-                                prefs.getString(Constants.APP_SELECTOR_STATUS,
-                                        UninstallWidget.AppSelectorStatus.USER.name()));
+                        AppSelectorStatus selector = Prefs.get().getAppSelectorStatus(appWidgetId);
+
                         Log.d(TAG, "onReceive PMR, class: " + Class.forName(awpi.get(i).provider.getClassName()) +
-                                " selector: " + selector );
+                                " selector: " + selector);
 
                         // add to ALL lists, if falls into selector
-                        if (action.equals(Intent.ACTION_PACKAGE_ADDED)) {
+                        if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
+                            assert pi != null;
                             if (PInfoHandler.fallsIntoSelector(pi, selector, context)) {
-                                PInfoHandler.addToSelected(appWidgetIds[j], modifiedInfo);
+                                PInfoHandler.addToSelected(appWidgetId, modifiedInfo);
                             }
                             PInfoHandler.addToAll(modifiedInfo);
                         }
 
-                        if (PInfoHandler.selectedPInfosNotExist(appWidgetIds[j]) || !PInfoHandler.filteredPInfosExists(appWidgetIds[j])) {
-                            UninstallWidget.getInstalledApps(appWidgetIds[j], UninstallWidget.WidgetActions.BUTTON_SELECTOR,
+                        if (PInfoHandler.selectedPInfosNotExist(appWidgetId) || !PInfoHandler.filteredPInfosExists(appWidgetId)) {
+                            UninstallWidget.getInstalledApps(appWidgetId, UninstallWidget.WidgetActions.BUTTON_SELECTOR,
                                     context, selector, this.pm);
                         }
                     }
@@ -119,16 +113,9 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                     Object widget = widgetClass.newInstance();
                     setAction.invoke(widget, UninstallWidget.WidgetActions.ADDED_NEW_APP);
                     onUpdate.invoke(widget, context, appWidgetManager, appWidgetIds);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
+                } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
+                        IllegalAccessException | InstantiationException e) {
+                    Log.e(TAG, e.getMessage());
                 }
             }
 

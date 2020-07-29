@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import pl.coddev.applu.d.PInfo;
-import pl.coddev.applu.p.UninstallWidget;
+import pl.coddev.applu.enums.AppSelectorStatus;
 
 /**
  * Created by Piotr Woszczek on 19/06/15.
@@ -189,7 +189,7 @@ public final class PInfoHandler {
         return (pi.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
     }
 
-    public static boolean fallsIntoSelector(PackageInfo pi, UninstallWidget.AppSelectorStatus selector, Context context) {
+    public static boolean fallsIntoSelector(PackageInfo pi, AppSelectorStatus selector, Context context) {
 
         if (context.getPackageManager().getLaunchIntentForPackage(pi.packageName) == null) {
             return false;
@@ -206,7 +206,7 @@ public final class PInfoHandler {
         }
     }
 
-    public static boolean fallsIntoSelector(PInfo pi, UninstallWidget.AppSelectorStatus selector) {
+    public static boolean fallsIntoSelector(PInfo pi, AppSelectorStatus selector) {
 
         switch (selector) {
             case ALL:

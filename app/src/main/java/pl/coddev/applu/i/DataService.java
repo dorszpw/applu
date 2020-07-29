@@ -26,7 +26,7 @@ import pl.coddev.applu.R;
 import pl.coddev.applu.b.PInfoHandler;
 import pl.coddev.applu.b.PackageModifiedReceiver;
 import pl.coddev.applu.d.PInfo;
-import pl.coddev.applu.p.UninstallWidget;
+import pl.coddev.applu.enums.AppSelectorStatus;
 
 
 public class DataService extends Service {
@@ -67,7 +67,7 @@ public class DataService extends Service {
             for (int i = 0; i < packs.size(); i++) {
                 PackageInfo pi = packs.get(i);
 
-                if (!PInfoHandler.fallsIntoSelector(pi, UninstallWidget.AppSelectorStatus.ALL, context))
+                if (!PInfoHandler.fallsIntoSelector(pi, AppSelectorStatus.ALL, context))
                     continue;
 
                 PInfo newInfo = new PInfo();
