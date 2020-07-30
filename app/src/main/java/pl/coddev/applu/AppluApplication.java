@@ -8,7 +8,6 @@ import android.util.Log;
 
 import pl.coddev.applu.broadcastreceiver.PackageModifiedReceiver;
 import pl.coddev.applu.service.DataService;
-import pl.coddev.applu.utils.Prefs;
 
 /**
  * Created by piotr woszczek on 30.12.14.
@@ -35,7 +34,6 @@ public class AppluApplication extends Application {
         super.onCreate();
         Log.i(TAG, "OnCreate invoked");
         instance = this;
-        featureCount = Prefs.get().getFeatureCount();
 
         Intent intent = new Intent(this, DataService.class);
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -47,14 +45,6 @@ public class AppluApplication extends Application {
         //registerBroadcastReceiver();
 
     } // onCreate - end
-
-    public int featureCount() {
-        return instance.featureCount;
-    }
-
-    public int incrementFeatureCount() {
-        return ++instance.featureCount;
-    }
 
     private void registerBroadcastReceiver() {
         PackageModifiedReceiver packageModifiedReceiver = new PackageModifiedReceiver();

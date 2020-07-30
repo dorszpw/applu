@@ -83,7 +83,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
 
                     for (int appWidgetId : appWidgetIds) {
 
-                        AppSelectorStatus selector = Prefs.get().getAppSelectorStatus(appWidgetId);
+                        AppSelectorStatus selector = Prefs.getAppSelectorStatus(appWidgetId);
 
                         Log.d(TAG, "onReceive PMR, class: " + Class.forName(awpi.get(i).provider.getClassName()) +
                                 " selector: " + selector);

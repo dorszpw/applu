@@ -28,7 +28,7 @@ abstract public class UninstallWidgetM extends UninstallWidget {
         String lastApp = "";
         int buttonNumber = Integer.parseInt(action.substring(action.length() - 1));
         // get from "display" list
-        String[] lastApps = Prefs.get().getLastApps(widgetId).split("\\|");
+        String[] lastApps = Prefs.getLastApps(widgetId).split("\\|");
         if (lastApps.length >= buttonNumber) {
             lastApp = lastApps[buttonNumber - 1];
         }
@@ -40,7 +40,7 @@ abstract public class UninstallWidgetM extends UninstallWidget {
     void setupLastAppsButtons(int widgetId, RemoteViews views, Context context, int[] ids) {
 
 
-        String lastAppsString = Prefs.get().getLastAppsSync(widgetId);
+        String lastAppsString = Prefs.getLastAppsSync(widgetId);
         String[] lastApps = lastAppsString.split("\\|");
         views.setOnClickPendingIntent(R.id.lastApp1, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP1.name(), ids));
         views.setOnClickPendingIntent(R.id.lastApp2, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP2.name(), ids));
@@ -66,13 +66,13 @@ abstract public class UninstallWidgetM extends UninstallWidget {
             views.setViewVisibility(R.id.lastAppsLabel, View.GONE);
 
         // this is a "display" list that tracks the displayed last apps
-        Prefs.get().setLastApps(lastAppsString, widgetId);
+        Prefs.setLastApps(lastAppsString, widgetId);
     }
 
     @Override
     void handleLastApps(String newPackage, int widgetId) {
         // this is a sync list, to track last launched apps
-        String[] lastApps = Prefs.get().getLastAppsSync(widgetId).split("\\|");
+        String[] lastApps = Prefs.getLastAppsSync(widgetId).split("\\|");
 
         LinkedList<String> lastAppsList = new LinkedList<>(Arrays.asList(lastApps));
 
@@ -87,7 +87,7 @@ abstract public class UninstallWidgetM extends UninstallWidget {
             lastAppsString.append(app).append("|");
         }
         Log.d(TAG, "handleLastApps " + lastAppsString);
-        Prefs.get().setLastAppsSync(lastAppsString.toString(), widgetId);
+        Prefs.setLastAppsSync(lastAppsString.toString(), widgetId);
     }
 
     @Override

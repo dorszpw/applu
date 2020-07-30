@@ -2,7 +2,6 @@ package pl.coddev.applu.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -70,41 +69,17 @@ public final class Utils {
         return bitmapStroked;
     }
 
-    public static boolean ranBefore(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(
-                Constants.PREFS_FILE, Context.MODE_PRIVATE);
-        boolean ranBefore = preferences.getBoolean(Constants.EXTRA_RAN_BEFORE, false);
-        if (!ranBefore) {
-            preferences.edit()
-                    .putBoolean(Constants.EXTRA_RAN_BEFORE, true)
-                    .commit();
-            preferences.edit()
-                    .putString(Calendar.getInstance().getTime().toString(), "")
-                    .commit();
-        }
-        return ranBefore;
-    }
-
-    public static int incrementUsage() {
-        if (AppluApplication.get().featureCount() < Constants.FEATURE_USAGE_MAX) {
+    public static void displayRateQuestionIfNeeded() {
+        if (Prefs.getFeatureCount() < Constants.FEATURE_USAGE_MAX) {
             Context context = AppluApplication.get();
 
-            SharedPreferences preferences = context.getSharedPreferences(
-                    Constants.PREFS_FILE, Context.MODE_PRIVATE);
-            int featureUsageCount = AppluApplication.get().incrementFeatureCount();
-
-            preferences.edit()
-                    .putInt(Constants.EXTRA_FEATURE_USAGE, featureUsageCount)
-                    .commit();
+            int featureUsageCount = Prefs.incrementFeatureCount();
 
             if (featureUsageCount == Constants.FEATURE_USAGE_MAX) {
                 Intent popUpIntent = new Intent(context, RateDialog.class);
                 popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(popUpIntent);
             }
-            return featureUsageCount;
         }
-
-        return AppluApplication.get().featureCount();
     }
 }

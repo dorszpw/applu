@@ -84,7 +84,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             widgetId = appWidgetIds[i];
             int[] ids = {widgetId};
 
-            appSelectorStatus = Prefs.get().getAppSelectorStatus(widgetId);
+            appSelectorStatus = Prefs.getAppSelectorStatus(widgetId);
 
             RemoteViews views;
             // Get the layout for the App Widget and attach an on-click listener
@@ -106,7 +106,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
             switchSelectorStatus(views);
 
 
-            PInfoHandler.setAppIndex(widgetId, Prefs.get().getAppIndex(widgetId));
+            PInfoHandler.setAppIndex(widgetId, Prefs.getAppIndex(widgetId));
             getInstalledApps(widgetId, action, context, appSelectorStatus, this.pm);
             PInfoHandler.rollIndex(widgetId);
 
@@ -140,8 +140,8 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                                 WidgetActions.NO_ACTION.name(), ids));
             }
 
-            Prefs.get().setAppIndex(PInfoHandler.getAppIndex(widgetId), widgetId);
-            Prefs.get().setCurrentApp(packageName, widgetId);
+            Prefs.setAppIndex(PInfoHandler.getAppIndex(widgetId), widgetId);
+            Prefs.setCurrentApp(packageName, widgetId);
             Log.d(TAG, "onUpdate prefs, class:  " + this.getClass().getName() +
                     ", saved: " + PInfoHandler.getAppIndex(widgetId) + "/" + packageName);
             views.setViewVisibility(R.id.progressBar, View.GONE);
@@ -212,7 +212,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
         Pattern ptn;
         Matcher matcher;
 
-        String filter = Prefs.get().getFilterList(widgetId);
+        String filter = Prefs.getFilterList(widgetId);
 
         Log.d(TAG, "getInstalledApps, last filter: " + filter);
         String commonChars = "[^a-zA-Z]*";
@@ -268,7 +268,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                 default:
                     PInfoHandler.setAppIndex(widgetId, 0);
             }
-            Prefs.get().setFilterList(filter, widgetId);
+            Prefs.setFilterList(filter, widgetId);
 
             ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
 
@@ -391,7 +391,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                 }
 
             } else if (actionString != null && actionString.contains("BUTTON")) {
-                Utils.incrementUsage();
+                Utils.displayRateQuestionIfNeeded();
                 if (action.equals((WidgetActions.BUTTON_SELECTOR))) {
                     buttonSelectorAction(context);
                 }
@@ -419,7 +419,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
 //            popUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //            context.startActivity(popUpIntent);
         appSelectorStatus = appSelectorStatus.next();
-        Prefs.get().setAppSelectorStatus(appSelectorStatus, widgetId);
+        Prefs.setAppSelectorStatus(appSelectorStatus, widgetId);
         Log.d(TAG, "Widget/selector: " + widgetId + "/" + appSelectorStatus.name());
     }
 
