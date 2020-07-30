@@ -2,9 +2,7 @@ package pl.coddev.applu.p;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 
 import java.util.List;
 
@@ -26,7 +23,6 @@ public class ConfigureActivity extends Activity implements AdapterView.OnItemSel
     Context context;
     private Spinner countrySpinner;
     String selectedCountry = "";
-    SharedPreferences prefs;
     Integer clickCount;
     List<String> countryCodes;
     EditText codeEdit;

@@ -10,8 +10,8 @@ import java.util.LinkedList;
 
 import pl.coddev.applu.R;
 import pl.coddev.applu.b.Cache;
-import pl.coddev.applu.c.Constants;
 import pl.coddev.applu.c.Log;
+import pl.coddev.applu.c.Prefs;
 
 /**
  * Created by Piotr Woszczek on 23/07/15.
@@ -29,8 +29,8 @@ abstract public class UninstallWidgetM extends UninstallWidget {
         String lastApp = "";
         int buttonNumber = Integer.parseInt(action.substring(action.length() - 1));
         // get from "display" list
-        String[] lastApps = prefs.getString(Constants.LAST_APPS, "").split("\\|");
-        if (lastApps != null && lastApps.length >= buttonNumber) {
+        String[] lastApps = Prefs.get().getLastApps(widgetId).split("\\|");
+        if (lastApps.length >= buttonNumber) {
             lastApp = lastApps[buttonNumber - 1];
         }
 
@@ -38,10 +38,10 @@ abstract public class UninstallWidgetM extends UninstallWidget {
     }
 
     @Override
-    void setupLastAppsButtons(RemoteViews views, Context context, int[] ids) {
+    void setupLastAppsButtons(int widgetId, RemoteViews views, Context context, int[] ids) {
 
 
-        String lastAppsString = prefs.getString(Constants.LAST_APPS_SYNC, "");
+        String lastAppsString = Prefs.get().getLastAppsSync(widgetId);
         String[] lastApps = lastAppsString.split("\\|");
         views.setOnClickPendingIntent(R.id.lastApp1, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP1.name(), ids));
         views.setOnClickPendingIntent(R.id.lastApp2, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP2.name(), ids));
@@ -52,51 +52,44 @@ abstract public class UninstallWidgetM extends UninstallWidget {
         views.setOnClickPendingIntent(R.id.lastApp7, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP7.name(), ids));
         views.setOnClickPendingIntent(R.id.lastApp8, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP8.name(), ids));
         boolean hideLabel = false;
-        if (lastApps != null) {
-            WidgetActions actions = WidgetActions.ADDED_NEW_APP;
-            for (int i = 0; i < lastApps.length; i++) {
-                if (lastApps[i] != "") {
-                    int id = context.getResources().getIdentifier("lastApp" + (i + 1), "id", context.getPackageName());
-                    
 
-                    hideLabel = true;
-                    Bitmap iconBitmap = Cache.getInstance().getBitmapFromMemCache(lastApps[i], this.pm);
-                    views.setImageViewBitmap(id, iconBitmap);
-                }
+        for (int i = 0; i < lastApps.length; i++) {
+            if (!lastApps[i].equals("")) {
+                int id = context.getResources().getIdentifier("lastApp" + (i + 1), "id", context.getPackageName());
+
+
+                hideLabel = true;
+                Bitmap iconBitmap = Cache.getInstance().getBitmapFromMemCache(lastApps[i], this.pm);
+                views.setImageViewBitmap(id, iconBitmap);
             }
         }
         if (hideLabel)
             views.setViewVisibility(R.id.lastAppsLabel, View.GONE);
 
         // this is a "display" list that tracks the displayed last apps
-        prefs.edit().putString(Constants.LAST_APPS, lastAppsString).commit();
+        Prefs.get().setLastApps(lastAppsString, widgetId);
     }
 
     @Override
     void handleLastApps(String newPackage, int widgetId) {
-        LinkedList<String> lastAppsList = new LinkedList<>();
         // this is a sync list, to track last launched apps
-        String[] lastApps = prefs.getString(Constants.LAST_APPS_SYNC, "").split("\\|");
+        String[] lastApps = Prefs.get().getLastAppsSync(widgetId).split("\\|");
 
-        lastAppsList.addAll(Arrays.asList(lastApps));
+        LinkedList<String> lastAppsList = new LinkedList<>(Arrays.asList(lastApps));
 
         if (lastAppsList.size() > 6)
             lastAppsList.removeLast();
-        if (lastAppsList.contains(newPackage))
-            lastAppsList.remove(newPackage);
+        lastAppsList.remove(newPackage);
         lastAppsList.addFirst(newPackage);
 
-        String lastAppsString = "";
+        StringBuilder lastAppsString = new StringBuilder();
         for (String app : lastAppsList
                 ) {
-            lastAppsString += (app + "|");
+            lastAppsString.append(app).append("|");
         }
         Log.d(TAG, "handleLastApps " + lastAppsString);
-        prefs.edit().putString(Constants.LAST_APPS_SYNC, lastAppsString).commit();
+        Prefs.get().setLastAppsSync(lastAppsString.toString(), widgetId);
     }
-
-//    @Override
-//    void setupRemoveAllButton(RemoteViews views, Context context, int[] ids){};
 
     @Override
     void setupRemoveAllButton(RemoteViews views, Context context, int[] ids) {
