@@ -36,9 +36,9 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
         Uri data = intent.getData();
 
         this.pm = context.getPackageManager();
-        String packageName = data.getEncodedSchemeSpecificPart();
-        if (packageName == null)
-            packageName = "no package";
+        String modifiedPackageName = data.getEncodedSchemeSpecificPart();
+        if (modifiedPackageName == null)
+            modifiedPackageName = "no package";
         String action = intent.getAction();
 
         boolean replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false);
@@ -49,7 +49,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
         PackageInfo pi = null;
         PInfo modifiedInfo = null;
         try {
-            pi = pm.getPackageInfo(packageName, 0);
+            pi = pm.getPackageInfo(modifiedPackageName, 0);
             modifiedInfo = new PInfo();
             modifiedInfo.setAppname(pi.applicationInfo.loadLabel(this.pm).toString());
             modifiedInfo.setPname(pi.packageName);
@@ -57,15 +57,16 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
             Log.e(TAG, e.getMessage());
         }
 
-        if (!replacing && (Intent.ACTION_PACKAGE_REMOVED.equals(action) ||
-                Intent.ACTION_PACKAGE_FULLY_REMOVED.equals(action))) {
-            Log.d(TAG, "Package removed: " + packageName);
-            PInfoHandler.removeFromSelected(packageName);
-            PInfoHandler.removeFromAll(packageName);
+        boolean packageRemoved = Intent.ACTION_PACKAGE_REMOVED.equals(action) ||
+                Intent.ACTION_PACKAGE_FULLY_REMOVED.equals(action);
+        if (!replacing && packageRemoved) {
+            Log.d(TAG, "Package removed: " + modifiedPackageName);
+            PInfoHandler.removeFromSelected(modifiedPackageName);
+            PInfoHandler.removeFromAll(modifiedPackageName);
         } else if (replacing && Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
-            Log.d(TAG, "Package replaced: " + packageName);
+            Log.d(TAG, "Package replaced: " + modifiedPackageName);
         } else {
-            Log.d(TAG, "Package added: " + packageName);
+            Log.d(TAG, "Package added: " + modifiedPackageName);
         }
 
         for (int i = 0; i < awpi.size(); i++) {
@@ -73,17 +74,17 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
             String widgetPackage = awpi.get(i).provider.getPackageName();
             if (widgetPackage.equals(context.getPackageName())) {
 
-                int[] appWidgetIds;
+                int[] widgetIds;
 
                 try {
 
-                    appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context,
+                    widgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context,
                             Class.forName(awpi.get(i).provider.getClassName())));
-                    Log.d(TAG, "appWIdgetIds length: " + appWidgetIds.length);
+                    Log.d(TAG, "appWIdgetIds length: " + widgetIds.length);
 
-                    for (int appWidgetId : appWidgetIds) {
+                    for (int widgetId : widgetIds) {
 
-                        AppSelectorStatus selector = Prefs.getAppSelectorStatus(appWidgetId);
+                        AppSelectorStatus selector = Prefs.getAppSelectorStatus(widgetId);
 
                         Log.d(TAG, "onReceive PMR, class: " + Class.forName(awpi.get(i).provider.getClassName()) +
                                 " selector: " + selector);
@@ -92,13 +93,15 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                         if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
                             assert pi != null;
                             if (PInfoHandler.fallsIntoSelector(pi, selector, context)) {
-                                PInfoHandler.addToSelected(appWidgetId, modifiedInfo);
+                                PInfoHandler.addToSelected(widgetId, modifiedInfo);
                             }
                             PInfoHandler.addToAll(modifiedInfo);
+                        } else if (packageRemoved) {
+                            Prefs.removeFromLastApps(modifiedPackageName, widgetId);
                         }
 
-                        if (PInfoHandler.selectedPInfosNotExist(appWidgetId) || !PInfoHandler.filteredPInfosExists(appWidgetId)) {
-                            UninstallWidget.getInstalledApps(appWidgetId, UninstallWidget.WidgetActions.BUTTON_SELECTOR,
+                        if (PInfoHandler.selectedPInfosNotExist(widgetId) || !PInfoHandler.filteredPInfosExists(widgetId)) {
+                            UninstallWidget.getInstalledApps(widgetId, UninstallWidget.WidgetActions.BUTTON_SELECTOR,
                                     context, selector, this.pm);
                         }
                     }
@@ -113,7 +116,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                     Method setAction = widgetClass.getMethod("setAction", new Class[]{UninstallWidget.WidgetActions.class});
                     Object widget = widgetClass.newInstance();
                     setAction.invoke(widget, UninstallWidget.WidgetActions.ADDED_NEW_APP);
-                    onUpdate.invoke(widget, context, appWidgetManager, appWidgetIds);
+                    onUpdate.invoke(widget, context, appWidgetManager, widgetIds);
                 } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
                         IllegalAccessException | InstantiationException e) {
                     Log.e(TAG, e.getMessage());

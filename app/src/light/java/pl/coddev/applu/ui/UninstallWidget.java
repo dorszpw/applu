@@ -61,10 +61,7 @@ abstract public class UninstallWidget extends AppWidgetProvider {
         this.action = action;
     }
 
-
     abstract void setupLastAppsButtons(int widgetId, RemoteViews views, Context context, int[] ids);
-
-    abstract void handleLastApps(String newPackage, int widgetId);
 
     abstract void setupRemoveAllButton(RemoteViews views, Context context, int[] ids);
 
@@ -365,7 +362,8 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                         if (i != null) {
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(i);
-                            handleLastApps(currentApp, widgetId);
+                            Prefs.addToLastApps(currentApp, widgetId);
+                            onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
                         }
                     } catch (Exception e) {
                         Log.d(TAG, e.getMessage());
@@ -382,7 +380,8 @@ abstract public class UninstallWidget extends AppWidgetProvider {
                         if (i != null) {
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(i);
-                            handleLastApps(currentApp, widgetId);
+                            Prefs.addToLastApps(currentApp, widgetId);
+                            onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
                         }
                     }
                 } catch (Exception e) {

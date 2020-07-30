@@ -16,7 +16,7 @@ abstract public class UninstallWidgetS extends UninstallWidget {
 
     ;
 
-    void handleLastApps(String newPackage, int widgetId) {
+    void addToLastApps(String newPackage, int widgetId) {
     }
 
     ;

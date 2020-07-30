@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import pl.coddev.applu.AppluApplication
 import pl.coddev.applu.enums.AppSelectorStatus
+import java.util.*
 
 object Prefs {
 
+    const val LAST_APPS_MAX_SIZE = 6
     const val LAUNCHED_BEFORE = "launchedBefore"
     private var prefs: SharedPreferences = AppluApplication.get()
             .getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE)
@@ -16,7 +18,6 @@ object Prefs {
     private var currentApp: String? = null
     private var filterList: String? = null
     private var lastApps: String? = null
-    private var lastAppsSync: String? = null
     private var featureCount = 0
 
     @JvmStatic
@@ -94,14 +95,34 @@ object Prefs {
     }
 
     @JvmStatic
-    fun getLastAppsSync(widgetId: Int): String? {
-        return prefs.getString(Constants.LAST_APPS_SYNC + widgetId, "")
+    fun getLastAppsList(widgetId: Int): LinkedList<String> {
+        val lastApps = getLastApps(widgetId)!!.split("\\|".toRegex())
+        return LinkedList(lastApps)
     }
 
     @JvmStatic
-    fun setLastAppsSync(lastAppsSync: String?, widgetId: Int) {
-        if (this.lastAppsSync == lastAppsSync) return
-        putString(Constants.LAST_APPS_SYNC + widgetId, lastAppsSync)
+    fun setLastAppsList(lastAppsList: LinkedList<String>, widgetId: Int) {
+        val lastAppsString = StringBuilder()
+        for (app in lastAppsList) {
+            lastAppsString.append(app).append("|")
+        }
+        setLastApps(lastAppsString.toString(), widgetId)
+    }
+
+    @JvmStatic
+    fun addToLastApps(newPackage: String, widgetId: Int) {
+        val lastAppsList = getLastAppsList(widgetId)
+        if (lastAppsList.size > LAST_APPS_MAX_SIZE) lastAppsList.removeLast()
+        lastAppsList.remove(newPackage)
+        lastAppsList.addFirst(newPackage)
+        setLastAppsList(lastAppsList, widgetId)
+    }
+
+    @JvmStatic
+    fun removeFromLastApps(newPackage: String?, widgetId: Int) {
+        val lastAppsList = getLastAppsList(widgetId)
+        lastAppsList.remove(newPackage)
+        setLastAppsList(lastAppsList, widgetId)
     }
 
     fun putString(key: String?, value: String?) {
