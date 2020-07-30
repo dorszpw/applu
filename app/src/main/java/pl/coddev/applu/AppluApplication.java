@@ -6,9 +6,9 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.util.Log;
 
-import pl.coddev.applu.b.PackageModifiedReceiver;
-import pl.coddev.applu.c.Prefs;
-import pl.coddev.applu.i.DataService;
+import pl.coddev.applu.broadcastreceiver.PackageModifiedReceiver;
+import pl.coddev.applu.service.DataService;
+import pl.coddev.applu.utils.Prefs;
 
 /**
  * Created by piotr woszczek on 30.12.14.
