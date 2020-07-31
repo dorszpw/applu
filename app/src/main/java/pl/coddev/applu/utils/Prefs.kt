@@ -56,8 +56,8 @@ object Prefs {
     }
 
     @JvmStatic
-    fun setAppIndex(appIndex: Int, widgetId: Int) {
-        if (this.appIndex == appIndex) return
+    fun setAppIndex(appIndex: Int?, widgetId: Int) {
+        if (this.appIndex == appIndex || appIndex == null) return
         putInt(Constants.APP_INDEX + widgetId, appIndex)
     }
 

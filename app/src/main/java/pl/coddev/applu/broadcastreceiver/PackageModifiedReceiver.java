@@ -113,7 +113,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                     cArg[2] = int[].class;
                     Class widgetClass = Class.forName(awpi.get(i).provider.getClassName());
                     Method onUpdate = widgetClass.getMethod("onUpdate", cArg);
-                    Method setAction = widgetClass.getMethod("setAction", new Class[]{UninstallWidget.WidgetActions.class});
+                    Method setAction = widgetClass.getMethod("setAction", UninstallWidget.WidgetActions.class);
                     Object widget = widgetClass.newInstance();
                     setAction.invoke(widget, UninstallWidget.WidgetActions.ADDED_NEW_APP);
                     onUpdate.invoke(widget, context, appWidgetManager, widgetIds);

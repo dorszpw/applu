@@ -12,7 +12,8 @@ import pl.coddev.applu.utils.Prefs.getLastApps
  */
 abstract class UninstallWidgetM : UninstallWidget() {
     abstract override fun getRemoteViews(context: Context): RemoteViews
-    public override fun getLastApp(action: String, widgetId: Int): String {
+    override fun getLastApp(action: String?, widgetId: Int): String? {
+        if (action == null) return null
         var lastApp = ""
         val buttonNumber = action.substring(action.length - 1).toInt()
         // get from "display" list
@@ -23,7 +24,7 @@ abstract class UninstallWidgetM : UninstallWidget() {
         return lastApp
     }
 
-    public override fun setupLastAppsButtons(widgetId: Int, views: RemoteViews, context: Context, ids: IntArray) {
+    override fun setupLastAppsButtons(widgetId: Int, views: RemoteViews, context: Context, ids: IntArray) {
         val lastAppsString = getLastApps(widgetId)
         val lastApps = lastAppsString!!.split("\\|".toRegex())
         views.setOnClickPendingIntent(R.id.lastApp1, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP1.name, ids))
@@ -39,7 +40,7 @@ abstract class UninstallWidgetM : UninstallWidget() {
             val id = context.resources.getIdentifier("lastApp" + (i + 1), "id", context.packageName)
             if (i < lastApps.size && lastApps[i].isNotBlank()) {
                 hideLabel = true
-                val iconBitmap = Cache.getInstance().getBitmapFromMemCache(lastApps[i], pm)
+                val iconBitmap = Cache.instance?.getBitmapFromMemCache(lastApps[i], pm)
                 views.setImageViewBitmap(id, iconBitmap)
             } else {
                 views.setImageViewBitmap(id, null)
@@ -48,7 +49,7 @@ abstract class UninstallWidgetM : UninstallWidget() {
         if (hideLabel) views.setViewVisibility(R.id.lastAppsLabel, View.GONE)
     }
 
-    public override fun setupRemoveAllButton(views: RemoteViews, context: Context, ids: IntArray) {
+    override fun setupRemoveAllButton(views: RemoteViews, context: Context, ids: IntArray) {
         views.setOnClickPendingIntent(R.id.clearAllButton, buildPendingIntent(context, WidgetActions.BUTTON_CLEAR_ALL.name, ids))
     }
 
