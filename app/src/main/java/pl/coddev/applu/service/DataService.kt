@@ -7,7 +7,6 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Build
@@ -17,9 +16,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import pl.coddev.applu.R
 import pl.coddev.applu.broadcastreceiver.PackageModifiedReceiver
-import pl.coddev.applu.data.PInfo
-import pl.coddev.applu.enums.AppSelectorStatus
-import java.util.*
 
 class DataService : Service() {
     lateinit var context: Context
@@ -41,24 +37,25 @@ class DataService : Service() {
         context = applicationContext
         registerBroadcastReceiver()
         AsyncTask.execute {
-            val pm = applicationContext.packageManager
-            // one of the most consuming tasks
-            val packs: ArrayList<PackageInfo> = pm.getInstalledPackages(0) as ArrayList<PackageInfo>
-            //PInfoHandler.setAllPInfos();
-            val allInfos = ArrayList<PInfo>()
-            for (i in packs.indices) {
-                val pi = packs[i]
-                if (!PInfoHandler.fallsIntoSelector(pi, AppSelectorStatus.ALL, context)) continue
-                val newInfo = PInfo()
-                // most time consuming task!
-                newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
-                newInfo.isSystemPackage = PInfoHandler.isSystemPackage(pi)
-                newInfo.pname = pi.packageName
-                if (!allInfos.contains(newInfo)) allInfos.add(newInfo)
-            }
-            // add all to synchronized ArrayList, not one by one
-            PInfoHandler.setAllPInfos(allInfos)
-            Log.d(TAG, "onCreate number of packages from PM: " + packs.size)
+//            val pm = applicationContext.packageManager
+//            // one of the most consuming tasks
+//            val packs: ArrayList<PackageInfo> = pm.getInstalledPackages(0) as ArrayList<PackageInfo>
+//            //PInfoHandler.setAllPInfos();
+//            val allInfos = ArrayList<PInfo>()
+//            for (i in packs.indices) {
+//                val pi = packs[i]
+//                if (!PInfoHandler.fallsIntoSelector(pi, AppSelectorStatus.ALL, context)) continue
+//                val newInfo = PInfo()
+//                // most time consuming task!
+//                newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
+//                Prefs.putString(pi.packageName, newInfo.appname)
+//                newInfo.isSystemPackage = PInfoHandler.isSystemPackage(pi)
+//                newInfo.pname = pi.packageName
+//                if (!allInfos.contains(newInfo)) allInfos.add(newInfo)
+//            }
+//            // add all to synchronized ArrayList, not one by one
+//            PInfoHandler.setAllPInfos(allInfos)
+//            Log.d(TAG, "onCreate number of packages from PM: " + packs.size)
         }
         //startForeground();
     }

@@ -141,6 +141,10 @@ object Prefs {
         prefs.edit().putString(key, value).apply()
     }
 
+    fun getString(key: String, value: String): String {
+        return prefs.getString(key, value) as String
+    }
+
     fun putInt(key: String?, value: Int) {
         prefs.edit().putInt(key, value).apply()
     }

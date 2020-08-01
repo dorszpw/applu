@@ -22,6 +22,7 @@ import pl.coddev.applu.enums.AppSelectorStatus
 import pl.coddev.applu.service.PInfoHandler
 import pl.coddev.applu.utils.Constants
 import pl.coddev.applu.utils.Log
+import pl.coddev.applu.utils.Prefs
 import pl.coddev.applu.utils.Prefs.addToLastAppsSync
 import pl.coddev.applu.utils.Prefs.getAppIndex
 import pl.coddev.applu.utils.Prefs.getAppSelectorStatus
@@ -316,7 +317,11 @@ abstract class UninstallWidget : AppWidgetProvider() {
                             val pi = packs[i]
                             if (!PInfoHandler.fallsIntoSelector(pi, appSelectorStatus, context)) continue
                             val newInfo = PInfo()
-                            newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
+                            newInfo.appname = Prefs.getString(pi.packageName, "")
+                            if (newInfo.appname == "") {
+                                newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
+                                Prefs.putString(pi.packageName, newInfo.appname)
+                            }
                             newInfo.pname = pi.packageName
                             newInfo.isSystemPackage = PInfoHandler.isSystemPackage(pi)
                             PInfoHandler.addToSelected(widgetId, newInfo)
