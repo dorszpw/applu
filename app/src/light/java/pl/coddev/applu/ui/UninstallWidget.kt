@@ -22,7 +22,7 @@ import pl.coddev.applu.enums.AppSelectorStatus
 import pl.coddev.applu.service.PInfoHandler
 import pl.coddev.applu.utils.Constants
 import pl.coddev.applu.utils.Log
-import pl.coddev.applu.utils.Prefs.addToLastApps
+import pl.coddev.applu.utils.Prefs.addToLastAppsSync
 import pl.coddev.applu.utils.Prefs.getAppIndex
 import pl.coddev.applu.utils.Prefs.getAppSelectorStatus
 import pl.coddev.applu.utils.Prefs.getFilterList
@@ -205,7 +205,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
                         if (i != null) {
                             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             context.startActivity(i)
-                            addToLastApps(currentApp, widgetId)
+                            addToLastAppsSync(currentApp, widgetId)
                         }
                     } catch (e: Exception) {
                         if (e.message != null) Log.d(TAG, e.message!!) else e.printStackTrace()
@@ -220,7 +220,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
                         if (i != null) {
                             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             context.startActivity(i)
-                            addToLastApps(currentApp, widgetId)
+                            addToLastAppsSync(currentApp, widgetId)
                             onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds)
                         }
                     }

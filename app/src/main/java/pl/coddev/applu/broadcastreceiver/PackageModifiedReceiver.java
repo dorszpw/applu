@@ -97,7 +97,7 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                             }
                             PInfoHandler.addToAll(modifiedInfo);
                         } else if (packageRemoved) {
-                            Prefs.removeFromLastApps(modifiedPackageName, widgetId);
+                            Prefs.removeFromLastAppsSync(modifiedPackageName, widgetId);
                         }
 
                         if (PInfoHandler.selectedPInfosNotExist(widgetId) || !PInfoHandler.filteredPInfosExists(widgetId)) {

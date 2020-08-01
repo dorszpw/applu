@@ -18,6 +18,7 @@ object Prefs {
     private var currentApp: String? = null
     private var filterList: String? = null
     private var lastApps: String? = null
+    private var lastAppsSync: String? = null
     private var featureCount = 0
 
     @JvmStatic
@@ -95,34 +96,45 @@ object Prefs {
     }
 
     @JvmStatic
-    fun getLastAppsList(widgetId: Int): LinkedList<String> {
-        val lastApps = getLastApps(widgetId)!!.split("\\|".toRegex())
-        return LinkedList(lastApps)
+    fun getLastAppsSync(widgetId: Int): String? {
+        return prefs.getString(Constants.LAST_APPS_SYNC + widgetId, "")
     }
 
     @JvmStatic
-    fun setLastAppsList(lastAppsList: LinkedList<String>, widgetId: Int) {
+    fun setLastAppsSync(lastAppsSync: String?, widgetId: Int) {
+        if (this.lastAppsSync == lastAppsSync) return
+        putString(Constants.LAST_APPS_SYNC + widgetId, lastAppsSync)
+    }
+
+    @JvmStatic
+    fun getLastAppsSyncList(widgetId: Int): LinkedList<String> {
+        val lastAppsSync = getLastAppsSync(widgetId)!!.split("\\|".toRegex())
+        return LinkedList(lastAppsSync)
+    }
+
+    @JvmStatic
+    fun setLastAppsSyncList(lastAppsSyncList: LinkedList<String>, widgetId: Int) {
         val lastAppsString = StringBuilder()
-        for (app in lastAppsList) {
+        for (app in lastAppsSyncList) {
             lastAppsString.append(app).append("|")
         }
-        setLastApps(lastAppsString.toString(), widgetId)
+        setLastAppsSync(lastAppsString.toString(), widgetId)
     }
 
     @JvmStatic
-    fun addToLastApps(newPackage: String, widgetId: Int) {
-        val lastAppsList = getLastAppsList(widgetId)
+    fun addToLastAppsSync(newPackage: String, widgetId: Int) {
+        val lastAppsList = getLastAppsSyncList(widgetId)
         if (lastAppsList.size > LAST_APPS_MAX_SIZE) lastAppsList.removeLast()
         lastAppsList.remove(newPackage)
         lastAppsList.addFirst(newPackage)
-        setLastAppsList(lastAppsList, widgetId)
+        setLastAppsSyncList(lastAppsList, widgetId)
     }
 
     @JvmStatic
-    fun removeFromLastApps(newPackage: String?, widgetId: Int) {
-        val lastAppsList = getLastAppsList(widgetId)
+    fun removeFromLastAppsSync(newPackage: String?, widgetId: Int) {
+        val lastAppsList = getLastAppsSyncList(widgetId)
         lastAppsList.remove(newPackage)
-        setLastAppsList(lastAppsList, widgetId)
+        setLastAppsSyncList(lastAppsList, widgetId)
     }
 
     fun putString(key: String?, value: String?) {

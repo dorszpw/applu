@@ -25,8 +25,8 @@ abstract class UninstallWidgetM : UninstallWidget() {
     }
 
     override fun setupLastAppsButtons(widgetId: Int, views: RemoteViews, context: Context, ids: IntArray) {
-        val lastAppsString = getLastApps(widgetId)
-        val lastApps = lastAppsString!!.split("\\|".toRegex())
+        val lastAppsSyncString = Prefs.getLastAppsSync(widgetId)
+        val lastAppsSync = lastAppsSyncString!!.split("\\|".toRegex())
         views.setOnClickPendingIntent(R.id.lastApp1, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP1.name, ids))
         views.setOnClickPendingIntent(R.id.lastApp2, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP2.name, ids))
         views.setOnClickPendingIntent(R.id.lastApp3, buildPendingIntent(context, WidgetActions.BUTTON_LASTAPP3.name, ids))
@@ -38,15 +38,16 @@ abstract class UninstallWidgetM : UninstallWidget() {
         var hideLabel = false
         for (i in 0 until Prefs.LAST_APPS_MAX_SIZE) {
             val id = context.resources.getIdentifier("lastApp" + (i + 1), "id", context.packageName)
-            if (i < lastApps.size && lastApps[i].isNotBlank()) {
+            if (i < lastAppsSync.size && lastAppsSync[i].isNotBlank()) {
                 hideLabel = true
-                val iconBitmap = Cache.instance?.getBitmapFromMemCache(lastApps[i], pm)
+                val iconBitmap = Cache.instance?.getBitmapFromMemCache(lastAppsSync[i], pm)
                 views.setImageViewBitmap(id, iconBitmap)
             } else {
                 views.setImageViewBitmap(id, null)
             }
         }
         if (hideLabel) views.setViewVisibility(R.id.lastAppsLabel, View.GONE)
+        Prefs.setLastApps(lastAppsSyncString, widgetId)
     }
 
     override fun setupRemoveAllButton(views: RemoteViews, context: Context, ids: IntArray) {
