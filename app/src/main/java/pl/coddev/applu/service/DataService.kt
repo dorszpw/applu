@@ -27,7 +27,7 @@ class DataService : Service() {
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.i(TAG, "onStartCommand()")
 
         //startForeground();
@@ -37,6 +37,7 @@ class DataService : Service() {
     override fun onCreate() {
         Log.d(TAG, "onCreate()")
         super.onCreate()
+
         context = applicationContext
         registerBroadcastReceiver()
         AsyncTask.execute {
