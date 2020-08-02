@@ -3,7 +3,6 @@ package pl.coddev.applu.utils
 import android.content.Context
 import android.content.SharedPreferences
 import pl.coddev.applu.App
-import pl.coddev.applu.enums.AppSelectorStatus
 import java.util.*
 
 object Prefs {
@@ -36,19 +35,6 @@ object Prefs {
     fun incrementFeatureCount(): Int {
         setFeatureCount(++featureCount)
         return featureCount
-    }
-
-    @JvmStatic
-    fun getAppSelectorStatus(widgetId: Int): AppSelectorStatus {
-        appSelectorStatus = prefs.getString(Constants.APP_SELECTOR_STATUS + widgetId,
-                AppSelectorStatus.ALL.name)
-        return AppSelectorStatus.valueOf(appSelectorStatus!!)
-    }
-
-    @JvmStatic
-    fun setAppSelectorStatus(appSelectorStatus: AppSelectorStatus, appWidgetId: Int) {
-        if (appSelectorStatus.name == this.appSelectorStatus) return
-        putString(Constants.EXTRA_FEATURE_USAGE + appWidgetId, appSelectorStatus.name)
     }
 
     @JvmStatic

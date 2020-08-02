@@ -19,43 +19,21 @@ import androidx.core.content.ContextCompat
 import pl.coddev.applu.App
 import pl.coddev.applu.R
 import pl.coddev.applu.data.PInfo
-import pl.coddev.applu.enums.AppSelectorStatus
+import pl.coddev.applu.enums.WidgetActions
 import pl.coddev.applu.service.DataService
 import pl.coddev.applu.service.PInfoHandler
 import pl.coddev.applu.utils.Constants
 import pl.coddev.applu.utils.Log
 import pl.coddev.applu.utils.Prefs.addToLastAppsSync
 import pl.coddev.applu.utils.Prefs.getAppIndex
-import pl.coddev.applu.utils.Prefs.getAppSelectorStatus
-import pl.coddev.applu.utils.Prefs.getFilterList
 import pl.coddev.applu.utils.Prefs.setAppIndex
-import pl.coddev.applu.utils.Prefs.setAppSelectorStatus
 import pl.coddev.applu.utils.Prefs.setCurrentApp
-import pl.coddev.applu.utils.Prefs.setFilterList
 import pl.coddev.applu.utils.Utils
-import java.util.*
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 /**
  * Created by pw on 16/03/15.
  */
 abstract class UninstallWidget : AppWidgetProvider() {
-    @JvmField
-    protected var appSelectorStatus = AppSelectorStatus.USER
-
-    enum class WidgetActions {
-        TEXTFIELD_BUTTON, BUTTON1, BUTTON2, BUTTON3, BUTTON4, BUTTON5, BUTTON6, BUTTON7, BUTTON8,
-        BUTTON_CLEAR, BUTTON_CLEAR_ALL, BUTTON_UNINSTALL, BUTTON_LAUNCH, OTHER, BUTTON_SELECTOR,
-        ADDED_NEW_APP, BUTTON_LASTAPP1, BUTTON_LASTAPP2, BUTTON_LASTAPP3, BUTTON_LASTAPP4, BUTTON_LASTAPP5,
-        BUTTON_LASTAPP6, BUTTON_LASTAPP7, BUTTON_LASTAPP8, NO_ACTION;
-
-        operator fun next(): WidgetActions {
-            val ordinal = if (ordinal + 1 >= values().size) 0 else ordinal + 1
-            return values()[ordinal]
-        }
-    }
-
     private var action: WidgetActions? = null
     lateinit var pm: PackageManager
     fun setAction(action: WidgetActions?) {
@@ -64,7 +42,6 @@ abstract class UninstallWidget : AppWidgetProvider() {
 
     abstract fun setupLastAppsButtons(widgetId: Int, views: RemoteViews, context: Context, ids: IntArray)
     abstract fun setupRemoveAllButton(views: RemoteViews, context: Context, ids: IntArray)
-    abstract fun switchSelectorStatus(views: RemoteViews)
     abstract fun getRemoteViews(context: Context): RemoteViews
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         Log.d(TAG, "onUpdate" + appWidgetIds.size)
@@ -73,7 +50,6 @@ abstract class UninstallWidget : AppWidgetProvider() {
             Log.d(TAG, "widget no " + i + ": " + appWidgetIds[i])
             widgetId = appWidgetIds[i]
             val ids = intArrayOf(widgetId)
-            appSelectorStatus = getAppSelectorStatus(widgetId)
             // Get the layout for the App Widget and attach an on-click listener
             val views: RemoteViews = getRemoteViews(context)
             views.setOnClickPendingIntent(R.id.searchText, buildPendingIntent(context, WidgetActions.TEXTFIELD_BUTTON.name, ids))
@@ -89,9 +65,8 @@ abstract class UninstallWidget : AppWidgetProvider() {
             views.setOnClickPendingIntent(R.id.appSelectorButton, buildPendingIntent(context, WidgetActions.BUTTON_SELECTOR.name, ids))
             setupLastAppsButtons(widgetId, views, context, ids)
             setupRemoveAllButton(views, context, ids)
-            switchSelectorStatus(views)
             PInfoHandler.setAppIndex(widgetId, getAppIndex(widgetId))
-            getInstalledApps(widgetId, action, context, appSelectorStatus, pm)
+            DataService.getAppsByFilter(widgetId, action)
             PInfoHandler.rollIndex(widgetId)
             var packageName = ""
             if (PInfoHandler.sizeOfFiltered(widgetId) > 0) {
@@ -232,9 +207,6 @@ abstract class UninstallWidget : AppWidgetProvider() {
                 }
             } else if (actionString != null && actionString.contains("BUTTON")) {
                 Utils.displayRateQuestionIfNeeded()
-                if (action == WidgetActions.BUTTON_SELECTOR) {
-                    buttonSelectorAction()
-                }
                 val views = getRemoteViews(context)
                 //views.setProgressBar(R.id.progressBar, 0, 0, true);
                 views.setViewVisibility(R.id.progressBar, View.VISIBLE)
@@ -250,12 +222,6 @@ abstract class UninstallWidget : AppWidgetProvider() {
         }
     }
 
-    private fun buttonSelectorAction() {
-        appSelectorStatus = appSelectorStatus.next()
-        setAppSelectorStatus(appSelectorStatus, widgetId)
-        Log.d(TAG, "Widget/selector: " + widgetId + "/" + appSelectorStatus.name)
-    }
-
     open fun getLastApp(action: String?, widgetId: Int): String? {
         return null
     }
@@ -269,73 +235,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
         private const val TAG = "UninstallWidget"
         private var widgetId = 0
 
-        @JvmStatic
-        fun getInstalledApps(widgetId: Int, button: WidgetActions?, context: Context,
-                             appSelectorStatus: AppSelectorStatus?, pm: PackageManager?) {
-            val start = Calendar.getInstance().timeInMillis
-            Log.d(TAG, "getInstalledApps xstart $start")
-            val ptn: Pattern
-            var matcher: Matcher
-            var filter = getFilterList(widgetId)
-            Log.d(TAG, "getInstalledApps, last filter: $filter")
-            val commonChars = "[^a-zA-Z]*"
-            var filterExpansion = ""
-            when (button) {
-                WidgetActions.BUTTON1 -> filterExpansion = "[abc]$commonChars"
-                WidgetActions.BUTTON2 -> filterExpansion = "[def]$commonChars"
-                WidgetActions.BUTTON3 -> filterExpansion = "[ghi]$commonChars"
-                WidgetActions.BUTTON4 -> filterExpansion = "[jkl]$commonChars"
-                WidgetActions.BUTTON5 -> filterExpansion = "[mno]$commonChars"
-                WidgetActions.BUTTON6 -> filterExpansion = "[pqrs]$commonChars"
-                WidgetActions.BUTTON7 -> filterExpansion = "[tuv]$commonChars"
-                WidgetActions.BUTTON8 -> filterExpansion = "[wxyz]$commonChars"
-                WidgetActions.BUTTON_CLEAR -> filter = filter!!.replaceFirst("\\[\\w+]\\[\\^a-zA-Z]\\*$".toRegex(), "")
-                WidgetActions.BUTTON_CLEAR_ALL -> filter = ""
-                else -> {
-                }
-            }
-            if (PInfoHandler.filteredPInfosExists(widgetId) &&
-                    PInfoHandler.sizeOfFiltered(widgetId) > 0) {
-                filter += filterExpansion
-            }
-            Log.d(TAG, "getInstalledApps, new filter: $filter")
-            if (button != WidgetActions.TEXTFIELD_BUTTON || !PInfoHandler.filteredPInfosExists(widgetId)) {
-                when (button) {
-                    WidgetActions.TEXTFIELD_BUTTON -> PInfoHandler.incrementAppIndex(widgetId, 1)
-                    WidgetActions.ADDED_NEW_APP -> {
-                    }
-                    else -> PInfoHandler.setAppIndex(widgetId, 0)
-                }
-                setFilterList(filter, widgetId)
 
-                ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE)
-                if (PInfoHandler.pInfosNotExist()) {
-                    if (!isServiceRunning()) {
-                        startDataService()
-                    }
-                } else {
-                    Log.d(TAG, "Using cached list. Size: " + PInfoHandler.sizeOfAll())
-                }
-
-                PInfoHandler.setFilteredPInfosMap(widgetId)
-                //PInfoHandler.clearFiltered(widgetId);
-                for (i in 0 until PInfoHandler.sizeOfAll()) {
-                    val newInfo = PInfoHandler.getAllPInfos()[i]
-                    matcher = ptn.matcher(newInfo.appname)
-                    if (matcher.find()) {
-                        newInfo.match = matcher.start()
-                        newInfo.matcherGroup = matcher.group()
-                        PInfoHandler.addToFiltered(widgetId, newInfo)
-                    }
-                }
-                PInfoHandler.sortFilteredByMatch(widgetId)
-
-            } else {
-                PInfoHandler.incrementAppIndex(widgetId, 1)
-            }
-            Log.d(TAG, "getInstalledApps xend " + Calendar.getInstance().timeInMillis + ", " +
-                    (Calendar.getInstance().timeInMillis - start))
-        }
 
         private fun isServiceRunning(): Boolean {
             val manager =
@@ -354,6 +254,4 @@ abstract class UninstallWidget : AppWidgetProvider() {
             App.get().context.startService(serviceIntent)
         }
     }
-
-
 }

@@ -1,10 +1,8 @@
 package pl.coddev.applu.service
 
-import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import pl.coddev.applu.data.PInfo
-import pl.coddev.applu.enums.AppSelectorStatus
 import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -119,28 +117,6 @@ object PInfoHandler {
 
     fun isSystemPackage(pi: PackageInfo): Boolean {
         return pi.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 1
-    }
-
-    @JvmStatic
-    fun fallsIntoSelector(pi: PackageInfo, selector: AppSelectorStatus?, context: Context): Boolean {
-        return if (context.packageManager.getLaunchIntentForPackage(pi.packageName) == null) {
-            false
-        } else when (selector) {
-            AppSelectorStatus.ALL -> true
-            AppSelectorStatus.USER -> !isSystemPackage(pi)
-            AppSelectorStatus.SYSTEM -> isSystemPackage(pi)
-            else -> false
-        }
-    }
-
-    @JvmStatic
-    fun fallsIntoSelector(pi: PInfo, selector: AppSelectorStatus?): Boolean {
-        return when (selector) {
-            AppSelectorStatus.ALL -> true
-            AppSelectorStatus.USER -> !pi.isSystemPackage
-            AppSelectorStatus.SYSTEM -> pi.isSystemPackage
-            else -> false
-        }
     }
 
     class PInfoComparator : Comparator<PInfo> {

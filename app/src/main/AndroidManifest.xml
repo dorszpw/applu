@@ -55,7 +55,7 @@
 
         <receiver
             android:name=".ui.UninstallWidgetSRightBlack"
-            android:label="Applu S Comfy black">
+            android:label="Applu S black">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -66,7 +66,7 @@
         </receiver>
         <receiver
             android:name=".ui.UninstallWidgetSRightWhite"
-            android:label="Applu S Comfy white" >
+            android:label="Applu S white">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

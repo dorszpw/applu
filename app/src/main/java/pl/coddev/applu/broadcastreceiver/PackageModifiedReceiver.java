@@ -15,9 +15,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import pl.coddev.applu.data.PInfo;
-import pl.coddev.applu.enums.AppSelectorStatus;
+import pl.coddev.applu.enums.WidgetActions;
 import pl.coddev.applu.service.PInfoHandler;
-import pl.coddev.applu.ui.UninstallWidget;
 import pl.coddev.applu.utils.Log;
 import pl.coddev.applu.utils.Prefs;
 
@@ -83,10 +82,8 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
 
                     for (int widgetId : widgetIds) {
 
-                        AppSelectorStatus selector = Prefs.getAppSelectorStatus(widgetId);
-
-                        Log.d(TAG, "onReceive PMR, class: " + Class.forName(awpi.get(i).provider.getClassName()) +
-                                " selector: " + selector);
+                        Log.d(TAG, "onReceive PMR, class: " +
+                                Class.forName(awpi.get(i).provider.getClassName()));
 
                         // add to ALL lists, if falls into selector
                         if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
@@ -109,9 +106,9 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                     cArg[2] = int[].class;
                     Class widgetClass = Class.forName(awpi.get(i).provider.getClassName());
                     Method onUpdate = widgetClass.getMethod("onUpdate", cArg);
-                    Method setAction = widgetClass.getMethod("setAction", UninstallWidget.WidgetActions.class);
+                    Method setAction = widgetClass.getMethod("setAction", WidgetActions.class);
                     Object widget = widgetClass.newInstance();
-                    setAction.invoke(widget, UninstallWidget.WidgetActions.ADDED_NEW_APP);
+                    setAction.invoke(widget, WidgetActions.ADDED_NEW_APP);
                     onUpdate.invoke(widget, context, appWidgetManager, widgetIds);
                 } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
                         IllegalAccessException | InstantiationException e) {

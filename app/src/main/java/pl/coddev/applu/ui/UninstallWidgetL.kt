@@ -3,6 +3,7 @@ package pl.coddev.applu.ui
 import android.content.Context
 import android.widget.RemoteViews
 import pl.coddev.applu.R
+import pl.coddev.applu.enums.WidgetActions
 
 /**
  * Created by Piotr Woszczek on 23/07/15.
