@@ -61,7 +61,6 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                 Intent.ACTION_PACKAGE_FULLY_REMOVED.equals(action);
         if (!replacing && packageRemoved) {
             Log.d(TAG, "Package removed: " + modifiedPackageName);
-            PInfoHandler.removeFromSelected(modifiedPackageName);
             PInfoHandler.removeFromAll(modifiedPackageName);
         } else if (replacing && Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
             Log.d(TAG, "Package replaced: " + modifiedPackageName);
@@ -92,18 +91,15 @@ public class PackageModifiedReceiver extends BroadcastReceiver {
                         // add to ALL lists, if falls into selector
                         if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
                             assert pi != null;
-                            if (PInfoHandler.fallsIntoSelector(pi, selector, context)) {
-                                PInfoHandler.addToSelected(widgetId, modifiedInfo);
-                            }
                             PInfoHandler.addToAll(modifiedInfo);
                         } else if (packageRemoved) {
                             Prefs.removeFromLastAppsSync(modifiedPackageName, widgetId);
                         }
 
-                        if (PInfoHandler.selectedPInfosNotExist(widgetId) || !PInfoHandler.filteredPInfosExists(widgetId)) {
-                            UninstallWidget.getInstalledApps(widgetId, UninstallWidget.WidgetActions.BUTTON_SELECTOR,
-                                    context, selector, this.pm);
-                        }
+//                        if (!PInfoHandler.filteredPInfosExists(widgetId)) {
+//                            UninstallWidget.getInstalledApps(widgetId, UninstallWidget.WidgetActions.BUTTON_SELECTOR,
+//                                    context, selector, this.pm);
+//                        }
                     }
 
                     // update widget by reflection

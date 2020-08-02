@@ -7,7 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.DisplayMetrics
-import pl.coddev.applu.AppluApplication.Companion.get
+import pl.coddev.applu.App.Companion.get
 import pl.coddev.applu.R
 import pl.coddev.applu.ui.RateDialog
 import pl.coddev.applu.utils.Prefs.getFeatureCount

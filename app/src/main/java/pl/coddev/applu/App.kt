@@ -1,6 +1,7 @@
 package pl.coddev.applu
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
@@ -11,12 +12,13 @@ import pl.coddev.applu.service.DataService
 /**
  * Created by piotr woszczek on 30.12.14.
  */
-class AppluApplication : Application() {
+class App : Application() {
     private val featureCount = 0
 
     // DataService
     var mDataService: DataService? = null
     private val mConnection: ServiceConnection? = null
+    lateinit var context: Context
 
     // =============================================================================================
     // ===== onCreate
@@ -25,6 +27,7 @@ class AppluApplication : Application() {
         super.onCreate()
         Log.i(TAG, "OnCreate invoked")
         instance = this
+        context = applicationContext
         val intent = Intent(this, DataService::class.java)
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         //    startForegroundService(intent);
@@ -47,10 +50,10 @@ class AppluApplication : Application() {
 
     companion object {
         var TAG = "AppluApplication"
-        private lateinit var instance: AppluApplication
+        private lateinit var instance: App
 
         @JvmStatic
-        fun get(): AppluApplication {
+        fun get(): App {
             return instance
         }
     }

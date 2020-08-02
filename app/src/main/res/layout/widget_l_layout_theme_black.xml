@@ -16,7 +16,7 @@
 
             <TextView
                 android:id="@+id/searchText"
-                style="@style/searchTextStyleBlackL"/>
+                style="@style/searchTextStyleBlackL" />
 
 
             <Button
@@ -28,8 +28,7 @@
                 android:gravity="center_vertical|right"
                 android:text="◀"
                 android:textColor="@color/blue_nasty"
-                android:visibility="gone"/>
-
+                android:visibility="gone" />
 
 
             <Button
@@ -41,15 +40,15 @@
                 android:gravity="center_vertical|left"
                 android:text="▶"
                 android:textColor="@color/blue_nasty"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <ProgressBar
                 android:id="@+id/progressBar"
+                style="@android:style/Widget.Holo.ProgressBar.Small"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="0.2"
-                style="@android:style/Widget.Holo.ProgressBar.Small"
-                android:visibility="visible"
-                />
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -59,92 +58,94 @@
             android:layout_below="@id/searchTextLayout"
             android:src="@drawable/separator" />
     </RelativeLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/lastApp1"
-            style="@style/lastAppButtonStyle"/>
-        <ImageView
-            android:id="@+id/lastApp2"
-            style="@style/lastAppButtonStyle"/>
-        <ImageView
-            android:id="@+id/lastApp3"
-            style="@style/lastAppButtonStyle"/>
-        <ImageView
-            android:id="@+id/lastApp4"
-            style="@style/lastAppButtonStyle"/>
-        <ImageView
-            android:id="@+id/lastApp5"
-            style="@style/lastAppButtonStyle"/>
-        <ImageView
-            android:id="@+id/lastApp6"
-            style="@style/lastAppButtonStyle"/>
-        <ImageView
-            android:id="@+id/lastApp7"
-            style="@style/lastAppButtonStyle"/>
-        <ImageView
-            android:id="@+id/lastApp8"
-            style="@style/lastAppButtonStyle"/>
-        <ImageView
-            android:id="@+id/lastApp9"
-            style="@style/lastAppButtonStyle"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/lastApp1"
+                style="@style/lastAppButtonStyle" />
+
+            <ImageView
+                android:id="@+id/lastApp2"
+                style="@style/lastAppButtonStyle" />
+
+            <ImageView
+                android:id="@+id/lastApp3"
+                style="@style/lastAppButtonStyle" />
+
+            <ImageView
+                android:id="@+id/lastApp4"
+                style="@style/lastAppButtonStyle" />
+
+            <ImageView
+                android:id="@+id/lastApp5"
+                style="@style/lastAppButtonStyle" />
+
+            <ImageView
+                android:id="@+id/lastApp6"
+                style="@style/lastAppButtonStyle" />
+
+            <ImageView
+                android:id="@+id/lastApp7"
+                style="@style/lastAppButtonStyle" />
+
+            <ImageView
+                android:id="@+id/lastApp8"
+                style="@style/lastAppButtonStyle" />
+
+            <ImageView
+                android:id="@+id/lastApp9"
+                style="@style/lastAppButtonStyle" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/lastAppsLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/last_apps"
             android:layout_gravity="center"
             android:paddingLeft="150dp"
-            android:textSize="20sp"
-        android:textColor="@color/last_apps_theme_black" />
+            android:text="@string/last_apps"
+            android:textColor="@color/last_apps_theme_black"
+            android:textSize="20sp" />
     </FrameLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/searchTextLayout"
         android:src="@drawable/separator" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/launchButton"
-            style="@style/lastAppButtonStyleTightLarge" />
-
-
-
 
         <Button
             android:id="@+id/searchButton1"
             style="@style/keypadButtonStyleL"
-            android:text="abc"
-
-            />
+            android:text="abc" />
 
         <Button
             android:id="@+id/searchButton2"
             style="@style/keypadButtonStyleL"
-            android:text="def"
-
-
-            />
+            android:text="def" />
 
         <Button
             android:id="@+id/searchButton3"
             style="@style/keypadButtonStyleL"
-            android:text="ghi"
+            android:text="ghi" />
 
-
-            />
-
+        <ImageView
+            android:id="@+id/launchButton"
+            style="@style/lastAppButtonStyleTightLarge" />
     </LinearLayout>
 
     <LinearLayout
@@ -152,33 +153,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
-        <ImageView
-            android:id="@+id/uninstallButton"
-            style="@style/lastAppButtonStyleTightLarge"
-            android:src="@drawable/ic_delete_theme_black" />
-
-
         <Button
             android:id="@+id/searchButton4"
             style="@style/keypadButtonStyleL"
-            android:text="jkl"
-
-            />
+            android:text="jkl" />
 
         <Button
             android:id="@+id/searchButton5"
             style="@style/keypadButtonStyleL"
-            android:text="mno"
-
-            />
+            android:text="mno" />
 
         <Button
             android:id="@+id/searchButton6"
             style="@style/keypadButtonStyleL"
             android:text="pqrs" />
 
-
+        <ImageView
+            android:id="@+id/uninstallButton"
+            style="@style/lastAppButtonStyleTightLarge"
+            android:src="@drawable/ic_delete_theme_black" />
     </LinearLayout>
 
     <LinearLayout
@@ -186,47 +179,36 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/appSelectorButton"
-            style="@style/lastAppButtonStyleTightLarge"
-            android:padding="2dp"
-            android:src="@drawable/filter_all_theme_black"
-            />
-
-
         <Button
             android:id="@+id/searchButton7"
             style="@style/keypadButtonStyleL"
-            android:text="tuv"
-
-            />
+            android:text="tuv" />
 
         <Button
             android:id="@+id/searchButton8"
             style="@style/keypadButtonStyleL"
-            android:text="wxyz"
+            android:text="wxyz" />
 
-            />
-
-        <LinearLayout style="@style/keypadButtonStyleL"
-            android:orientation="horizontal"
-
-            >
+        <LinearLayout
+            style="@style/keypadButtonStyleL"
+            android:layout_width="108dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/clearButton"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_weight="0.5"
                 android:layout_gravity="center"
+                android:layout_weight="0.5"
                 android:padding="2dp"
                 android:src="@drawable/backspace_arrow" />
+
             <ImageView
                 android:id="@+id/clearAllButton"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_weight="0.5"
                 android:layout_gravity="center"
+                android:layout_weight="0.5"
                 android:padding="3dp"
                 android:src="@drawable/cancel_button_128" />
 

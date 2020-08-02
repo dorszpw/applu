@@ -15,11 +15,8 @@ object PInfoHandler {
     private const val TAG = "PInfoHandler"
     private val appIndexMap: MutableMap<Int, Int> = HashMap()
     private val filteredPInfosMap: MutableMap<Int, ArrayList<PInfo>?> = HashMap()
-    private val selectedPInfosMap: MutableMap<Int, ArrayList<PInfo>?> = HashMap()
+    //private val selectedPInfosMap: MutableMap<Int, ArrayList<PInfo>?> = HashMap()
     private var allPInfos: CopyOnWriteArrayList<PInfo> = CopyOnWriteArrayList()
-    fun setSelectedPInfosMap(widgetId: Int) {
-        selectedPInfosMap[widgetId] = ArrayList()
-    }
 
     fun setFilteredPInfosMap(widgetId: Int) {
         filteredPInfosMap[widgetId] = ArrayList()
@@ -32,11 +29,6 @@ object PInfoHandler {
 
     fun getAllPInfos(): List<PInfo> {
         return allPInfos
-    }
-
-    @JvmStatic
-    fun selectedPInfosNotExist(widgetId: Int): Boolean {
-        return !selectedPInfosMap.containsKey(widgetId)
     }
 
     @JvmStatic
@@ -84,19 +76,9 @@ object PInfoHandler {
         }
     }
 
-    fun getPInfoFromSelected(widgetId: Int, index: Int): PInfo? {
-        val selectedPInfos = selectedPInfosMap[widgetId]
-        return selectedPInfos?.get(index)
-    }
-
     fun sizeOfFiltered(widgetId: Int): Int {
         val filteredPInfos = filteredPInfosMap[widgetId]
         return filteredPInfos?.size ?: 0
-    }
-
-    fun sizeOfSelected(widgetId: Int): Int {
-        val selectedPInfos = selectedPInfosMap[widgetId]
-        return selectedPInfos?.size ?: 0
     }
 
     fun sizeOfAll(): Int {
@@ -112,33 +94,12 @@ object PInfoHandler {
     }
 
     @JvmStatic
-    fun addToSelected(widgetId: Int, pInfo: PInfo) {
-        if (selectedPInfosNotExist(widgetId)) {
-            setSelectedPInfosMap(widgetId)
-        }
-        val selectedPInfos = selectedPInfosMap[widgetId]
-        if (selectedPInfos != null && !selectedPInfos.contains(pInfo)) {
-            selectedPInfos.add(pInfo)
-        }
-    }
-
-    @JvmStatic
     fun addToAll(pInfo: PInfo) {
         if (pInfosNotExist()) {
             setAllPInfos(null)
         }
         if (!allPInfos!!.contains(pInfo)) {
             allPInfos!!.add(pInfo)
-        }
-    }
-
-    @JvmStatic
-    fun removeFromSelected(packageName: String) {
-        for ((_, value) in selectedPInfosMap) if (value != null) {
-            val iter = value.iterator()
-            while (iter.hasNext()) {
-                if (iter.next().pname == packageName) iter.remove()
-            }
         }
     }
 

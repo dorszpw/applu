@@ -2,7 +2,7 @@ package pl.coddev.applu.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import pl.coddev.applu.AppluApplication
+import pl.coddev.applu.App
 import pl.coddev.applu.enums.AppSelectorStatus
 import java.util.*
 
@@ -10,7 +10,7 @@ object Prefs {
 
     const val LAST_APPS_MAX_SIZE = 6
     const val LAUNCHED_BEFORE = "launchedBefore"
-    private var prefs: SharedPreferences = AppluApplication.get()
+    private var prefs: SharedPreferences = App.get()
             .getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE)
 
     private var appSelectorStatus: String? = null

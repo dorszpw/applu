@@ -1,11 +1,11 @@
 package pl.coddev.applu.ui
 
+import android.app.ActivityManager
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.text.SpannableString
@@ -16,13 +16,14 @@ import android.view.View
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import pl.coddev.applu.App
 import pl.coddev.applu.R
 import pl.coddev.applu.data.PInfo
 import pl.coddev.applu.enums.AppSelectorStatus
+import pl.coddev.applu.service.DataService
 import pl.coddev.applu.service.PInfoHandler
 import pl.coddev.applu.utils.Constants
 import pl.coddev.applu.utils.Log
-import pl.coddev.applu.utils.Prefs
 import pl.coddev.applu.utils.Prefs.addToLastAppsSync
 import pl.coddev.applu.utils.Prefs.getAppIndex
 import pl.coddev.applu.utils.Prefs.getAppSelectorStatus
@@ -294,8 +295,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
                 }
             }
             if (PInfoHandler.filteredPInfosExists(widgetId) &&
-                    PInfoHandler.sizeOfFiltered(widgetId) > 0 ||
-                    PInfoHandler.selectedPInfosNotExist(widgetId)) {
+                    PInfoHandler.sizeOfFiltered(widgetId) > 0) {
                 filter += filterExpansion
             }
             Log.d(TAG, "getInstalledApps, new filter: $filter")
@@ -309,39 +309,18 @@ abstract class UninstallWidget : AppWidgetProvider() {
                 setFilterList(filter, widgetId)
 
                 ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE)
-                if (PInfoHandler.selectedPInfosNotExist(widgetId) || button == WidgetActions.BUTTON_SELECTOR) {
-                    if (PInfoHandler.pInfosNotExist()) {
-                        val packs = pm!!.getInstalledPackages(0) as ArrayList<PackageInfo>
-                        PInfoHandler.setSelectedPInfosMap(widgetId)
-                        for (i in packs.indices) {
-                            val pi = packs[i]
-                            if (!PInfoHandler.fallsIntoSelector(pi, appSelectorStatus, context)) continue
-                            val newInfo = PInfo()
-                            newInfo.appname = Prefs.getString(pi.packageName, "")
-                            if (newInfo.appname == "") {
-                                newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
-                                Prefs.putString(pi.packageName, newInfo.appname)
-                            }
-                            newInfo.pname = pi.packageName
-                            newInfo.isSystemPackage = PInfoHandler.isSystemPackage(pi)
-                            PInfoHandler.addToSelected(widgetId, newInfo)
-                        }
-                        Log.d(TAG, "Loaded new ALL list. Size: " + PInfoHandler.sizeOfAll())
-                    } else {
-                        PInfoHandler.setSelectedPInfosMap(widgetId)
-                        for (pi in PInfoHandler.getAllPInfos()) {
-                            if (!PInfoHandler.fallsIntoSelector(pi, appSelectorStatus)) continue
-                            PInfoHandler.addToSelected(widgetId, pi)
-                        }
+                if (PInfoHandler.pInfosNotExist()) {
+                    if (!isServiceRunning()) {
+                        startDataService()
                     }
                 } else {
-                    Log.d(TAG, "Using cached SELECTED list. Size: " + PInfoHandler.sizeOfSelected(widgetId))
+                    Log.d(TAG, "Using cached list. Size: " + PInfoHandler.sizeOfAll())
                 }
 
                 PInfoHandler.setFilteredPInfosMap(widgetId)
                 //PInfoHandler.clearFiltered(widgetId);
-                for (i in 0 until PInfoHandler.sizeOfSelected(widgetId)) {
-                    val newInfo = PInfoHandler.getPInfoFromSelected(widgetId, i) ?: continue
+                for (i in 0 until PInfoHandler.sizeOfAll()) {
+                    val newInfo = PInfoHandler.getAllPInfos()[i]
                     matcher = ptn.matcher(newInfo.appname)
                     if (matcher.find()) {
                         newInfo.match = matcher.start()
@@ -357,5 +336,24 @@ abstract class UninstallWidget : AppWidgetProvider() {
             Log.d(TAG, "getInstalledApps xend " + Calendar.getInstance().timeInMillis + ", " +
                     (Calendar.getInstance().timeInMillis - start))
         }
+
+        private fun isServiceRunning(): Boolean {
+            val manager =
+                    App.get().context.getSystemService(Context.ACTIVITY_SERVICE)
+                            as ActivityManager
+            for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+                if (DataService::class.java.name == service.service.className) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        private fun startDataService() {
+            val serviceIntent = Intent(App.get().context, DataService::class.java)
+            App.get().context.startService(serviceIntent)
+        }
     }
+
+
 }
