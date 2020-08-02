@@ -104,7 +104,7 @@ class DataService : Service() {
             val allInfos = ArrayList<PInfo>()
             for (i in packs.indices) {
                 val pi = packs[i]
-                //if (PInfoHandler.isSystemPackage(pi)) continue
+                if (pm.getLaunchIntentForPackage(pi.packageName) == null) continue
                 val newInfo = PInfo()
                 newInfo.appname = Prefs.getString(pi.packageName, "")
                 if (newInfo.appname == "") {

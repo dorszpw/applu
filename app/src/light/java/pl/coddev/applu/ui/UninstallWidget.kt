@@ -46,6 +46,9 @@ abstract class UninstallWidget : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         Log.d(TAG, "onUpdate" + appWidgetIds.size)
         pm = context.packageManager
+
+
+
         for (i in appWidgetIds.indices) {
             Log.d(TAG, "widget no " + i + ": " + appWidgetIds[i])
             widgetId = appWidgetIds[i]
@@ -154,8 +157,13 @@ abstract class UninstallWidget : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "---onReceive received")
+        android.util.Log.d(TAG, "onReceive: ${intent.getStringExtra("Action")}")
+
         val appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
         if (appWidgetIds != null) {
+            if (WidgetActions.ADDED_NEW_APP.name.equals(intent.getStringExtra("Action"))) {
+                onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds)
+            }
             val widgetId = appWidgetIds[0]
             val currentApp: String?
             val actionString = intent.action
