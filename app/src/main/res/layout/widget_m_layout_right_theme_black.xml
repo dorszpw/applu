@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/widget_background_theme_black"
+
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -57,7 +58,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.3"
                 android:src="@drawable/ic_baseline_refresh_24"
-                android:tint="@color/blue_nasty" />
+                android:tint="@color/gold" />
 
         </LinearLayout>
 
@@ -65,7 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/searchTextLayout"
-            android:src="@drawable/separator" />
+            android:src="@drawable/separator"
+            android:tint="@color/gold" />
     </RelativeLayout>
 
     <FrameLayout
@@ -130,7 +132,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/searchTextLayout"
-        android:src="@drawable/separator" />
+        android:src="@drawable/separator"
+        android:tint="@color/gold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -230,17 +233,18 @@
                 android:layout_height="30dp"
                 android:layout_weight="0.5"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/backspace_arrow" />
+                android:src="@drawable/backspace_arrow"
+                android:tint="@color/gold" />
 
             <ImageView
                 android:id="@+id/clearAllButton"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-
                 android:layout_weight="0.5"
                 android:padding="3dp"
-                android:src="@drawable/cancel_button_128" />
+                android:src="@drawable/cancel_button_128"
+                android:tint="@color/gold" />
         </LinearLayout>
 
     </LinearLayout>
