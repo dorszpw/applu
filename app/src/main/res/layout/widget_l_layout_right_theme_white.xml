@@ -50,6 +50,15 @@
                 android:layout_weight="0.2"
                 android:visibility="visible" />
 
+            <ImageView
+                android:id="@+id/reloadButton"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.3"
+                android:src="@drawable/ic_baseline_refresh_24"
+                android:tint="@color/blue_nasty" />
+
         </LinearLayout>
 
         <ImageView

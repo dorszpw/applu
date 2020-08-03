@@ -25,7 +25,7 @@ object PInfoHandler {
         if (list != null) allPInfos.addAll(list)
     }
 
-    fun getAllPInfos(): List<PInfo> {
+    fun getAllPInfos(): CopyOnWriteArrayList<PInfo> {
         return allPInfos
     }
 

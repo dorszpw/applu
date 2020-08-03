@@ -3,7 +3,7 @@
     package="pl.coddev.applu">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />-->
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
 
@@ -29,29 +29,6 @@
             android:name=".ui.RateDialog"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
-
-        <!--        <receiver-->
-        <!--            android:name=".p.UninstallWidgetSInsideBlack"-->
-        <!--            android:label="Applu S Crazy black" >-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
-        <!--            </intent-filter>-->
-
-        <!--            <meta-data-->
-        <!--                android:name="android.appwidget.provider"-->
-        <!--                android:resource="@xml/widget_provider_s_inside_theme_black" />-->
-        <!--        </receiver>-->
-        <!--        <receiver-->
-        <!--            android:name=".p.UninstallWidgetSInsideWhite"-->
-        <!--            android:label="Applu S Crazy white" >-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
-        <!--            </intent-filter>-->
-
-        <!--            <meta-data-->
-        <!--                android:name="android.appwidget.provider"-->
-        <!--                android:resource="@xml/widget_provider_s_inside_theme_white" />-->
-        <!--        </receiver>-->
 
         <receiver
             android:name=".ui.UninstallWidgetSRightBlack"

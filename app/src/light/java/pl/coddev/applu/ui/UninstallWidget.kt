@@ -65,7 +65,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
             views.setOnClickPendingIntent(R.id.searchButton7, buildPendingIntent(context, WidgetActions.BUTTON7.name, ids))
             views.setOnClickPendingIntent(R.id.searchButton8, buildPendingIntent(context, WidgetActions.BUTTON8.name, ids))
             views.setOnClickPendingIntent(R.id.clearButton, buildPendingIntent(context, WidgetActions.BUTTON_CLEAR.name, ids))
-            views.setOnClickPendingIntent(R.id.appSelectorButton, buildPendingIntent(context, WidgetActions.BUTTON_SELECTOR.name, ids))
+            views.setOnClickPendingIntent(R.id.reloadButton, buildPendingIntent(context, WidgetActions.FORCE_RELOAD.name, ids))
             setupLastAppsButtons(widgetId, views, context, ids)
             setupRemoveAllButton(views, context, ids)
             PInfoHandler.setAppIndex(widgetId, getAppIndex(widgetId))
@@ -160,9 +160,10 @@ abstract class UninstallWidget : AppWidgetProvider() {
         android.util.Log.d(TAG, "onReceive: ${intent.getStringExtra("Action")}")
 
         val appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
+        val appWidgetManager = AppWidgetManager.getInstance(context)
         if (appWidgetIds != null) {
             if (WidgetActions.ADDED_NEW_APP.name.equals(intent.getStringExtra("Action"))) {
-                onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds)
+                onUpdate(context, appWidgetManager, appWidgetIds)
             }
             val widgetId = appWidgetIds[0]
             val currentApp: String?
@@ -197,6 +198,10 @@ abstract class UninstallWidget : AppWidgetProvider() {
                         Toast.makeText(context, R.string.cannot_run_app, Toast.LENGTH_LONG).show()
                     }
                 }
+            } else if (action == WidgetActions.FORCE_RELOAD) {
+                showProgressBar(context, widgetId)
+                DataService.setForceUpdateLabels()
+                onUpdate(context, appWidgetManager, appWidgetIds)
             } else if (actionString != null && actionString.contains("LASTAPP")) {
                 currentApp = getLastApp(actionString, widgetId)
                 try {
@@ -206,7 +211,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
                             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             context.startActivity(i)
                             addToLastAppsSync(currentApp, widgetId)
-                            onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds)
+                            onUpdate(context, appWidgetManager, appWidgetIds)
                         }
                     }
                 } catch (e: Exception) {
@@ -215,12 +220,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
                 }
             } else if (actionString != null && actionString.contains("BUTTON")) {
                 Utils.displayRateQuestionIfNeeded()
-                val views = getRemoteViews(context)
-                //views.setProgressBar(R.id.progressBar, 0, 0, true);
-                views.setViewVisibility(R.id.progressBar, View.VISIBLE)
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                // every widget is separate!!!
-                appWidgetManager.partiallyUpdateAppWidget(widgetId, views)
+                showProgressBar(context, widgetId)
                 onUpdate(context, appWidgetManager, appWidgetIds)
             } else {
                 super.onReceive(context, intent)
@@ -228,6 +228,14 @@ abstract class UninstallWidget : AppWidgetProvider() {
         } else {
             super.onReceive(context, intent)
         }
+    }
+
+    private fun showProgressBar(context: Context, widgetId: Int) {
+        val views = getRemoteViews(context)
+        views.setViewVisibility(R.id.progressBar, View.VISIBLE)
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        // every widget is separate!!!
+        appWidgetManager.partiallyUpdateAppWidget(widgetId, views)
     }
 
     open fun getLastApp(action: String?, widgetId: Int): String? {

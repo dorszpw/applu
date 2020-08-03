@@ -95,6 +95,7 @@ class DataService : Service() {
 
     companion object {
         private const val TAG = "DataService"
+        private var forceUpdateLabels = false
 
         fun getAllInstalledApps() {
             val pm = App.get().packageManager
@@ -106,16 +107,21 @@ class DataService : Service() {
                 val pi = packs[i]
                 if (pm.getLaunchIntentForPackage(pi.packageName) == null) continue
                 val newInfo = PInfo()
-                newInfo.appname = Prefs.getString(pi.packageName, "")
-                if (newInfo.appname == "") {
-                    // most time consuming task!
+                if (forceUpdateLabels) {
                     newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
-                    Prefs.putString(pi.packageName, newInfo.appname)
+                } else {
+                    newInfo.appname = Prefs.getString(pi.packageName, "")
+                    if (newInfo.appname == "") {
+                        // most time consuming task!
+                        newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
+                        Prefs.putString(pi.packageName, newInfo.appname)
+                    }
                 }
                 newInfo.isSystemPackage = PInfoHandler.isSystemPackage(pi)
                 newInfo.pname = pi.packageName
                 if (!allInfos.contains(newInfo)) allInfos.add(newInfo)
             }
+            forceUpdateLabels = false
             // add all to synchronized ArrayList, not one by one
             PInfoHandler.setAllPInfos(allInfos)
             Log.d(TAG, "onCreate number of packages from PM: " + packs.size)
@@ -185,6 +191,11 @@ class DataService : Service() {
             }
             Log.d(TAG, "getInstalledApps end " + Calendar.getInstance().timeInMillis + ", " +
                     (Calendar.getInstance().timeInMillis - start))
+        }
+
+        fun setForceUpdateLabels() {
+            PInfoHandler.getAllPInfos().clear()
+            forceUpdateLabels = true
         }
     }
 }

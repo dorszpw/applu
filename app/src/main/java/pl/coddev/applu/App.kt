@@ -32,7 +32,11 @@ class App : Application() {
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         //    startForegroundService(intent);
         //} else {
-        startService(intent)
+        try {
+            startService(intent)
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, e.message)
+        }
         //}
 
         //registerBroadcastReceiver();

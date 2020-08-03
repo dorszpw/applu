@@ -28,9 +28,7 @@
                 android:gravity="center_vertical|right"
                 android:text="◀"
                 android:textColor="@color/blue_nasty"
-                android:visibility="gone"/>
-
-
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/navButtonRight"
@@ -41,15 +39,24 @@
                 android:gravity="center_vertical|left"
                 android:text="▶"
                 android:textColor="@color/blue_nasty"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="0.2"
                 style="@android:style/Widget.Holo.ProgressBar.Small"
-                android:visibility="visible"
-                />
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/reloadButton"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.3"
+                android:src="@drawable/ic_baseline_refresh_24"
+                android:tint="@color/blue_nasty" />
 
         </LinearLayout>
 
@@ -69,29 +76,20 @@
         <Button
             android:id="@+id/searchButton1"
             style="@style/keypadButtonStyle"
-            android:text="abc"
-
-            />
+            android:text="abc" />
 
         <Button
             android:id="@+id/searchButton2"
             style="@style/keypadButtonStyle"
-            android:text="def"
-
-
-            />
+            android:text="def" />
 
         <Button
             android:id="@+id/searchButton3"
             style="@style/keypadButtonStyle"
-            android:text="ghi"
-            />
+            android:text="ghi" />
         <ImageView
             android:id="@+id/launchButton"
             style="@style/actionButtonStyle" />
-
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -100,20 +98,15 @@
         android:orientation="horizontal">
 
 
-
         <Button
             android:id="@+id/searchButton4"
             style="@style/keypadButtonStyle"
-            android:text="jkl"
-
-            />
+            android:text="jkl" />
 
         <Button
             android:id="@+id/searchButton5"
             style="@style/keypadButtonStyle"
-            android:text="mno"
-
-            />
+            android:text="mno" />
 
         <Button
             android:id="@+id/searchButton6"
@@ -123,8 +116,6 @@
             android:id="@+id/uninstallButton"
             style="@style/actionButtonStyle"
             android:src="@drawable/ic_delete_theme_black" />
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -136,16 +127,12 @@
         <Button
             android:id="@+id/searchButton7"
             style="@style/keypadButtonStyle"
-            android:text="tuv"
-
-            />
+            android:text="tuv" />
 
         <Button
             android:id="@+id/searchButton8"
             style="@style/keypadButtonStyle"
-            android:text="wxyz"
-
-            />
+            android:text="wxyz" />
 
 
         <LinearLayout
@@ -166,7 +153,6 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-
                 android:layout_weight="0.5"
                 android:padding="3dp"
                 android:src="@drawable/cancel_button_128" />
