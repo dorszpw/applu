@@ -101,7 +101,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
             setCurrentApp(packageName, widgetId)
             Log.d(TAG, "onUpdate prefs, class:  " + this.javaClass.name +
                     ", saved: " + PInfoHandler.getAppIndex(widgetId) + "/" + packageName)
-            views.setViewVisibility(R.id.progressBar, View.GONE)
+            //views.setViewVisibility(R.id.progressBar, View.GONE)
             appWidgetManager.updateAppWidget(widgetId, views)
         }
     }
@@ -164,6 +164,9 @@ abstract class UninstallWidget : AppWidgetProvider() {
         if (appWidgetIds != null) {
             if (WidgetActions.ADDED_NEW_APP.name.equals(intent.getStringExtra("Action"))) {
                 onUpdate(context, appWidgetManager, appWidgetIds)
+            } else if (WidgetActions.RELOADED_APP_LIST.name.equals(intent.getStringExtra("Action"))) {
+                hideProgressBar(context, widgetId)
+                onUpdate(context, appWidgetManager, appWidgetIds)
             }
             val widgetId = appWidgetIds[0]
             val currentApp: String?
@@ -220,7 +223,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
                 }
             } else if (actionString != null && actionString.contains("BUTTON")) {
                 Utils.displayRateQuestionIfNeeded()
-                showProgressBar(context, widgetId)
+                //showProgressBar(context, widgetId)
                 onUpdate(context, appWidgetManager, appWidgetIds)
             } else {
                 super.onReceive(context, intent)
@@ -233,6 +236,14 @@ abstract class UninstallWidget : AppWidgetProvider() {
     private fun showProgressBar(context: Context, widgetId: Int) {
         val views = getRemoteViews(context)
         views.setViewVisibility(R.id.progressBar, View.VISIBLE)
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        // every widget is separate!!!
+        appWidgetManager.partiallyUpdateAppWidget(widgetId, views)
+    }
+
+    private fun hideProgressBar(context: Context, widgetId: Int) {
+        val views = getRemoteViews(context)
+        views.setViewVisibility(R.id.progressBar, View.GONE)
         val appWidgetManager = AppWidgetManager.getInstance(context)
         // every widget is separate!!!
         appWidgetManager.partiallyUpdateAppWidget(widgetId, views)

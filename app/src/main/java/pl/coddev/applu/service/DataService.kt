@@ -4,6 +4,8 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -98,6 +100,8 @@ class DataService : Service() {
         private var forceUpdateLabels = false
 
         fun getAllInstalledApps() {
+            val start = Calendar.getInstance().timeInMillis
+            Log.d(TAG, "getAllInstalledApps xstart $start")
             val pm = App.get().packageManager
             // one of the most consuming tasks
             val packs: ArrayList<PackageInfo> = pm.getInstalledPackages(0) as ArrayList<PackageInfo>
@@ -125,15 +129,18 @@ class DataService : Service() {
             // add all to synchronized ArrayList, not one by one
             PInfoHandler.setAllPInfos(allInfos)
             Log.d(TAG, "onCreate number of packages from PM: " + packs.size)
+            updateAllWidgetsOnAction(WidgetActions.RELOADED_APP_LIST)
+            Log.d(TAG, "getAllInstalledApps end " + Calendar.getInstance().timeInMillis + ", " +
+                    (Calendar.getInstance().timeInMillis - start))
         }
 
         fun getAppsByFilter(widgetId: Int, button: WidgetActions?) {
             val start = Calendar.getInstance().timeInMillis
-            Log.d(TAG, "getInstalledApps xstart $start")
+            Log.d(TAG, "getAppsByFilter xstart $start")
             val ptn: Pattern
             var matcher: Matcher
             var filter = Prefs.getFilterList(widgetId)
-            Log.d(TAG, "getInstalledApps, last filter: $filter")
+            Log.d(TAG, "getAppsByFilter, last filter: $filter")
             val commonChars = "[^a-zA-Z]*"
             var filterExpansion = ""
             when (button) {
@@ -155,7 +162,7 @@ class DataService : Service() {
                     PInfoHandler.sizeOfFiltered(widgetId) > 0) {
                 filter += filterExpansion
             }
-            Log.d(TAG, "getInstalledApps, new filter: $filter")
+            Log.d(TAG, "getAppsByFilter, new filter: $filter")
             if (button != WidgetActions.TEXTFIELD_BUTTON ||
                     !PInfoHandler.filteredPInfosExists(widgetId)) {
                 when (button) {
@@ -169,7 +176,10 @@ class DataService : Service() {
 
                 ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE)
                 if (PInfoHandler.pInfosNotExist()) {
-                    getAllInstalledApps()
+                    AsyncTask.execute {
+                        getAllInstalledApps()
+                    }
+                    return
                 } else {
                     Log.d(TAG, "Using cached list. Size: " + PInfoHandler.sizeOfAll())
                 }
@@ -185,17 +195,51 @@ class DataService : Service() {
                     }
                 }
                 PInfoHandler.sortFilteredByMatch(widgetId)
-
             } else {
                 PInfoHandler.incrementAppIndex(widgetId, 1)
             }
-            Log.d(TAG, "getInstalledApps end " + Calendar.getInstance().timeInMillis + ", " +
+            Log.d(TAG, "getAppsByFilter end " + Calendar.getInstance().timeInMillis + ", " +
                     (Calendar.getInstance().timeInMillis - start))
         }
 
         fun setForceUpdateLabels() {
             PInfoHandler.getAllPInfos().clear()
             forceUpdateLabels = true
+        }
+
+        fun getMyWidgets(): HashMap<Class<*>, IntArray> {
+            val widgetMap = HashMap<Class<*>, IntArray>()
+            val appWidgetManager = AppWidgetManager.getInstance(App.get())
+            val appWidgetProviderInfoList = appWidgetManager.installedProviders
+
+            for (pi in appWidgetProviderInfoList.filter { awpi -> awpi.provider.packageName == App.get().packageName }) {
+                var widgetIds: IntArray
+                try {
+                    val widgetClass = Class.forName(pi.provider.className)
+                    widgetIds = appWidgetManager.getAppWidgetIds(ComponentName(App.get(), widgetClass))
+                    Log.d(TAG, "appWIdgetIds length: " + widgetIds.size)
+                    if (widgetIds != null && widgetIds.isNotEmpty()) widgetMap[widgetClass] = widgetIds
+                } catch (e: ClassNotFoundException) {
+                    Log.e(TAG, e.message!!)
+                }
+            }
+            return widgetMap
+        }
+
+        fun updateAllWidgetsOnAction(action: WidgetActions) {
+            for ((widgetClass, widgetIds) in getMyWidgets()) {
+                updateWiddgetsOfClassOnAction(widgetClass, widgetIds, action)
+            }
+        }
+
+        fun updateWiddgetsOfClassOnAction(widgetClass: Class<*>, widgetIds: IntArray, action: WidgetActions) {
+            val intentWidget = Intent(App.get(), widgetClass)
+            intentWidget.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+            intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
+            intentWidget.putExtra("Action", action.name)
+            App.get().sendBroadcast(intentWidget)
         }
     }
 }
