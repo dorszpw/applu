@@ -157,14 +157,10 @@ abstract class UninstallWidget : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-
         val appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
-        android.util.Log.d(TAG, "onReceive: ${Arrays.toString(appWidgetIds)}")
+        Log.d(TAG, "onReceive: ${Arrays.toString(appWidgetIds)}")
         val appWidgetManager = AppWidgetManager.getInstance(context)
         if (appWidgetIds != null) {
-            if (WidgetActions.ADDED_NEW_APP.name.equals(intent.getStringExtra("Action"))) {
-                onUpdate(context, appWidgetManager, appWidgetIds)
-            }
             val widgetId = appWidgetIds[0]
             val currentApp: String?
             val actionString = intent.action
@@ -203,9 +199,10 @@ abstract class UninstallWidget : AppWidgetProvider() {
                 onUpdate(context, appWidgetManager, appWidgetIds)
             } else if (action == WidgetActions.ON_RELOAD_APP_LIST) {
                 showProgressBar(context, widgetId)
-                //onUpdate(context, appWidgetManager, appWidgetIds)
             } else if (action == WidgetActions.RELOADED_APP_LIST) {
                 hideProgressBar(context, widgetId)
+                onUpdate(context, appWidgetManager, appWidgetIds)
+            } else if (action == WidgetActions.ADDED_NEW_APP) {
                 onUpdate(context, appWidgetManager, appWidgetIds)
             } else if (actionString != null && actionString.contains("LASTAPP")) {
                 currentApp = getLastApp(actionString, widgetId)
@@ -225,7 +222,6 @@ abstract class UninstallWidget : AppWidgetProvider() {
                 }
             } else if (actionString != null && actionString.contains("BUTTON")) {
                 Utils.displayRateQuestionIfNeeded()
-                //showProgressBar(context, widgetId)
                 onUpdate(context, appWidgetManager, appWidgetIds)
             } else {
                 super.onReceive(context, intent)
