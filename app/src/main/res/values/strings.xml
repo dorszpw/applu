@@ -70,4 +70,5 @@
     <string name="get_full_version">Go full!</string>
     <string name="filtering_in_full_version">Get the full version to use filtering option &amp; and bigger, more functional widgets.
         \nIn this one, always all apps (user + system) are searched through.</string>
+    <string name="cannot_get_all_apps">Cannot get all installed apps. Try again or reinstall app.</string>
 </resources>

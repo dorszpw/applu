@@ -29,6 +29,7 @@ import pl.coddev.applu.utils.Prefs.getAppIndex
 import pl.coddev.applu.utils.Prefs.setAppIndex
 import pl.coddev.applu.utils.Prefs.setCurrentApp
 import pl.coddev.applu.utils.Utils
+import java.util.*
 
 /**
  * Created by pw on 16/03/15.
@@ -156,16 +157,12 @@ abstract class UninstallWidget : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(TAG, "---onReceive received")
-        android.util.Log.d(TAG, "onReceive: ${intent.getStringExtra("Action")}")
 
         val appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
+        android.util.Log.d(TAG, "onReceive: ${Arrays.toString(appWidgetIds)}")
         val appWidgetManager = AppWidgetManager.getInstance(context)
         if (appWidgetIds != null) {
             if (WidgetActions.ADDED_NEW_APP.name.equals(intent.getStringExtra("Action"))) {
-                onUpdate(context, appWidgetManager, appWidgetIds)
-            } else if (WidgetActions.RELOADED_APP_LIST.name.equals(intent.getStringExtra("Action"))) {
-                hideProgressBar(context, widgetId)
                 onUpdate(context, appWidgetManager, appWidgetIds)
             }
             val widgetId = appWidgetIds[0]
@@ -202,8 +199,13 @@ abstract class UninstallWidget : AppWidgetProvider() {
                     }
                 }
             } else if (action == WidgetActions.FORCE_RELOAD) {
-                showProgressBar(context, widgetId)
                 DataService.setForceUpdateLabels()
+                onUpdate(context, appWidgetManager, appWidgetIds)
+            } else if (action == WidgetActions.ON_RELOAD_APP_LIST) {
+                showProgressBar(context, widgetId)
+                //onUpdate(context, appWidgetManager, appWidgetIds)
+            } else if (action == WidgetActions.RELOADED_APP_LIST) {
+                hideProgressBar(context, widgetId)
                 onUpdate(context, appWidgetManager, appWidgetIds)
             } else if (actionString != null && actionString.contains("LASTAPP")) {
                 currentApp = getLastApp(actionString, widgetId)
@@ -242,6 +244,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
     }
 
     private fun hideProgressBar(context: Context, widgetId: Int) {
+        android.util.Log.d(TAG, "hideProgressBar: widgetId: $widgetId")
         val views = getRemoteViews(context)
         views.setViewVisibility(R.id.progressBar, View.GONE)
         val appWidgetManager = AppWidgetManager.getInstance(context)

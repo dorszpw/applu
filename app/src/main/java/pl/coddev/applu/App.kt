@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
+import android.os.AsyncTask
 import android.util.Log
 import pl.coddev.applu.broadcastreceiver.PackageModifiedReceiver
 import pl.coddev.applu.service.DataService
@@ -36,6 +37,10 @@ class App : Application() {
             startService(intent)
         } catch (e: IllegalStateException) {
             Log.e(TAG, e.message)
+        }
+
+        AsyncTask.execute {
+            DataService.getAllInstalledApps()
         }
         //}
 

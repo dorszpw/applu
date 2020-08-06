@@ -12,10 +12,9 @@ object Prefs {
     private var prefs: SharedPreferences = App.get()
             .getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE)
 
-    private var appSelectorStatus: String? = null
     private var appIndex: Int? = null
     private var currentApp: String? = null
-    private var filterList: String? = null
+    private var filter: String? = null
     private var lastApps: String? = null
     private var lastAppsSync: String? = null
     private var featureCount = 0
@@ -60,14 +59,14 @@ object Prefs {
     }
 
     @JvmStatic
-    fun getFilterList(widgetId: Int): String? {
+    fun getFilter(widgetId: Int): String? {
         return prefs.getString(Constants.PREFS_FILTER_LIST + widgetId, "")
     }
 
     @JvmStatic
-    fun setFilterList(filterList: String?, widgetId: Int) {
-        if (this.filterList == filterList) return
-        putString(Constants.PREFS_FILTER_LIST + widgetId, filterList)
+    fun setFilter(filter: String?, widgetId: Int) {
+        if (this.filter == filter) return
+        putString(Constants.PREFS_FILTER_LIST + widgetId, filter)
     }
 
     @JvmStatic

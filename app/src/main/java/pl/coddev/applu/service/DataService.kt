@@ -15,6 +15,7 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import pl.coddev.applu.App
@@ -24,9 +25,11 @@ import pl.coddev.applu.data.PInfo
 import pl.coddev.applu.enums.WidgetActions
 import pl.coddev.applu.utils.Prefs
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
+import kotlin.concurrent.timerTask
 
 class DataService : Service() {
     lateinit var context: Context
@@ -48,9 +51,6 @@ class DataService : Service() {
 
         context = applicationContext
         registerBroadcastReceiver()
-        AsyncTask.execute {
-            getAllInstalledApps()
-        }
         //startForeground();
     }
 
@@ -96,50 +96,67 @@ class DataService : Service() {
     }
 
     companion object {
+        private var gettingAllInstalledApps: AtomicBoolean = AtomicBoolean(false)
         private const val TAG = "DataService"
         private var forceUpdateLabels = false
 
         fun getAllInstalledApps() {
-            val start = Calendar.getInstance().timeInMillis
-            Log.d(TAG, "getAllInstalledApps xstart $start")
-            val pm = App.get().packageManager
-            // one of the most consuming tasks
-            val packs: ArrayList<PackageInfo> = pm.getInstalledPackages(0) as ArrayList<PackageInfo>
-            //PInfoHandler.setAllPInfos();
-            val allInfos = ArrayList<PInfo>()
-            for (i in packs.indices) {
-                val pi = packs[i]
-                if (pm.getLaunchIntentForPackage(pi.packageName) == null) continue
-                val newInfo = PInfo()
-                if (forceUpdateLabels) {
-                    newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
-                } else {
-                    newInfo.appname = Prefs.getString(pi.packageName, "")
-                    if (newInfo.appname == "") {
-                        // most time consuming task!
-                        newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
-                        Prefs.putString(pi.packageName, newInfo.appname)
+            if (!gettingAllInstalledApps.get()) {
+                gettingAllInstalledApps.set(true)
+                val start = Calendar.getInstance().timeInMillis
+                Log.d(TAG, "getAllInstalledApps start $start")
+
+                updateAllWidgetsOnAction(WidgetActions.ON_RELOAD_APP_LIST)
+
+                try {
+                    val pm = App.get().packageManager
+                    // one of the most consuming tasks
+                    val packs: ArrayList<PackageInfo> = pm.getInstalledPackages(0) as ArrayList<PackageInfo>
+                    //PInfoHandler.setAllPInfos();
+                    val allInfos = ArrayList<PInfo>()
+                    for (i in packs.indices) {
+                        val pi = packs[i]
+                        if (pm.getLaunchIntentForPackage(pi.packageName) == null) continue
+                        val newInfo = PInfo()
+                        if (forceUpdateLabels) {
+                            newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
+                        } else {
+                            newInfo.appname = Prefs.getString(pi.packageName, "")
+                            if (newInfo.appname == "") {
+                                // most time consuming task!
+                                newInfo.appname = pi.applicationInfo.loadLabel(pm).toString()
+                                Prefs.putString(pi.packageName, newInfo.appname)
+                            }
+                        }
+                        newInfo.isSystemPackage = PInfoHandler.isSystemPackage(pi)
+                        newInfo.pname = pi.packageName
+                        if (!allInfos.contains(newInfo)) allInfos.add(newInfo)
                     }
+                    forceUpdateLabels = false
+                    // add all to synchronized ArrayList, not one by one
+                    PInfoHandler.setAllPInfos(allInfos)
+                    Log.d(TAG, "onCreate number of packages from PM: " + packs.size)
+                } catch (e: Exception) {
+                    Toast.makeText(App.get(), App.get().getString(R.string.cannot_get_all_apps),
+                            Toast.LENGTH_LONG).show()
+                    Log.e(TAG, "getAllInstalledApps: {${e.message}", e)
                 }
-                newInfo.isSystemPackage = PInfoHandler.isSystemPackage(pi)
-                newInfo.pname = pi.packageName
-                if (!allInfos.contains(newInfo)) allInfos.add(newInfo)
+                updateAllWidgetsOnAction(WidgetActions.RELOADED_APP_LIST)
+                Log.d(TAG, "getAllInstalledApps END, duration = " +
+                        (Calendar.getInstance().timeInMillis - start))
+
+                Timer().schedule(timerTask { gettingAllInstalledApps.set(false) }, 1000)
+            } else {
+                Log.d(TAG, "getAllInstalledApps: getting in progress already")
             }
-            forceUpdateLabels = false
-            // add all to synchronized ArrayList, not one by one
-            PInfoHandler.setAllPInfos(allInfos)
-            Log.d(TAG, "onCreate number of packages from PM: " + packs.size)
-            updateAllWidgetsOnAction(WidgetActions.RELOADED_APP_LIST)
-            Log.d(TAG, "getAllInstalledApps end " + Calendar.getInstance().timeInMillis + ", " +
-                    (Calendar.getInstance().timeInMillis - start))
         }
 
         fun getAppsByFilter(widgetId: Int, button: WidgetActions?) {
             val start = Calendar.getInstance().timeInMillis
-            Log.d(TAG, "getAppsByFilter xstart $start")
+            Log.d(TAG, "getAppsByFilter start $start")
             val ptn: Pattern
             var matcher: Matcher
-            var filter = Prefs.getFilterList(widgetId)
+            var filter = Prefs.getFilter(widgetId)
             Log.d(TAG, "getAppsByFilter, last filter: $filter")
             val commonChars = "[^a-zA-Z]*"
             var filterExpansion = ""
@@ -172,7 +189,7 @@ class DataService : Service() {
                     }
                     else -> PInfoHandler.setAppIndex(widgetId, 0)
                 }
-                Prefs.setFilterList(filter, widgetId)
+                Prefs.setFilter(filter, widgetId)
 
                 ptn = Pattern.compile(filter, Pattern.CASE_INSENSITIVE)
                 if (PInfoHandler.pInfosNotExist()) {
@@ -238,7 +255,8 @@ class DataService : Service() {
             // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
 // since it seems the onUpdate() is only fired on that:
             intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
-            intentWidget.putExtra("Action", action.name)
+            intentWidget.action = action.name
+            Log.d(TAG, "updateWiddgetsOfClassOnAction: widgetClass: ${widgetClass.name} widgetIds: ${widgetIds.contentToString()}")
             App.get().sendBroadcast(intentWidget)
         }
     }
