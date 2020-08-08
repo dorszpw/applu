@@ -153,7 +153,7 @@ class DataService : Service() {
 
         fun getAppsByFilter(widgetId: Int, button: WidgetActions?) {
             val start = Calendar.getInstance().timeInMillis
-            Log.d(TAG, "getAppsByFilter start $start")
+            Log.d(TAG, "getAppsByFilter start $start for widgetId: $widgetId")
             val ptn: Pattern
             var matcher: Matcher
             var filter = Prefs.getFilter(widgetId)
@@ -185,7 +185,7 @@ class DataService : Service() {
                 when (button) {
                     WidgetActions.TEXTFIELD_BUTTON ->
                         PInfoHandler.incrementAppIndex(widgetId, 1)
-                    WidgetActions.ADDED_NEW_APP -> {
+                    WidgetActions.ADDED_OR_REMOVED_APP -> {
                     }
                     else -> PInfoHandler.setAppIndex(widgetId, 0)
                 }

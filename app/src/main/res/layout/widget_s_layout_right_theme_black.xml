@@ -46,8 +46,9 @@
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="0.2"
+                android:layout_gravity="center_vertical"
                 style="@android:style/Widget.Holo.ProgressBar.Small"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/reloadButton"

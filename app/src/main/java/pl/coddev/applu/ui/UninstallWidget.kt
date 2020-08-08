@@ -158,7 +158,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
-        Log.d(TAG, "onReceive: ${Arrays.toString(appWidgetIds)}")
+        Log.d(TAG, "onReceive: ${Arrays.toString(appWidgetIds)} action: ${intent.action}")
         val appWidgetManager = AppWidgetManager.getInstance(context)
         if (appWidgetIds != null) {
             val widgetId = appWidgetIds[0]
@@ -202,7 +202,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
             } else if (action == WidgetActions.RELOADED_APP_LIST) {
                 hideProgressBar(context, widgetId)
                 onUpdate(context, appWidgetManager, appWidgetIds)
-            } else if (action == WidgetActions.ADDED_NEW_APP) {
+            } else if (action == WidgetActions.ADDED_OR_REMOVED_APP) {
                 onUpdate(context, appWidgetManager, appWidgetIds)
             } else if (actionString != null && actionString.contains("LASTAPP")) {
                 currentApp = getLastApp(actionString, widgetId)
@@ -235,7 +235,6 @@ abstract class UninstallWidget : AppWidgetProvider() {
         val views = getRemoteViews(context)
         views.setViewVisibility(R.id.progressBar, View.VISIBLE)
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        // every widget is separate!!!
         appWidgetManager.partiallyUpdateAppWidget(widgetId, views)
     }
 
@@ -244,7 +243,6 @@ abstract class UninstallWidget : AppWidgetProvider() {
         val views = getRemoteViews(context)
         views.setViewVisibility(R.id.progressBar, View.GONE)
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        // every widget is separate!!!
         appWidgetManager.partiallyUpdateAppWidget(widgetId, views)
     }
 

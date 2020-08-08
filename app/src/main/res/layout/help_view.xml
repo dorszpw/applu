@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:background="@color/lightGrey">
 
@@ -12,9 +12,7 @@
         android:layout_marginRight="@dimen/ref_10"
         android:layout_marginTop="@dimen/ref_30"
         android:orientation="vertical"
-
-
-        >
+        android:background="@color/lightGrey">
 
         <TextView
             android:id="@+id/helpTitleBack"
@@ -22,12 +20,13 @@
             android:text="@string/help_title_extended"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/primaryText"/>
+            android:textColor="@color/primaryText" />
 
         <TextView
             android:id="@+id/helpBodyBack"
             style="@style/helpPageStyle"
             android:textColorLink="@color/white"
+            android:layout_marginBottom="24dp"
             android:text="@string/help_body_extended" />
 
         <ImageView
@@ -53,7 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:numColumns="2"
-            android:paddingBottom="50dp">
+            android:paddingBottom="48dp"
+            android:paddingTop="24dp">
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -153,16 +153,32 @@
             </TableRow>
             <TableRow
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
+
                 <TextView
                     style="@style/helpPageStyle"
                     android:layout_weight="0.2"
                     android:text="8." />
+
                 <TextView
                     style="@style/helpPagePointsStyle"
                     android:layout_weight="3"
                     android:text="@string/help_points8" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/helpPageStyle"
+                    android:layout_weight="0.2"
+                    android:text="9." />
+
+                <TextView
+                    style="@style/helpPagePointsStyle"
+                    android:layout_weight="3"
+                    android:text="@string/help_points9" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

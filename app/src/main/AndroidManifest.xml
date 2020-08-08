@@ -86,12 +86,34 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".ui.UninstallWidgetLBlack"
+            android:label="Applu L black">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_l_theme_black" />
+        </receiver>
+        <receiver
+            android:name=".ui.UninstallWidgetLWhite"
+            android:label="Applu L white">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_l_theme_white" />
+        </receiver>
+
 
         <service
             android:name=".service.DataService"
             android:enabled="true"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
 
     </application>
 

@@ -1,10 +1,11 @@
 <resources>
+
     <string name="app_name">AppLU</string>
     <string name="enter_search_pattern">Enter search pattern</string>
+
     <!--
     to be filtered
     -->
-    <string name="cannot_run_app">This app is not runnable</string>
     <!-- icons from awesome-->
     <string name="icon_trash">&#xf1f8;</string>
     <string name="icon_trash_o">&#xf014;</string>
@@ -18,9 +19,38 @@
                                 \nto launch or uninstall your apps
                                 \ndirectly from your home screen.
                                 \n\nYou can choose between layouts in size:\n S, M or L\n
+    </string>
 
+    <string name="help_points1">Name of the currently selected app</string>
+    <string name="help_points2">Index of the current app and number of found apps</string>
+    <string name="help_points3">Last apps ran from AppLU. You can click to run any of them</string>
+    <string name="help_points4">Launch button - runs currently selected app</string>
+    <string name="help_points5">Uninstall button - removes currently selected app from the system</string>
+    <string name="help_points6">App filter button - switch between user/system/all</string>
+    <string name="help_points7">Letter buttons - click on them to find your app</string>
+    <string name="help_points8">Backspace buttons - remove last or all letters from the filter</string>
+    <string name="help_title_extended">How to use the widgets?</string>
+    <string name="help_body_extended">
+         \nSpell app name that you\'re trying to find, locate appropriate letters and click on them!
+         \nThat\'s it.
+         \nIf there are multiple results, just click on the app name field (1)
 
     </string>
+    <string name="share_message">Hi :)
+        \nHave you seen AppLU? It\'s a great Widget letting you find, run &amp;
+        uninstall apps directly from your home screen.
+        \n\nYou can download it from the app store.
+        \nhttps://play.google.com/store/apps/details?id=pl.coddev.applu.light
+        \nhttp://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu
+    </string>
+    <string name="share_title">Share Applu</string>
+    <string name="share_subject">Applu is an awesome Widget</string>
+    <string name="abc">abc</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="cannot_run_app">This app is not runnable</string>
+    <!-- icons from awesome-->
+
     <string name="help_points">
         \n1. Name of the currently selected app
     \n2. Index of the current app and number of found apps
@@ -32,36 +62,7 @@
     \n8. Delete buttons - remove last or all letters from the filter
         \n
     </string>
-     <string name="help_points1">
-        Name of the currently selected app
-         </string>
-    <string name="help_points2">Index of the current app and number of found apps</string>
-    <string name="help_points3">
-    Last apps ran from AppLU. You can click to run any of them
-    </string>
-    <string name="help_points4">Launch button - runs currently selected app</string>
-    <string name="help_points5">Uninstall button - removes currently selected app from the system</string>
-    <string name="help_points6">App filter button - switch between user/system/all</string>
-    <string name="help_points7">Letter buttons - click on them to find your app</string>
-    <string name="help_points8">Backspace buttons - remove last or all letters from the filter</string>
-    <string name="help_title_extended">How to use the widgets?</string>
-     <string name="help_body_extended">
-         \n\nUsing the letter buttons (7) is easy. Just spell app name that you\'re trying to find, locate appropriate letters and click on them!
-         \nThat\'s it.
-         \nIf one letter is not enough, add another one and another one, until the app is found.
-         \nIf there are multiple results, just click on the app name field (1) and the next one will appear.
-         \n\nNow, just have a look at below description with some hints:
 
-    </string>
-    <string name="share_message">Hi :)
-        \nHave you seen AppLU? It\'s a great Widget letting you find, run &amp;
-        uninstall apps directly from your home screen.
-        \n\nYou can download it from the app store.
-        \nhttp://www.amazon.com/gp/mas/dl/android?p=pl.coddev.applu
-    </string>
-    <string name="share_title">Share Applu</string>
-    <string name="share_subject">Applu is an awesome Widget</string>
-    <string name="abc">abc</string>
     <string name="rate_body">You\'ve used AppLU a couple of times now, it seems :)
     \nPlease rate it in the app store. Thanks!</string>
     <string name="rate">Let\'s rate!</string>
@@ -71,4 +72,7 @@
     <string name="filtering_in_full_version">Get the full version to use filtering option &amp; and bigger, more functional widgets.
         \nIn this one, always all apps (user + system) are searched through.</string>
     <string name="cannot_get_all_apps">Cannot get all installed apps. Try again or reinstall app.</string>
+    <string name="help_points9">Hit refresh button to force refresh widget and list of apps</string>
+
+
 </resources>

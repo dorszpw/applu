@@ -7,8 +7,12 @@ import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.os.AsyncTask
 import android.util.Log
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 import pl.coddev.applu.broadcastreceiver.PackageModifiedReceiver
 import pl.coddev.applu.service.DataService
+
 
 /**
  * Created by piotr woszczek on 30.12.14.
@@ -29,6 +33,7 @@ class App : Application() {
         Log.i(TAG, "OnCreate invoked")
         instance = this
         context = applicationContext
+        initAppCenter()
         val intent = Intent(this, DataService::class.java)
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         //    startForegroundService(intent);
@@ -43,7 +48,6 @@ class App : Application() {
             DataService.getAllInstalledApps()
         }
         //}
-
         //registerBroadcastReceiver();
     } // onCreate - end
 
@@ -55,6 +59,17 @@ class App : Application() {
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
         filter.addDataScheme("package")
         registerReceiver(packageModifiedReceiver, filter)
+    }
+
+    private fun initAppCenter() {
+        if (BuildConfig.BUILD_TYPE == "debug") {
+            AppCenter.start(this, "eeaff29b-02de-430f-a3bf-642a8ffc863e",
+                    Analytics::class.java, Crashes::class.java)
+            AppCenter.setLogLevel(Log.VERBOSE);
+        } else if (BuildConfig.BUILD_TYPE == "release") {
+            AppCenter.start(this, "af0c46d8-ba26-4203-b40d-539e87120c63",
+                    Analytics::class.java, Crashes::class.java)
+        }
     }
 
     companion object {

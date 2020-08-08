@@ -16,28 +16,16 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.OvershootInterpolator
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.help_view.*
+import kotlinx.android.synthetic.main.main_layout.*
 import pl.coddev.applu.R
 import pl.coddev.applu.utils.Log
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val TAG = "MainActivity"
     private var context: Context? = null
-    var relative: RelativeLayout? = null
-    var play: ImageButton? = null
-    var infoButton: ImageButton? = null
-    var lu: ImageView? = null
-    var rocket_background: ImageView? = null
-    var bin_background: ImageView? = null
-    var app: ImageView? = null
-    var lid: ImageView? = null
-    var rocket: ImageView? = null
-    var frame: ImageView? = null
-    var scrollView: ScrollView? = null
-    var helpBody: TextView? = null
-    var helpBodyBack: TextView? = null
     private var dm: DisplayMetrics? = null
     var share: FloatingActionButton? = null
     private var scale = 0f
@@ -56,22 +44,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
         context = applicationContext
-        relative = findViewById(R.id.relative)
-        frame = findViewById<View>(R.id.frame) as ImageView
-        lu = findViewById<View>(R.id.background) as ImageView
-        app = findViewById<View>(R.id.app) as ImageView
-        lid = findViewById<View>(R.id.lid) as ImageView
-        rocket = findViewById<View>(R.id.rocket) as ImageView
-        rocket_background = findViewById<View>(R.id.rocket_background) as ImageView
-        bin_background = findViewById<View>(R.id.bin_background) as ImageView
-        play = findViewById<View>(R.id.play) as ImageButton
+
         play!!.setOnClickListener(this)
-        infoButton = findViewById<View>(R.id.infoButton) as ImageButton
         infoButton!!.setOnClickListener(this)
-        scrollView = findViewById<View>(R.id.scrollView) as ScrollView
-        helpBody = findViewById<View>(R.id.helpBody) as TextView
         helpBody!!.movementMethod = LinkMovementMethod.getInstance()
-        helpBodyBack = findViewById<View>(R.id.helpBodyBack) as TextView
         helpBodyBack!!.movementMethod = LinkMovementMethod.getInstance()
         dm = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(dm)
@@ -120,7 +96,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         app!!.translationX = 0f
         app!!.translationY = 0f
         app!!.rotation = 0f
-        lu!!.translationX = 0f
+        background!!.translationX = 0f
         val rocketBackUnfade = ObjectAnimator.ofFloat(rocket_background, "alpha", 1f)
         val binBackUnfade = ObjectAnimator.ofFloat(bin_background, "alpha", 1f)
         rocketBackUnfade.start()
@@ -159,7 +135,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         appSet.interpolator = AnticipateOvershootInterpolator()
         appSet.playTogether(appScaleX, appScaleY, appTranslationX, appTranslationY, appRotation, rocketBackFade, binBackFade)
         val appTranslationYUp = ObjectAnimator.ofFloat(app, "translationY", 230 * scale)
-        val luTranslationX = ObjectAnimator.ofFloat(lu, "translationX", 220 * scale)
+        val luTranslationX = ObjectAnimator.ofFloat(background, "translationX", 220 * scale)
         val finishSet = AnimatorSet()
         finishSet.playSequentially(appSet, luTranslationX, appTranslationYUp)
         finishSet.addListener(object : AnimatorListenerAdapter() {

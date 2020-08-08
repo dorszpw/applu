@@ -56,7 +56,7 @@ class PackageModifiedReceiver : BroadcastReceiver() {
                     removeFromLastAppsSync(modifiedPackageName, widgetId)
                 }
             }
-            DataService.updateWiddgetsOfClassOnAction(widgetClass, widgetIds, WidgetActions.ADDED_NEW_APP)
+            DataService.updateWiddgetsOfClassOnAction(widgetClass, widgetIds, WidgetActions.ADDED_OR_REMOVED_APP)
         }
     }
 
