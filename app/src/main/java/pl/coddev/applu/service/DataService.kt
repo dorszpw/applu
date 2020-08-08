@@ -50,7 +50,7 @@ class DataService : Service() {
         super.onCreate()
 
         context = applicationContext
-        registerBroadcastReceiver()
+        //registerBroadcastReceiver()
         //startForeground();
     }
 
@@ -64,7 +64,7 @@ class DataService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy: ")
-        unregisterReceiver(packageModifiedReceiver)
+        //unregisterReceiver(packageModifiedReceiver)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -48,7 +48,7 @@ class App : Application() {
             DataService.getAllInstalledApps()
         }
         //}
-        //registerBroadcastReceiver();
+        registerBroadcastReceiver();
     } // onCreate - end
 
     private fun registerBroadcastReceiver() {
