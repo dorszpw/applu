@@ -18,7 +18,6 @@ import pl.coddev.applu.service.DataService
  * Created by piotr woszczek on 30.12.14.
  */
 class App : Application() {
-    private val featureCount = 0
 
     // DataService
     var mDataService: DataService? = null

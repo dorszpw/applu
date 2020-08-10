@@ -66,9 +66,9 @@ object Utils {
 
     fun displayRateQuestionIfNeeded() {
         if (getFeatureCount() < Constants.FEATURE_USAGE_MAX) {
-            val context: Context = get()
             val featureUsageCount = incrementFeatureCount()
             if (featureUsageCount == Constants.FEATURE_USAGE_MAX) {
+                val context: Context = get()
                 val popUpIntent = Intent(context, RateDialog::class.java)
                 popUpIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(popUpIntent)
