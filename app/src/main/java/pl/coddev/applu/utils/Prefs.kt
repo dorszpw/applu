@@ -26,7 +26,6 @@ object Prefs {
 
     @JvmStatic
     fun setFeatureCount(featureCount: Int) {
-        if (this.featureCount == featureCount) return
         putInt(Constants.EXTRA_FEATURE_USAGE, featureCount)
     }
 
