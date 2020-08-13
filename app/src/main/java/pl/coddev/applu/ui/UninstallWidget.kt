@@ -45,13 +45,10 @@ abstract class UninstallWidget : AppWidgetProvider() {
     abstract fun setupRemoveAllButton(views: RemoteViews, context: Context, ids: IntArray)
     abstract fun getRemoteViews(context: Context): RemoteViews
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        Log.d(TAG, "onUpdate" + appWidgetIds.size)
+        Log.d(TAG, "onUpdate $appWidgetIds")
         pm = context.packageManager
 
-
-
         for (i in appWidgetIds.indices) {
-            Log.d(TAG, "widget no " + i + ": " + appWidgetIds[i])
             widgetId = appWidgetIds[i]
             val ids = intArrayOf(widgetId)
             // Get the layout for the App Widget and attach an on-click listener
@@ -67,11 +64,13 @@ abstract class UninstallWidget : AppWidgetProvider() {
             views.setOnClickPendingIntent(R.id.searchButton8, buildPendingIntent(context, WidgetActions.BUTTON8.name, ids))
             views.setOnClickPendingIntent(R.id.clearButton, buildPendingIntent(context, WidgetActions.BUTTON_CLEAR.name, ids))
             views.setOnClickPendingIntent(R.id.reloadButton, buildPendingIntent(context, WidgetActions.FORCE_RELOAD.name, ids))
+
             setupLastAppsButtons(widgetId, views, context, ids)
             setupRemoveAllButton(views, context, ids)
             PInfoHandler.setAppIndex(widgetId, getAppIndex(widgetId))
             DataService.getAppsByFilter(widgetId, action)
             PInfoHandler.rollIndex(widgetId)
+
             var packageName = ""
             if (PInfoHandler.sizeOfFiltered(widgetId) > 0) {
                 val pinfo = PInfoHandler.getCurrentPInfo(widgetId)
@@ -88,7 +87,7 @@ abstract class UninstallWidget : AppWidgetProvider() {
                     views.setImageViewBitmap(R.id.launchButton, iconBitmap)
                     views.setTextViewText(R.id.searchText, getSpannableForField(context, pinfo))
                 }
-            } else {
+            } else if (!DataService.gettingAllInstalledApps.get()) {
                 views.setTextViewText(R.id.searchText, context.getString(R.string.no_matches))
                 views.setImageViewResource(R.id.launchButton, R.drawable.search_problem_128)
                 views.setOnClickPendingIntent(R.id.uninstallButton,
@@ -102,7 +101,6 @@ abstract class UninstallWidget : AppWidgetProvider() {
             setCurrentApp(packageName, widgetId)
             Log.d(TAG, "onUpdate prefs, class:  " + this.javaClass.name +
                     ", saved: " + PInfoHandler.getAppIndex(widgetId) + "/" + packageName)
-            //views.setViewVisibility(R.id.progressBar, View.GONE)
             appWidgetManager.updateAppWidget(widgetId, views)
         }
     }
