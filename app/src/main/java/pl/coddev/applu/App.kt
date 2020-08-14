@@ -64,7 +64,7 @@ class App : Application() {
         if (BuildConfig.BUILD_TYPE == "debug") {
             AppCenter.start(this, "eeaff29b-02de-430f-a3bf-642a8ffc863e",
                     Analytics::class.java, Crashes::class.java)
-            AppCenter.setLogLevel(Log.VERBOSE);
+            //AppCenter.setLogLevel(Log.VERBOSE);
         } else if (BuildConfig.BUILD_TYPE == "release") {
             AppCenter.start(this, "af0c46d8-ba26-4203-b40d-539e87120c63",
                     Analytics::class.java, Crashes::class.java)

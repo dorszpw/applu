@@ -96,7 +96,7 @@ class DataService : Service() {
     }
 
     companion object {
-        private var gettingAllInstalledApps: AtomicBoolean = AtomicBoolean(false)
+        var gettingAllInstalledApps: AtomicBoolean = AtomicBoolean(false)
         private const val TAG = "DataService"
         private var forceUpdateLabels = false
 
@@ -175,7 +175,7 @@ class DataService : Service() {
                 else -> {
                 }
             }
-            if (PInfoHandler.filteredPInfosExists(widgetId) &&
+            if (!PInfoHandler.filteredPInfosExists(widgetId) ||
                     PInfoHandler.sizeOfFiltered(widgetId) > 0) {
                 filter += filterExpansion
             }
