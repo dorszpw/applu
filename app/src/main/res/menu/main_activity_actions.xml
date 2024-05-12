@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/ic_delete_theme_black"
+        android:title="delete"
+        compat:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_compose"
+        android:icon="@drawable/filter_all_theme_white"
+        android:title="deleter"
+        compat:showAsAction="always"/>
+</menu>

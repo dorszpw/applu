@@ -1,0 +1,170 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+
+        <!-- the theme applied to the application or activity -->
+        <style name="CustomActionBarTheme"
+    parent="Theme.AppCompat.Light.NoActionBar">
+
+
+
+        </style>
+    <!--<item name="android:logo">@android:color/transparent</item>-->
+        <!-- ActionBar styles -->
+        <style name="MyActionBar"
+            parent="android:Widget.Holo.ActionBar">
+
+            <item name="android:background">@null</item>
+            <!-- Support library compatibility -->
+            <item name="background">@null</item>
+        </style>
+
+
+    <style name="animationImageViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+    <style name="keypadButtonStyle">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_weight">1.3</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textColor">@color/button_text_color_theme_black</item>
+
+        <item name="android:textAllCaps" tools:targetApi="14">false</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="keypadButtonStyleL" parent="keypadButtonStyle">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textSize">22dp</item>
+
+    </style>
+    <style name="keypadButtonStyleWhite" parent="keypadButtonStyle">
+        <item name="android:textColor">@color/button_text_color_theme_white</item>
+    </style>
+    <style name="keypadButtonStyleLWhite" parent="keypadButtonStyleWhite">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textSize">22dp</item>
+    </style>
+
+
+    <!--<style name="Theme.Transparent" parent="android:Theme">-->
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="android:windowIsFloating">false</item>-->
+        <!--<item name="android:backgroundDimEnabled">false</item>-->
+    <!--</style>-->
+
+    <style name="actionButtonStyle">
+        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="actionButtonInsideStyle">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="lastAppButtonStyle">
+        <item name="android:layout_width">37dp</item>
+        <item name="android:layout_height">37dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:src">@null</item>
+    </style>
+
+    <style name="lastAppButtonStyleTight" parent="lastAppButtonStyle">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:src">@null</item>
+    </style>
+
+    <style name="lastAppButtonStyleTightLarge" parent="lastAppButtonStyleTight">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:src">@null</item>
+    </style>
+
+    <style name="searchTextStyle">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">35dp</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:layout_weight">2</item>
+    <item name="android:background">@null</item>
+    <item name="android:clickable">true</item>
+    <item name="android:paddingLeft">5dp</item>
+    <item name="android:paddingRight">5dp</item>
+    <item name="android:singleLine">true</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="searchTextStyleBlack" parent="searchTextStyle">
+        <item name="android:textColor">@color/lightGrey</item>
+
+    </style>
+    <style name="searchTextStyleBlackL" parent="searchTextStyleBlack">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="searchTextStyleWhite" parent="searchTextStyle">
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+    <style name="searchTextStyleWhiteL" parent="searchTextStyleWhite">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="helpPageStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/secondaryText</item>
+        <item name="android:textSize">@dimen/ref_font_medium</item>
+    </style>
+
+    <style name="helpPagePointsStyle" parent="helpPageStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">@color/secondaryText</item>
+        <item name="android:textSize">@dimen/ref_font_medium</item>
+    </style>
+
+
+</resources>
