@@ -6,7 +6,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
@@ -17,6 +16,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.OvershootInterpolator
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -54,6 +54,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.infoButton.setOnClickListener(this)
         binding.helpBody.movementMethod = LinkMovementMethod.getInstance()
 
+        // Handle back press: if help screen is visible, hide it; otherwise finish
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.d(TAG, "onBackPressed ")
+                if (screen == VIEW.HELP) {
+                    handleHelpView(HELPVIEW_ACTION.HIDE)
+                } else {
+                    finish()
+                }
+            }
+        })
+
         // Push the info button below the status bar on all screen sizes / Android versions
         val defaultTopMargin = resources.getDimensionPixelSize(R.dimen.ref_10)
         ViewCompat.setOnApplyWindowInsetsListener(binding.infoButton) { view, insets ->
@@ -65,6 +77,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 //        binding.helpBodyBack.movementMethod = LinkMovementMethod.getInstance()
         dm = DisplayMetrics()
+        @Suppress("DEPRECATION")
         windowManager.defaultDisplay.getMetrics(dm)
         binding.relative.getViewTreeObserver().addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -82,24 +95,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 //this is an important step not to keep receiving callbacks:
                 //we should remove this listener
                 //I use the function to remove it based on the api level!
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    binding.relative!!.getViewTreeObserver().removeOnGlobalLayoutListener(this)
-                else binding.relative!!.getViewTreeObserver().removeGlobalOnLayoutListener(this)
+                binding.relative!!.getViewTreeObserver().removeOnGlobalLayoutListener(this)
             }
         })
         share = findViewById(R.id.share)
         share!!.setOnClickListener(this)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        Log.d(TAG, "onBackPressed ")
-        if (screen == VIEW.HELP) {
-            handleHelpView(HELPVIEW_ACTION.HIDE)
-        } else if (screen == VIEW.MAIN) {
-            finish()
-        }
-    }
 
     private fun resetImageViews() {
         binding.rocket!!.translationX = 0f
