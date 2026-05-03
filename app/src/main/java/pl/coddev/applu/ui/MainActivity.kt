@@ -11,12 +11,15 @@ import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.coddev.applu.R
 import pl.coddev.applu.databinding.MainLayoutBinding
@@ -50,6 +53,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.play.setOnClickListener(this)
         binding.infoButton.setOnClickListener(this)
         binding.helpBody.movementMethod = LinkMovementMethod.getInstance()
+
+        // Push the info button below the status bar on all screen sizes / Android versions
+        val defaultTopMargin = resources.getDimensionPixelSize(R.dimen.ref_10)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.infoButton) { view, insets ->
+            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            val params = view.layoutParams as ViewGroup.MarginLayoutParams
+            params.topMargin = statusBarHeight + defaultTopMargin
+            view.layoutParams = params
+            insets
+        }
 //        binding.helpBodyBack.movementMethod = LinkMovementMethod.getInstance()
         dm = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(dm)
