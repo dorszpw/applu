@@ -1,5 +1,7 @@
 MIT License
 
+Uninstall & Run Widget
+play.google.com/store/apps/details?id=pl.coddev.applu.light
 Copyright (c) 2024, dorszpw
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
