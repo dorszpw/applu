@@ -3,9 +3,9 @@
 This policy applies to **Uninstall & Run Widget**:  
 https://play.google.com/store/apps/details?id=pl.coddev.applu.light
 
-Thank you for using Applu!
+Thank you for using Uninstall & Run Widget!
 
-Applu is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and disclose information when you use our mobile application.
+Uninstall & Run Widget is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and disclose information when you use our mobile application.
 
 ## Information We Do Not Collect:
 
@@ -35,4 +35,4 @@ Changes to This Privacy Policy:
 We reserve the right to update or change our Privacy Policy at any time. 
 Any changes to this Privacy Policy will be posted on this page.
 
-By using Applu mobile app, you agree to the collection and use of information in accordance with this Privacy Policy.
+By using Uninstall & Run Widget mobile app, you agree to the collection and use of information in accordance with this Privacy Policy.
